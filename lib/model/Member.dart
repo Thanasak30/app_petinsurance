@@ -4,7 +4,7 @@ import 'package:pet_insurance/model/Login.dart';
 
 class Member {
 
-  String? memberId;
+  int? memberId;
   String? member_name;
   String? age;
   String? mobileno;

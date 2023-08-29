@@ -1,7 +1,9 @@
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:pet_insurance/screen/View_insurance.dart';
 import 'package:pet_insurance/screen/login.dart';
 // import '../controller/MemberController.dart';
@@ -10,7 +12,6 @@ import '../controller/LoginController.dart';
 import 'Register.dart';
 // import 'Veiw_insurance.dart';
 import 'package:http/http.dart' as http;
-
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -22,25 +23,28 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   bool stateResEye = true;
   final LoginController loginController = LoginController();
+  final GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
   TextEditingController userNameTextController = TextEditingController();
   TextEditingController pssswordController = TextEditingController();
-
 
   @override
   Widget build(BuildContext context) {
     double size = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: SafeArea(
-        child: ListView(
-          children: [
-            buildImage(size),
-            buildappname(),
-            buildUser(size),
-            buildPassword(size),
-            buildbuttom(size),
-            buildregister(context),
-          ],
+      body: Form(
+        key: formkey,
+        child: SafeArea(
+          child: ListView(
+            children: [
+              buildImage(size),
+              buildappname(),
+              buildUser(size),
+              buildPassword(size),
+              buildbuttom(size),
+              buildregister(context),
+            ],
+          ),
         ),
       ),
     );
@@ -48,19 +52,19 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Row buildregister(BuildContext context) {
     return Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text("ยังไม่มีบัญชี ?"),
-              TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (BuildContext context) {
-                      return RegisterScreen();
-                    }));
-                  },
-                  child: Text("สมัครเข้าใช้งาน"))
-            ],
-          );
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text("ยังไม่มีบัญชี ?"),
+        TextButton(
+            onPressed: () {
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (BuildContext context) {
+                return RegisterScreen();
+              }));
+            },
+            child: Text("สมัครเข้าใช้งาน"))
+      ],
+    );
   }
 
   Row buildbuttom(double size) {
@@ -74,12 +78,30 @@ class _LoginScreenState extends State<LoginScreen> {
                 style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30))),
-                onPressed: ()  {
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (BuildContext context) {
-                return Viewinsurance();
-                }));
-              },
+                onPressed: () async {
+                  if (formkey.currentState!.validate()) {
+                    http.Response response = await loginController.userLogin(
+                        userNameTextController.text, pssswordController.text);
+
+                    if (response.statusCode == 403) {
+                      print("user not found naja");
+                    } else if (response.statusCode == 500) {
+                      print("Error naja");
+                    } else {
+                      var jsonResponse = jsonDecode(response.body);
+                      String usertype = jsonResponse["usertype"];
+                      if (usertype == "M") {
+                        print("sescces");
+                        await SessionManager().set(
+                            "username", jsonResponse["username"].toString());
+                        Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          return Viewinsurance();
+                        }));
+                      }
+                    }
+                  }
+                },
                 child: Text("เข้าสู่ระบบ"))),
       ],
     );

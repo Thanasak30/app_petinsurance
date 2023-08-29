@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pet_insurance/screen/login.dart';
 import 'package:pet_insurance/widgets/custom_text.dart';
-// import 'package:http/http.dart' as http;
+import 'package:http/http.dart' as http;
+
+import '../controller/MemberController.dart';
 
 // import '../controller/MemberController.dart';
 
@@ -15,7 +17,7 @@ class RegisterScreen extends StatefulWidget {
 const List<String> listnationality = <String>['ไทย', 'อื่นๆ'];
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  // final MemberController memberController = MemberController();
+  final MemberController memberController = MemberController();
 
   TextEditingController userNameTextController = TextEditingController();
   TextEditingController passwordTextController = TextEditingController();
@@ -77,17 +79,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30))),
-                onPressed: () {
-                  //      http.Response response = await loginController.addLogin(
-                  //       userNameTextController.text,
-                  //       pssswordController.text,
-                  //       "0"
-                  //      );
-                  // if (response.statusCode == 500) {
-                  //   print("Error!");
-                  // } else {
-                  //   print("Member was added successfully!");
-                  // }
+                onPressed: () async {
+                  http.Response response = await memberController.addMember(
+                      userNameTextController.text,
+                      AgeTextController.text,
+                      MobilenumberTextController.text,
+                      EmailTextController.text,
+                      GenderTextController.text,
+                      fullnameTextController.text,
+                      IdCardTextController.text,
+                      AdddressTextController.text,
+                      birthdayTextController.text,
+                      passwordTextController.text,
+                      nationalityTextController.text,
+                      IDlineTextController.text);
+                  if (response.statusCode == 500) {
+                    print("Error!");
+                  } else {
+                    print("Member was added successfully!");
+                  }
                   Navigator.of(context).pushReplacement(
                       MaterialPageRoute(builder: (BuildContext context) {
                     return LoginScreen();

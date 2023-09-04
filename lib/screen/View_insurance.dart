@@ -104,7 +104,7 @@ class _ViewinsuranceState extends State<Viewinsurance> {
                   onPressed: () {
                     Navigator.of(context).pushReplacement(
                         MaterialPageRoute(builder: (BuildContext context) {
-                      return InsuranceREG();
+                      return AddPet();
                     }));
                   },
                   child: Text("สมัครแผน"))

@@ -17,7 +17,6 @@ class PetdetailController {
     String member_id,
     String animal_species,
     String Checkforinsurance,
-    
   ) async {
     Map data = {
       "namepet": namepet,
@@ -29,7 +28,7 @@ class PetdetailController {
       "isSick": isSick,
       'hasGenderDisease': hasGenderDisease,
       'Check': Checkforinsurance,
-      'animal_species' : animal_species
+      'animal_species': animal_species
     };
 
     var jsonData = json.encode(data);
@@ -69,12 +68,27 @@ class PetdetailController {
 
     final utf8Body = utf8.decode(response.bodyBytes);
     var jsonResponse = json.decode(utf8Body);
-    Petdetail member = Petdetail.fromJsonToPetdetail(jsonResponse);
-    return member;
+
+    return jsonResponse;
   }
 
   static addPetdetail(String text, String text2, String text3,
       {required String Type,
       required String TypeSpice,
       required String listValue}) {}
+
+  Future listAllPetdetail() async {
+    Map data = {};
+
+    var body = json.encode(data);
+    var url = Uri.parse(baseURL + '/petdetail/list');
+
+    http.Response response = await http.post(url, headers: headers, body: body);
+
+    final utf8Body = utf8.decode(response.bodyBytes);
+    List<dynamic> jsonResponse = json.decode(utf8Body);
+    List<Petdetail> list =
+        jsonResponse.map((e) => Petdetail.fromJsonToPetdetail(e)).toList();
+    return list;
+  }
 }

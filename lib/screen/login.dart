@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
+import 'package:pet_insurance/screen/OfficerAddinsurance.dart';
 import 'package:pet_insurance/screen/View_insurance.dart';
 import 'package:pet_insurance/screen/login.dart';
 // import '../controller/MemberController.dart';
@@ -35,16 +36,14 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Form(
         key: formkey,
         child: SafeArea(
-          child: ListView(
-            children: [
-              buildImage(size),
-              buildappname(),
-              buildUser(size),
-              buildPassword(size),
-              buildbuttom(size),
-              buildregister(context),
-            ],
-          ),
+          child: ListView(children: [
+            buildImage(size),
+            buildappname(),
+            buildUser(size),
+            buildPassword(size),
+            buildbuttom(size),
+            buildregister(context),
+          ]),
         ),
       ),
     );
@@ -97,6 +96,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         Navigator.of(context).pushReplacement(
                             MaterialPageRoute(builder: (BuildContext context) {
                           return Viewinsurance();
+                        }));
+                      }else if(usertype == "F"){
+                        print("sescces");
+                        await SessionManager().set(
+                            "username", jsonResponse["username"].toString());
+                        Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          return Addinsurance();
                         }));
                       }
                     }

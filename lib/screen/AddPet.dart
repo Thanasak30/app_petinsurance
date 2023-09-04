@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:http/http.dart' as http;
+import 'package:pet_insurance/screen/insurance_reg1.dart';
 
 import '../controller/PetdetailController.dart';
 import 'Register.dart';
@@ -122,7 +123,7 @@ class _AddPetState extends State<AddPet> {
                   }
                   Navigator.of(context).pushReplacement(
                       MaterialPageRoute(builder: (BuildContext context) {
-                    return RegisterScreen();
+                    return InsuranceREG();
                   }));
                 },
                 child: Text("เพิ่มสัตว์เลี้ยง"))),

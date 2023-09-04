@@ -4,18 +4,46 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:pet_insurance/model/Petdetail.dart';
 import 'package:pet_insurance/screen/insurance_reg3.dart';
 
+import '../controller/PetdetailController.dart';
 import 'AddPet.dart';
 
 class InsuranceREG2 extends StatefulWidget {
-  const InsuranceREG2({super.key});
+  final String pet_id;
+  const InsuranceREG2({Key? key, required this.pet_id}) : super(key: key);
 
   @override
   State<InsuranceREG2> createState() => _InsuranceREG2State();
 }
 
 class _InsuranceREG2State extends State<InsuranceREG2> {
+
+  final  petdetailController = PetdetailController();
+
+  Petdetail? petdetail;
+  bool? isLoade;
+
+  void fetcData(String pet_id) async {
+    print(pet_id);
+    setState(() {
+      isLoade = false;
+    });
+    var response = await petdetailController.getPetdetailById(pet_id);
+    petdetail =  Petdetail.fromJsonToPetdetail(response);
+    setState(() {
+      isLoade = true;
+    });
+    
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetcData(widget.pet_id);
+  }
+
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
@@ -130,7 +158,7 @@ class _InsuranceREG2State extends State<InsuranceREG2> {
   Row buildshowdatapet() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [Text("สัตว์เลี้ยง :"), Text("สายพันธุ์ :"), Text("อายุ :")],
+      children: [Text("${petdetail?.namepet}"), Text("${petdetail?.animal_species}"), Text("${petdetail?.agepet}")],
     );
   }
 

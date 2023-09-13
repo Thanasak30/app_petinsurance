@@ -3,6 +3,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:pet_insurance/controller/MemberController.dart';
+import 'package:pet_insurance/screen/AddPet.dart';
+import 'package:pet_insurance/screen/EditProfile.dart';
+import 'package:pet_insurance/screen/View_insurance.dart';
+import 'package:pet_insurance/screen/login.dart';
 
 import '../model/Member.dart';
 
@@ -14,7 +18,6 @@ class Navbar extends StatefulWidget {
 }
 
 class _NavbarState extends State<Navbar> {
-
   MemberController memberController = MemberController();
 
   String? username;
@@ -28,7 +31,7 @@ class _NavbarState extends State<Navbar> {
     });
     var usernameSession = await SessionManager().get("username");
     username = usernameSession.toString();
-    var response = await memberController.getMemberByUsername(username??"");
+    var response = await memberController.getMemberByUsername(username ?? "");
     member = Member.fromJsonToMember(response);
     print(member?.fullname);
     setState(() {
@@ -37,7 +40,7 @@ class _NavbarState extends State<Navbar> {
   }
 
   @override
-  void initState()  {
+  void initState() {
     super.initState();
     syncUser();
   }
@@ -49,7 +52,8 @@ class _NavbarState extends State<Navbar> {
         children: [
           UserAccountsDrawerHeader(
             accountName: Text('${username}'),
-            accountEmail: Text('${isLoaded == true? member?.member_email : null}'),
+            accountEmail:
+                Text('${isLoaded == true ? member?.member_email : null}'),
             currentAccountPicture: CircleAvatar(
               child: ClipOval(child: Image.asset('Image/pet-insurance.png')),
             ),
@@ -59,28 +63,57 @@ class _NavbarState extends State<Navbar> {
                     image: AssetImage('Image/background.png'),
                     fit: BoxFit.cover)),
           ),
-         // Text("${username}"),
+          // Text("${username}"),
           ListTile(
-            leading: Icon(Icons.home_outlined),
-            title: Text("Home"),
-            onTap: () => print('Home'),
-          ),
+              leading: Icon(Icons.home_outlined),
+              title: Text("Home"),
+              onTap: () {
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (BuildContext context) {
+                  return Viewinsurance();
+                }));
+              }),
           ListTile(
             leading: Icon(Icons.account_circle),
-            title: Text("Insurance Pet"),
-            onTap: () => print('Insurance Pet'),
+            title: Text("EditProfile"),
+            onTap: () {
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (BuildContext context) {
+                return EditProfile();
+              }));
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.pets),
+            title: Text("Addpet"),
+            onTap: () {
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (BuildContext context) {
+                return AddPet();
+              }));
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.view_timeline),
+            title: Text("รายการสมัคร"),
+            onTap: () {
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (BuildContext context) {
+                return AddPet();
+              }));
+            },
           ),
           const Divider(),
           ListTile(
-            leading: Icon(Icons.settings),
-            title: Text("Setting"),
-            onTap: () => print('Setting'),
-          ),
-          ListTile(
-            leading: Icon(Icons.logout),
-            title: Text("Sing out"),
-            onTap: () => print('Sing out'),
-          )
+              leading: Icon(Icons.logout),
+              title: Text("Sing out"),
+              onTap: () {
+                SessionManager().remove("username");
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (BuildContext context) {
+                  return LoginScreen();
+                }));
+              })
         ],
       ),
     );

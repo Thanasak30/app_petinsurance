@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:http/http.dart' as http;
+import 'package:pet_insurance/screen/View_insurance.dart';
 import 'package:pet_insurance/screen/insurance_reg1.dart';
 
+import '../controller/MemberController.dart';
 import '../controller/PetdetailController.dart';
+import '../model/Member.dart';
 import 'Register.dart';
 
 class AddPet extends StatefulWidget {
@@ -19,13 +23,27 @@ enum Type { Dog, Cat }
 enum TypeSpice { purebred, mixedbreed }
 
 const List<String> listanimal_Spice = <String>['1', '2'];
+const List<String> listAge = <String>[
+  '8 สัปดาห์ - 1 ปี',
+  '2 ปี',
+  '3 ปี',
+  '4 ปี',
+  '5 ปี',
+  '6 ปี',
+  '7 ปี'
+];
 
 class _AddPetState extends State<AddPet> {
+  String? user;
+  bool? isLoaded;
+  Member? member;
+
   TextEditingController namePetTextController = TextEditingController();
   TextEditingController agePetTextController = TextEditingController();
   TextEditingController genderpetTextController = TextEditingController();
 
   String listanimal = listanimal_Spice.first;
+  String listage = listAge.first;
 
   var type;
   var typeSpice;
@@ -35,6 +53,23 @@ class _AddPetState extends State<AddPet> {
   String? species;
 
   final PetdetailController petdetailController = PetdetailController();
+  final MemberController memberController = MemberController();
+
+  void fetcData() async {
+    user = await SessionManager().get("username");
+    print(user);
+    member = await memberController.getMemberById(user!);
+    print("testusername ${member?.username?.username}");
+    setState(() {
+      isLoaded = false;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetcData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +79,12 @@ class _AddPetState extends State<AddPet> {
         title: const Text("เพิ่มสัตว์เลี้ยง"),
         leading: BackButton(
           color: Colors.white,
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (BuildContext context) {
+              return Viewinsurance();
+            }));
+          },
         ),
       ),
       body: SingleChildScrollView(
@@ -106,13 +146,13 @@ class _AddPetState extends State<AddPet> {
                   http.Response response = await petdetailController.addPet(
                     "-",
                     "flase",
-                    agePetTextController.text,
+                    listage.toString(),
                     genderpetTextController.text,
                     "-",
                     namePetTextController.text,
                     typespices.toString(),
                     types.toString(),
-                    "",
+                    member!.memberId.toString(),
                     listanimal.toString(),
                     "flase",
                   );
@@ -233,25 +273,25 @@ class _AddPetState extends State<AddPet> {
 
   Row buildagepet(double size) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Container(
-          margin: EdgeInsets.only(top: 30),
-          width: size * 0.6,
-          child: TextFormField(
-            controller: agePetTextController,
-            decoration: InputDecoration(
-              labelText: "ชื่อสัตว์",
-              prefixIcon: Icon(Icons.account_circle_outlined),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                  borderRadius: BorderRadius.circular(30)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.cyan),
-                  borderRadius: BorderRadius.circular(30)),
-            ),
+        Expanded(child: Text("อายุ", style: TextStyle(fontSize: 15))),
+        Expanded(
+          child: DropdownButton<String>(
+            value: listage,
+            isExpanded: true,
+            onChanged: (String? val) {
+              setState(() {
+                listage = val!;
+              });
+            },
+            items: listAge.map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
           ),
-        ),
+        )
       ],
     );
   }

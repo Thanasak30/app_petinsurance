@@ -100,6 +100,10 @@ class _ViewinsuranceState extends State<Viewinsurance> {
                 " แผน ${(itemIndex + 1).toString()}",
                 style: TextStyle(color: Colors.black, fontSize: 40),
               ),
+              Text("price บาท/ปี"),
+              Text("ค่ารักษาจากอุบัติเหตุ(บาท)\n" + "บาท/ครั้ง\n" + "ครั้ง/ปี"),
+              Text("ค่ารักษาจากการเจ็บป่วย(บาท)\n" + "บาท/ครั้ง\n" + "ครั้ง/ปี"),
+              Text("ค่าวัคซีนป้องกันโรคสัตว์เลี้ยง(บาท)"+""),
               ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).pushReplacement(
@@ -113,7 +117,7 @@ class _ViewinsuranceState extends State<Viewinsurance> {
         ),
       ),
       options: CarouselOptions(
-        height: 300,
+        height: 350,
         aspectRatio: 16 / 9,
         viewportFraction: 0.6,
         initialPage: 0,

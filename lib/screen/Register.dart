@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pet_insurance/screen/login.dart';
 import 'package:pet_insurance/widgets/custom_text.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:intl/intl.dart';
 import '../controller/MemberController.dart';
 
 // import '../controller/MemberController.dart';
@@ -14,9 +14,12 @@ class RegisterScreen extends StatefulWidget {
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-const List<String> listnationality = <String>['ไทย', 'อื่นๆ'];
+
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  var dateFormat = DateFormat('dd-MM-yyyy');
+  DateTime currentDate = DateTime.now();
+  DateTime? birthday;
   final MemberController memberController = MemberController();
 
   TextEditingController userNameTextController = TextEditingController();
@@ -32,7 +35,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController AdddressTextController = TextEditingController();
   TextEditingController IDlineTextController = TextEditingController();
 
-  String listNationality = listnationality.first;
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +83,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         borderRadius: BorderRadius.circular(30))),
                 onPressed: () async {
                   http.Response response = await memberController.addMember(
-                      userNameTextController.text,
                       AgeTextController.text,
                       MobilenumberTextController.text,
                       EmailTextController.text,
@@ -92,7 +93,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       birthdayTextController.text,
                       passwordTextController.text,
                       nationalityTextController.text,
-                      IDlineTextController.text);
+                      IDlineTextController.text,
+                      userNameTextController.text);
                   if (response.statusCode == 500) {
                     print("Error!");
                   } else {
@@ -191,10 +193,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
           margin: EdgeInsets.only(top: 15),
           width: size * 0.6,
           child: TextFormField(
+            onTap: () async {
+              DateTime? tempDate = await showDatePicker(
+                  context: context,
+                  initialDate: currentDate,
+                  firstDate: DateTime(1950),
+                  lastDate: DateTime(2100));
+                  setState(() {
+                    birthday = tempDate;
+                    birthdayTextController.text = 
+                    dateFormat.format(birthday!);
+                  });
+                  print(birthday);
+            },
+            readOnly: true,
             controller: birthdayTextController,
             decoration: InputDecoration(
               labelText: "วัน/เดือน/ปีเกิด",
-              prefixIcon: Icon(Icons.account_circle_outlined),
+              prefixIcon: Icon(Icons.calendar_month),
               enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
                   borderRadius: BorderRadius.circular(30)),
@@ -202,6 +218,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   borderSide: BorderSide(color: Colors.cyan),
                   borderRadius: BorderRadius.circular(30)),
             ),
+            validator: (value){
+              if(value!.isEmpty){
+                return "กรุณาเลือกวันที่";
+              }
+            },
           ),
         ),
       ],

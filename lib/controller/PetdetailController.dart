@@ -14,7 +14,7 @@ class PetdetailController {
     String namepet,
     String species,
     String type,
-    String member_id,
+    String memberId,
     String animal_species,
     String Checkforinsurance,
   ) async {
@@ -28,7 +28,8 @@ class PetdetailController {
       "isSick": isSick,
       'hasGenderDisease': hasGenderDisease,
       'Check': Checkforinsurance,
-      'animal_species': animal_species
+      'animal_species': animal_species,
+      'memberId': memberId
     };
 
     var jsonData = json.encode(data);

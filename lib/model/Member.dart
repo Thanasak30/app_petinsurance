@@ -5,7 +5,6 @@ import 'package:pet_insurance/model/Login.dart';
 class Member {
 
   int? memberId;
-  String? member_name;
   String? age;
   String? mobileno;
   String? member_email;
@@ -16,11 +15,10 @@ class Member {
   DateTime? brithday;
   String? nationality;
   String? id_line;
-  Login? login;
+  Login? username;
 
   Member({
     this.memberId,
-    this.member_name,
     this.age,
     this.mobileno,
     this.member_email,
@@ -31,14 +29,13 @@ class Member {
     this.brithday,
     this.nationality,
     this.id_line,
-    this.login
+    this.username
   });
 
 
     Map<String, dynamic> fromMemberToJson() {
     return <String, dynamic>{
       'memberId': memberId,
-      'member_name': member_name,
       'age': age,
       'mobileno': mobileno,
       'member_email': member_email,
@@ -46,17 +43,16 @@ class Member {
       'fullname': fullname,
       'idcard': idcard,
       'address': address,
-      'brithday': brithday?.toIso8601String(),
+      'brithday': brithday,
       'nationality' : nationality,
       'id_line' : id_line,
-      'login': login?.fromLoginToJson()
+      'username': username?.fromLoginToJson()
     };
   }
 
     factory Member.fromJsonToMember(Map<String, dynamic> json) {
     return Member(
       memberId: json["memberId"],
-      member_name: json["member_name"],
       age: json["age"],
       mobileno: json["mobileno"],
       member_email: json["member_email"],
@@ -67,7 +63,7 @@ class Member {
       brithday: DateTime.parse(json["brithday"]),
       nationality: json["nationality"],
       id_line: json["id_line"],
-      login: Login.fromJsonToLogin(json["username"])
+      username: Login.fromJsonToLogin(json["username"])
     );
   }
   

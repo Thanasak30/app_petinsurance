@@ -3,44 +3,46 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:pet_insurance/controller/MemberController.dart';
+import 'package:pet_insurance/controller/OfficerController.dart';
 import 'package:pet_insurance/model/Officer.dart';
 
 import '../model/Member.dart';
 
-class Navbar extends StatefulWidget {
-  const Navbar({super.key});
+class NavbarOficer extends StatefulWidget {
+  const NavbarOficer({super.key});
 
   @override
-  State<Navbar> createState() => _NavbarState();
+  State<NavbarOficer> createState() => _NavbarOficerState();
 }
 
-class _NavbarState extends State<Navbar> {
+class _NavbarOficerState extends State<NavbarOficer> {
 
   MemberController memberController = MemberController();
+  OfficerController officerController = OfficerController();
 
   String? username;
   Officer? officer;
 
   bool? isLoaded;
 
-  void syncUser() async {
-    setState(() {
-      isLoaded = false;
-    });
-    var usernameSession = await SessionManager().get("username");
-    username = usernameSession.toString();
-    var response = await memberController.getMemberByUsername(username??"");
-    officer = Officer.fromJsonToOfficer(response);
-    print(officer?.officername);
-    setState(() {
-      isLoaded = true;
-    });
-  }
+  // void syncUser() async {
+  //   setState(() {
+  //     isLoaded = false;
+  //   });
+  //   var usernameSession = await SessionManager().get("username");
+  //   username = usernameSession.toString();
+  //   var response = await memberController.getMemberByUsername(username??"");
+  //   officer = Officer.fromJsonToOfficer(response);
+  //   print(officer?.officername);
+  //   setState(() {
+  //     isLoaded = true;
+  //   });
+  // }
 
   @override
   void initState()  {
     super.initState();
-    syncUser();
+    // syncUser();
   }
 
   @override
@@ -68,15 +70,20 @@ class _NavbarState extends State<Navbar> {
           ),
           ListTile(
             leading: Icon(Icons.account_circle),
-            title: Text("Insurance Pet"),
-            onTap: () => print('Insurance Pet'),
+            title: Text("List Applicant"),
+            onTap: () => print('List Applicant'),
           ),
-          const Divider(),
           ListTile(
             leading: Icon(Icons.settings),
-            title: Text("Setting"),
-            onTap: () => print('Setting'),
+            title: Text("Add insurance"),
+            onTap: () => print('Add insurance'),
           ),
+          ListTile(
+            leading: Icon(Icons.settings),
+            title: Text("List All insurance"),
+            onTap: () => print('List All insurance'),
+          ),
+          const Divider(),
           ListTile(
             leading: Icon(Icons.logout),
             title: Text("Sing out"),

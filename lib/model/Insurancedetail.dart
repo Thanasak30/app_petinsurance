@@ -6,7 +6,7 @@
   String? duration;
   String? medical_expenses;
   String? treatment;
-  String? medical_expenses_pertime;
+  String? cost_of_preventive_vaccination;
   double? price;
 
 
@@ -17,7 +17,7 @@
     this.duration,
     this.medical_expenses,
     this.treatment,
-    this.medical_expenses_pertime,
+    this.cost_of_preventive_vaccination,
     this.price
   });
 
@@ -29,7 +29,7 @@
       'duration': duration,
       'medical_expenses': medical_expenses,
       'treatment': treatment,
-      'medical_expenses_pertime': medical_expenses_pertime,
+      'cost_of_preventive_vaccination': cost_of_preventive_vaccination,
       'price': price,
     };
   }
@@ -42,7 +42,7 @@
       duration: json["duration"],
       medical_expenses: json["medical_expenses"],
       treatment: json["treatment"],
-      medical_expenses_pertime: json["medical_expenses_pertime"],
+      cost_of_preventive_vaccination: json["cost_of_preventive_vaccination"],
       price: json["price"],
     );
   }

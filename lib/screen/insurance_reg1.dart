@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:pet_insurance/controller/PetdetailController.dart';
 import 'package:pet_insurance/model/Petdetail.dart';
+import 'package:pet_insurance/screen/View_insurance.dart';
 
 import 'insurance_reg2.dart';
 
@@ -45,7 +46,12 @@ class _InsuranceREGState extends State<InsuranceREG> {
         title: const Text("เลือกสัตว์เลี้ยงที่ต้องการทำประกัน"),
         leading: BackButton(
           color: Colors.white,
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (BuildContext context) {
+              return Viewinsurance();
+            }));
+          },
         ),
       ),
       body: ListView.builder(
@@ -62,13 +68,12 @@ class _InsuranceREGState extends State<InsuranceREG> {
                       print("pet_id ${petdetail?[index].petId}");
                       print("Click at ${index}");
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (_) =>
-                              InsuranceREG2(pet_id: (petdetail?[index].petId).toString())));
+                          builder: (_) => InsuranceREG2(
+                              pet_id: (petdetail?[index].petId).toString())));
                     },
                   )),
             );
           }),
     );
   }
-
 }

@@ -87,20 +87,22 @@ class _AddPetState extends State<AddPet> {
           },
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            buildappname(),
-            buildnamepet(size),
-            buildagepet(size),
-            buildgenderpet(size),
-            buildtitle(),
-            buildtypepet(),
-            buildtitlespice(),
-            buildtypespice(),
-            buildanimalspice(),
-            buildbuttom(size),
-          ],
+      body: Form(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              buildappname(),
+              buildnamepet(size),
+              buildagepet(size),
+              buildgenderpet(size),
+              buildtitle(),
+              buildtypepet(),
+              buildtitlespice(),
+              buildtypespice(),
+              buildanimalspice(),
+              buildbuttom(size),
+            ],
+          ),
         ),
       ),
     );

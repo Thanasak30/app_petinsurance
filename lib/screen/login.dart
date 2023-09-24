@@ -6,6 +6,8 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:pet_insurance/screen/OfficerAddinsurance.dart';
 import 'package:pet_insurance/screen/View_insurance.dart';
+import 'package:pet_insurance/screen/insurance_reg1.dart';
+import 'package:pet_insurance/screen/insurance_reg4.dart';
 import 'package:pet_insurance/screen/login.dart';
 // import '../controller/MemberController.dart';
 // import '../widgets/custom_text.dart';
@@ -97,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             MaterialPageRoute(builder: (BuildContext context) {
                           return Viewinsurance();
                         }));
-                      }else if(usertype == "F"){
+                      } else if (usertype == "F") {
                         print("sescces");
                         await SessionManager().set(
                             "username", jsonResponse["username"].toString());
@@ -156,6 +158,21 @@ class _LoginScreenState extends State<LoginScreen> {
                   borderSide: BorderSide(color: Colors.cyan),
                   borderRadius: BorderRadius.circular(30)),
             ),
+            validator: (value) {
+              //ถ้าใส่ email ถูก
+              bool usernameValid =
+                 RegExp(r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])[A-Za-z0-9]{4,16}$')
+                      .hasMatch(value!);
+
+              //กรณีไม่ใส่ username
+              if (value.isEmpty) {
+                return "กรุณากรอก ตัวอักษรภาษาอังกฤษ\n [A-Z,a-z,[0-9] 4-16 ตัวอักษร";
+              }
+              //กรณีใส่ usename ผิด
+              else if (!usernameValid) {
+                return "ชื่อผู้ใช้ไม่ถูกต้อง";
+              }
+            },
           ),
         ),
       ],
@@ -197,6 +214,22 @@ class _LoginScreenState extends State<LoginScreen> {
                   borderSide: BorderSide(color: Colors.cyan),
                   borderRadius: BorderRadius.circular(30)),
             ),
+            validator: (value) {
+              // ตรวจสอบความถูกต้องของรหัสผ่าน
+              // bool isPasswordValid  = RegExp(r'^[A-Za-z0-9]{8}$').hasMatch(value!);
+              bool isPasswordValid = RegExp(r'^[0-9]{4}$').hasMatch(value!);
+
+              // กรณีไม่กรอกรหัสผ่าน
+              if (value == null || value.isEmpty) {
+                return "กรุณากรอกรหัสผ่าน มีอักษรภาษาอังกฤษและตัวเลข\nความยาวไม่เกิน 8 ตัวอักษร";
+              }
+              // กรณีรหัสผ่านไม่ถูกต้อง
+              else if (!isPasswordValid) {
+                return "รหัสผ่านไม่ถูกต้อง";
+              }
+              // กรณีรหัสผ่านถูกต้อง
+              return null;
+            },
           ),
         ),
       ],

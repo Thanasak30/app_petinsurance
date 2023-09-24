@@ -1,63 +1,64 @@
 import "package:pet_insurance/model/Member.dart";
 
 class Petdetail {
+  bool? hasGenderDisease;
+  bool? isSick;
   int? petId;
-  String? namepet;
   String? agepet;
-  String? type;
+  String? animal_species;
+  String? Checkforinsurance;
   String? gender;
   String? listpicture;
+  String? namepet;
   String? species;
-  String? animal_species;
-  bool? isSick;
-  bool? hasGenderDisease;
-  String? Checkforinsurance;
+  String? type;
   Member? member;
 
   Petdetail({
+    this.hasGenderDisease,
+    this.isSick,
     this.petId,
-    this.namepet,
     this.agepet,
-    this.type,
+    this.animal_species,
+    this.Checkforinsurance,
     this.gender,
     this.listpicture,
+    this.namepet,
     this.species,
-    this.animal_species,
-    this.isSick,
-    this.hasGenderDisease,
-    this.Checkforinsurance,
+    this.type,
     this.member,
   });
 
   Map<String, dynamic> fromPetdetailToJson() {
     return <String, dynamic>{
+      'hasGenderDisease': hasGenderDisease,
+      'isSick': isSick,
       'petId': petId,
-      'namepet': namepet,
       'agepet': agepet,
-      'type': type,
+      'animal_species': animal_species,
+      'Checkforinsurance': Checkforinsurance,
       'gender': gender,
       'listpicture': listpicture,
+      'namepet': namepet,
       'species': species,
-      'animal_species': animal_species,
-      'isSick': isSick,
-      'hasGenderDisease': hasGenderDisease,
-      'Checkforinsurance': Checkforinsurance,
-      'member': member,
+      'type': type,
+      'member': member?.fromMemberToJson(),
     };
   }
 
   factory Petdetail.fromJsonToPetdetail(Map<String, dynamic> json) {
     return Petdetail(
+        hasGenderDisease: json["hasGenderDisease"],
+        isSick: json["isSick"],
         petId: json["petId"],
-        namepet: json["namepet"],
         agepet: json["agepet"],
-        type: json["type"],
+        animal_species: json["animal_species"],
+        Checkforinsurance: json["Checkforinsurance"],
         gender: json["gender"],
         listpicture: json["listpicture"],
+        namepet: json["namepet"],
         species: json["species"],
-        animal_species: json["animal_species"],
-        hasGenderDisease: json["hasGenderDisease"],
-        Checkforinsurance: json["Checkforinsurance"],
+        type: json["type"],
         member: json["member"] == null
             ? null
             : Member.fromJsonToMember(json["member_id"]));

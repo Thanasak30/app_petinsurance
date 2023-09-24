@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:pet_insurance/model/Petdetail.dart';
+import 'package:pet_insurance/screen/insurance_reg1.dart';
 import 'package:pet_insurance/screen/insurance_reg3.dart';
+import 'package:pet_insurance/screen/insurance_reg4.dart';
 
 import '../controller/PetdetailController.dart';
 import 'AddPet.dart';
@@ -19,8 +21,7 @@ class InsuranceREG2 extends StatefulWidget {
 }
 
 class _InsuranceREG2State extends State<InsuranceREG2> {
-
-  final  petdetailController = PetdetailController();
+  final petdetailController = PetdetailController();
 
   Petdetail? petdetail;
   bool? isLoade;
@@ -31,11 +32,12 @@ class _InsuranceREG2State extends State<InsuranceREG2> {
       isLoade = false;
     });
     var response = await petdetailController.getPetdetailById(pet_id);
-    petdetail =  Petdetail.fromJsonToPetdetail(response);
-    setState(() {
-      isLoade = true;
-    });
-    
+    petdetail = Petdetail.fromJsonToPetdetail(response);
+    setState(
+      () {
+        isLoade = true;
+      },
+    );
   }
 
   @override
@@ -55,7 +57,12 @@ class _InsuranceREG2State extends State<InsuranceREG2> {
         title: const Text("สมัครแผนประกัน"),
         leading: BackButton(
           color: Colors.white,
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (BuildContext context) {
+              return InsuranceREG();
+            }));
+          },
         ),
       ),
       body: ListView(
@@ -132,10 +139,13 @@ class _InsuranceREG2State extends State<InsuranceREG2> {
               ),
               ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (BuildContext context) {
-                      return InsuranceREG3();
-                    }));
+                    // Navigator.of(context).pushReplacement(
+                    //     MaterialPageRoute(builder: (BuildContext context) {
+                    //   return InsuranceREG4();
+                    // }));
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (_) => InsuranceREG4(
+                            pet_id: (petdetail?.petId).toString())));
                   },
                   child: Text("สมัครแผน"))
             ],
@@ -158,7 +168,11 @@ class _InsuranceREG2State extends State<InsuranceREG2> {
   Row buildshowdatapet() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [Text("${petdetail?.namepet}"), Text("${petdetail?.animal_species}"), Text("${petdetail?.agepet}")],
+      children: [
+        Text("${petdetail?.namepet}"),
+        Text("${petdetail?.animal_species}"),
+        Text("${petdetail?.agepet}")
+      ],
     );
   }
 

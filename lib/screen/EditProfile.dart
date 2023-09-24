@@ -175,7 +175,7 @@ class _EditProfileState extends State<EditProfile> {
                     id_line: IDlineTextController.text,
                     username: member?.username
                   );
-                  print(updateMember?.username?.username);
+                  // print(updateMember?.username?.username);
                   showSureToUpdateMemberAlert(updateMember);
                 },
                 child: Text("แก้ไขข้อมูล"))),

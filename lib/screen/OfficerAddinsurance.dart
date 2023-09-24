@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:intl/intl.dart';
+import 'package:pet_insurance/navbar/navbarofficer.dart';
 import 'package:pet_insurance/screen/View_insurance.dart';
 
 import '../controller/OfficerController.dart';
@@ -15,6 +17,11 @@ class Addinsurance extends StatefulWidget {
 }
 
 class _AddinsuranceState extends State<Addinsurance> {
+  var dateFormat = DateFormat('dd-MM-yyyy');
+  DateTime currentDate = DateTime.now();
+  DateTime? birthday;
+  DateTime nextYearDate = DateTime.now().add(Duration(days: 365 + 1));
+
   final OfficerController officerController = OfficerController();
 
   TextEditingController PlantnameController = TextEditingController();
@@ -28,20 +35,22 @@ class _AddinsuranceState extends State<Addinsurance> {
   Widget build(BuildContext context) {
     double size = MediaQuery.of(context).size.width;
     return Scaffold(
-      // drawer: Navbar(),
+      drawer: NavbarOficer(),
       appBar: AppBar(
         title: const Text("เลือกสัตว์เลี้ยงที่ต้องการทำประกัน"),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            buildPlantname(size),
-            buildPrice(size),
-            buildmedical_expenses(size),
-            buildtreatment(size),
-            buildcost_of_preventive_vaccination(size),
-            buildbuttom(size)
-          ],
+      body: Form(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              buildPlantname(size),
+              buildPrice(size),
+              buildmedical_expenses(size),
+              buildtreatment(size),
+              buildcost_of_preventive_vaccination(size),
+              buildbuttom(size)
+            ],
+          ),
         ),
       ),
     );
@@ -75,7 +84,7 @@ class _AddinsuranceState extends State<Addinsurance> {
                   }
                   Navigator.of(context).pushReplacement(
                       MaterialPageRoute(builder: (BuildContext context) {
-                    return Viewinsurance();
+                    return Addinsurance();
                   }));
                 },
                 child: Text("เพิ่มแผนประกันภัย"))),
@@ -93,7 +102,7 @@ class _AddinsuranceState extends State<Addinsurance> {
           child: TextFormField(
             controller: PlantnameController,
             decoration: InputDecoration(
-              labelText: "Plantname",
+              labelText: "ชื่อแผนประกัน",
               enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
                   borderRadius: BorderRadius.circular(30)),
@@ -117,7 +126,7 @@ class _AddinsuranceState extends State<Addinsurance> {
           child: TextFormField(
             controller: MedicalController,
             decoration: InputDecoration(
-              labelText: "Medical_expenses",
+              labelText: "ค่ารักษา",
               enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
                   borderRadius: BorderRadius.circular(30)),
@@ -141,7 +150,7 @@ class _AddinsuranceState extends State<Addinsurance> {
           child: TextFormField(
             controller: TreatmentController,
             decoration: InputDecoration(
-              labelText: "Treatment",
+              labelText: "การรักษา",
               enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
                   borderRadius: BorderRadius.circular(30)),
@@ -165,7 +174,7 @@ class _AddinsuranceState extends State<Addinsurance> {
           child: TextFormField(
             controller: preventive_vaccinationController,
             decoration: InputDecoration(
-              labelText: "preventive_vaccination",
+              labelText: "การฉีดวัคซีน",
               enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
                   borderRadius: BorderRadius.circular(30)),
@@ -189,7 +198,7 @@ class _AddinsuranceState extends State<Addinsurance> {
           child: TextFormField(
             controller: PriceController,
             decoration: InputDecoration(
-              labelText: "Price",
+              labelText: "ราคาแผน",
               enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
                   borderRadius: BorderRadius.circular(30)),

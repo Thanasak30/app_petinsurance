@@ -13,17 +13,15 @@ class OfficerController {
     String insurance_name,
     String medical_expenses,
     String treatment,
-    
-    
   ) async {
     Map data = {
-      "insurance_name": insurance_name,
+      "price": price,
+      "cost_of_preventive_vaccination": cost_of_preventive_vaccination,
       "details": details,
       "duration": duration,
+      "insurance_name": insurance_name,
       "medical_expenses": medical_expenses,
       "treatment": treatment,
-      "cost_of_vaccination": cost_of_preventive_vaccination,
-      "price": price,
     };
 
     var jsonData = json.encode(data);

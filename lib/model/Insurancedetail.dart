@@ -1,8 +1,7 @@
  class Insurancedetail {
 
-  String? insurance_planId;
+  int? insurance_planId;
   String? insurance_name;
-  String? details;
   String? duration;
   String? medical_expenses;
   String? treatment;
@@ -12,38 +11,39 @@
 
   Insurancedetail({
     this.insurance_planId,
-    this.insurance_name,
-    this.details,
+    this.price,
+    this.cost_of_preventive_vaccination,
     this.duration,
+    this.insurance_name,
     this.medical_expenses,
     this.treatment,
-    this.cost_of_preventive_vaccination,
-    this.price
+    
+    
   });
 
     Map<String, dynamic> fromInsurancedetailToJson() {
     return <String, dynamic>{
       'insurance_planId': insurance_planId,
-      'insurance_name': insurance_name,
-      'details': details,
+      'price': price,
+      'cost_of_preventive_vaccination': cost_of_preventive_vaccination,
       'duration': duration,
+      'insurance_name': insurance_name,
       'medical_expenses': medical_expenses,
       'treatment': treatment,
-      'cost_of_preventive_vaccination': cost_of_preventive_vaccination,
-      'price': price,
+      
+      
     };
   }
 
     factory Insurancedetail.fromJsonToInsurancedetail(Map<String, dynamic> json) {
     return Insurancedetail(
       insurance_planId: json["insurance_planId"],
-      insurance_name: json["insurance_name"],
-      details: json["details"],
+      price: json["price"],
+      cost_of_preventive_vaccination: json["cost_of_preventive_vaccination"],
       duration: json["duration"],
+      insurance_name: json["insurance_name"],
       medical_expenses: json["medical_expenses"],
       treatment: json["treatment"],
-      cost_of_preventive_vaccination: json["cost_of_preventive_vaccination"],
-      price: json["price"],
     );
   }
 

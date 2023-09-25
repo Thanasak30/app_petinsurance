@@ -5,6 +5,7 @@ import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:pet_insurance/controller/MemberController.dart';
 import 'package:pet_insurance/controller/OfficerController.dart';
 import 'package:pet_insurance/model/Officer.dart';
+import 'package:pet_insurance/screen/ListAllinsurance.dart';
 
 import '../model/Member.dart';
 
@@ -71,7 +72,12 @@ class _NavbarOficerState extends State<NavbarOficer> {
           ListTile(
             leading: Icon(Icons.account_circle),
             title: Text("List Applicant"),
-            onTap: () => print('List Applicant'),
+            onTap: (){
+               Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (BuildContext context) {
+                    return ListAllinsurance();
+                  }));
+            },
           ),
           ListTile(
             leading: Icon(Icons.settings),

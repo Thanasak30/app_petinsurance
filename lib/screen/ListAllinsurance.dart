@@ -1,32 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:pet_insurance/controller/PetdetailController.dart';
-import 'package:pet_insurance/model/Petdetail.dart';
-import 'package:pet_insurance/screen/View_insurance.dart';
+import 'package:pet_insurance/controller/OfficerController.dart';
+import 'package:pet_insurance/model/Insurancedetail.dart';
+import 'package:pet_insurance/screen/EditInsurance.dart';
+import 'package:pet_insurance/screen/OfficerAddinsurance.dart';
 
 import 'insurance_reg2.dart';
 
-class InsuranceREG extends StatefulWidget {
-  const InsuranceREG({super.key});
+class ListAllinsurance extends StatefulWidget {
+  const ListAllinsurance({super.key});
 
   @override
-  State<InsuranceREG> createState() => _InsuranceREGState();
+  State<ListAllinsurance> createState() => _ListAllinsuranceState();
 }
 
+class _ListAllinsuranceState extends State<ListAllinsurance> {
 
+  final OfficerController officerController = OfficerController();
 
-class _InsuranceREGState extends State<InsuranceREG> {
-  final PetdetailController petdetailController = PetdetailController();
-
-  List<Petdetail>? petdetail;
+  List<Insurancedetail>? insurancedetail;
 
   bool? isLoade;
   void fetcData() async {
     setState(() {
       isLoade = false;
     });
-    petdetail = await petdetailController.listAllPetdetail();
+    insurancedetail = await officerController.listAllInsurance();
     setState(() {
       isLoade = true;
     });
@@ -42,19 +42,19 @@ class _InsuranceREGState extends State<InsuranceREG> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("เลือกสัตว์เลี้ยงที่ต้องการทำประกัน"),
+        title: Text("รายการแผนประกัน"),
         leading: BackButton(
           color: Colors.white,
           onPressed: () {
             Navigator.of(context).pushReplacement(
                 MaterialPageRoute(builder: (BuildContext context) {
-              return Viewinsurance();
+              return Addinsurance();
             }));
           },
         ),
       ),
       body: ListView.builder(
-          itemCount: petdetail?.length,
+          itemCount: insurancedetail?.length,
           itemBuilder: (context, index) {
             return Padding(
               padding:
@@ -62,13 +62,13 @@ class _InsuranceREGState extends State<InsuranceREG> {
               child: Card(
                   elevation: 10,
                   child: ListTile(
-                    leading: Text("${petdetail?[index].namepet}"),
+                    leading: Text("${insurancedetail?[index].insurance_name}"),
                     onTap: () {
-                      print("pet_id ${petdetail?[index].petId}");
+                      print("insurance_planId ${insurancedetail?[index].insurance_planId}");
                       print("Click at ${index}");
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (_) => InsuranceREG2(
-                              pet_id: (petdetail?[index].petId).toString())));
+                          builder: (_) => EditInsurance(
+                              insurance_planId: (insurancedetail?[index].insurance_planId).toString())));
                     },
                   )),
             );

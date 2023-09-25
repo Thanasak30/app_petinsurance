@@ -37,7 +37,7 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
   var dateFormat = DateFormat('dd-MM-yyyy');
   DateTime currentDate = DateTime.now();
   DateTime? birthday;
-  DateTime nextYearDate = DateTime.now().add(Duration(days: 365 + 1));
+  DateTime nextYearDate = DateTime.now().add(Duration(days: 365 + 1));//xรอคูนกับ duration
 
   String? type;
   String? typeSpice;
@@ -112,7 +112,6 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
     print(response);
     setData();
     setState(() {
-      setData();
       isLoaded = true;
     });
   }

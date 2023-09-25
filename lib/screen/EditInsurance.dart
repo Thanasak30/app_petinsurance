@@ -37,7 +37,7 @@ class _EditInsuranceState extends State<EditInsurance> {
     TreatmentController.text = insurancedetail?.treatment ?? "";
     preventive_vaccinationController.text =
         insurancedetail?.cost_of_preventive_vaccination ?? "";
-    PriceController.text = insurancedetail!.price.toString()??"";
+    PriceController.text = insurancedetail?.price.toString()??"";
   }
 
   void fetcData(String insurance_planId) async {

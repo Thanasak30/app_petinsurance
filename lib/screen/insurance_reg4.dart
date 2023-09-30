@@ -1,7 +1,12 @@
+import 'dart:io';
+
+import 'package:file_picker/src/platform_file.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:pet_insurance/controller/PetdetailController.dart';
 import 'package:pet_insurance/model/Petdetail.dart';
@@ -16,7 +21,10 @@ import 'insurance_reg3.dart';
 
 class InsuranceREG4 extends StatefulWidget {
   final String pet_id;
-  const InsuranceREG4({Key? key, required this.pet_id}) : super(key: key);
+  final String insurance_planId;
+  const InsuranceREG4(
+      {Key? key, required this.pet_id, required this.insurance_planId})
+      : super(key: key);
 
   @override
   State<InsuranceREG4> createState() => _InsuranceREG4State();
@@ -37,7 +45,8 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
   var dateFormat = DateFormat('dd-MM-yyyy');
   DateTime currentDate = DateTime.now();
   DateTime? birthday;
-  DateTime nextYearDate = DateTime.now().add(Duration(days: 365 + 1));//xรอคูนกับ duration
+  DateTime nextYearDate =
+      DateTime.now().add(Duration(days: 365 + 1)); //xรอคูนกับ duration
 
   String? type;
   String? typeSpice;
@@ -49,12 +58,16 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
   String? user;
   Member? member;
   bool? isLoaded;
-  bool isLoadingPicture = true;
+
   Petdetail? petdetail;
 
-  // FilePickerResult? filePickerResult;
-  // PlatformFile? pickedFile;
-  // File? fileToDisplay;
+  FilePickerResult? filePickerResult;
+  PlatformFile? pickedFile;
+  File? fileToDisplay;
+  String? fileName;
+  bool isLoadingPicture = true;
+
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   final MemberController memberController = MemberController();
   final PetdetailController petdetailController = PetdetailController();
@@ -75,6 +88,8 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
   TextEditingController TypeTextController = TextEditingController();
   TextEditingController animal_speciesController = TextEditingController();
   TextEditingController speciesController = TextEditingController();
+
+  TextEditingController InsuranceImg = TextEditingController();
 
   String listanimal = listanimal_Spice.first;
   String listage = listAge.first;
@@ -99,7 +114,7 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
     animal_speciesController.text = petdetail?.animal_species ?? "";
   }
 
-  void petdata(String pet_id) async {
+  void petdata(String petId) async {
     user = await SessionManager().get("username");
     member = await memberController.getMemberById(user!);
     print("testusername ${member?.username?.username}");
@@ -107,7 +122,7 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
     setState(() {
       isLoaded = false;
     });
-    var response = await petdetailController.getPetdetailById(pet_id);
+    var response = await petdetailController.getPetdetailById(petId);
     petdetail = Petdetail.fromJsonToPetdetail(response);
     print(response);
     setData();
@@ -134,87 +149,129 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
     });
   }
 
-  // void _pickFile() async {
-  //   try {
-  //     setState(() {
-  //       isLoadingPicture = true;
-  //     });
-  //     filePickerResult = await FilePicker.platform
-  //         .pickFiles(allowMultiple: false, type: FileType.image);
-  //     if (filePickerResult != null) {
-  //       fileName = filePickerResult!.files.first.name;
-  //       pickedFile = filePickerResult!.files.first;
-  //       fileToDisplay = File(pickedFile!.path.toString());
-  //       farmerCertImgTextController.text = fileName.toString();
-  //       print("File is ${fileName}");
-  //     }
-  //     setState(() {
-  //       isLoadingPicture = false;
-  //     });
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
+    void _pickFile() async {
+      try {
+        setState(() {
+          isLoadingPicture = true;
+        });
+        filePickerResult = await FilePicker.platform
+            .pickFiles(allowMultiple: false, type: FileType.image);
+        if (filePickerResult != null) {
+          fileName = filePickerResult!.files.first.name;
+          pickedFile = filePickerResult!.files.first;
+          fileToDisplay = File(pickedFile!.path.toString());
+          InsuranceImg.text = fileName.toString();
+          print("File is ${fileName}");
+        }
+        setState(() {
+          isLoadingPicture = false;
+        });
+      } catch (e) {
+        print(e);
+      }
+    }
+
     double size = MediaQuery.of(context).size.width;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("แผนประกัน"),
-        leading: BackButton(
-          color: Colors.white,
-          onPressed: () {
-            Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (BuildContext context) {
-              return InsuranceREG2(
-                pet_id: '',
-              );
-            }));
-          },
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("แผนประกัน"),
+          leading: BackButton(
+            color: Colors.white,
+            onPressed: () {
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (BuildContext context) {
+                return InsuranceREG2(
+                  pet_id: '',
+                );
+              }));
+            },
+          ),
         ),
-      ),
-      body: Form(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Text("ข้อมูลส่วนตัว"), //ดึงค่าออกมาแสดง
-              buildfullname(size),
-              buildAge(size),
-              buildnationality(size),
-              buildIDcard(size),
-              buildmobile(size),
-              buildbirthday(size),
-              buildemail(size),
-              buildaddress(size),
-              buildidline(size),
-              const Divider(),
-              buildDate(),
-              const Divider(),
-              Text("ข้อมูลสัตว์เลี้ยง"),
-              const Divider(),
-              buildnamepet(size),
-              buildagepet(size),
-              buildgenderpet(size),
-              buildtitle(),
-              buildtypepet(),
-              buildtitlespice(),
-              buildtypespice(),
-              buildanimalspice(size),
-              const Divider(),
-              Text("เพิ่มรูปภาพสัตว์เลี้ยง"),
-              const Divider(),
-              Text("เอกสารประกอบการยื่นประกันภัย"),
-              Text("ใบรับรองการทำวัคซีนหรือใบตรวจสุขภาพ"),
-              Text("รูปภาพ"),
-              const Divider(),
-              Text("วิธีการรับกรมธรรม์"),
-              Text("radio"),
-              buildbuttom(size)
-            ],
+        body: Form(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Text("ข้อมูลส่วนตัว"), //ดึงค่าออกมาแสดง
+                buildfullname(size),
+                buildAge(size),
+                buildnationality(size),
+                buildIDcard(size),
+                buildmobile(size),
+                buildbirthday(size),
+                buildemail(size),
+                buildaddress(size),
+                buildidline(size),
+                const Divider(),
+                buildDate(),
+                const Divider(),
+                Text("ข้อมูลสัตว์เลี้ยง"),
+                const Divider(),
+                buildnamepet(size),
+                buildagepet(size),
+                buildgenderpet(size),
+                buildtitle(),
+                buildtypepet(),
+                buildtitlespice(),
+                buildtypespice(),
+                buildanimalspice(size),
+                const Divider(),
+                Text("เพิ่มรูปภาพสัตว์เลี้ยง"),
+                builImage(_pickFile),
+                const Divider(),
+                Text("เอกสารประกอบการยื่นประกันภัย"),
+                Text("ใบรับรองการทำวัคซีนหรือใบตรวจสุขภาพ"),
+                Text("รูปภาพ"),
+                const Divider(),
+                Text("วิธีการรับกรมธรรม์"),
+                Text("radio"),
+                buildbuttom(size)
+              ],
+            ),
           ),
         ),
       ),
+    );
+  }
+
+  Row builImage(void _pickFile()) {
+    return Row(
+      children: [
+        Expanded(
+          flex: 2,
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: TextFormField(
+              controller: InsuranceImg,
+              enabled: false,
+              decoration: InputDecoration(
+                  labelText: "รูปภาพหน้าตรง",
+                  counterText: "",
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  prefixIcon: const Icon(Icons.image),
+                  prefixIconColor: Colors.black),
+              style: const TextStyle(fontFamily: 'Itim', fontSize: 18),
+            ),
+          ),
+        ),
+        Expanded(
+            flex: 1,
+            child: SizedBox(
+              height: 50,
+              child: ElevatedButton(
+                onPressed: () {
+                  _pickFile();
+                },
+                child: const Text("เลือกรูปภาพ"),
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.grey)),
+              ),
+            )),
+      ],
     );
   }
 

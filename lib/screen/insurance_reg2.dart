@@ -9,7 +9,9 @@ import 'package:pet_insurance/screen/insurance_reg1.dart';
 import 'package:pet_insurance/screen/insurance_reg3.dart';
 import 'package:pet_insurance/screen/insurance_reg4.dart';
 
+import '../controller/OfficerController.dart';
 import '../controller/PetdetailController.dart';
+import '../model/Insurancedetail.dart';
 import 'AddPet.dart';
 
 class InsuranceREG2 extends StatefulWidget {
@@ -26,13 +28,18 @@ class _InsuranceREG2State extends State<InsuranceREG2> {
   Petdetail? petdetail;
   bool? isLoade;
 
+  List<Insurancedetail>? insurancedetail;
+  Insurancedetail? insurancedetails;
+
+  OfficerController officerController = OfficerController();
+
   void fetcData(String pet_id) async {
-    print(pet_id);
     setState(() {
       isLoade = false;
     });
     var response = await petdetailController.getPetdetailById(pet_id);
     petdetail = Petdetail.fromJsonToPetdetail(response);
+    insurancedetail = await officerController.listAllInsurance();
     setState(
       () {
         isLoade = true;
@@ -77,81 +84,55 @@ class _InsuranceREG2State extends State<InsuranceREG2> {
           const SizedBox(
             height: 20,
           ),
-          buildbutton(carouselController),
         ],
       ),
     );
   }
 
-  Center buildbutton(CarouselController carouselController) {
-    return Center(
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ElevatedButton(
-            onPressed: () {
-              carouselController.previousPage();
-            },
-            child: Icon(
-              Icons.arrow_back_ios,
-              color: Colors.cyanAccent,
-            ),
-            style: ElevatedButton.styleFrom(
-                shape: CircleBorder(),
-                padding: EdgeInsets.all(20),
-                primary: Colors.redAccent),
-          ),
-          SizedBox(
-            width: 20,
-          ),
-          ElevatedButton(
-            onPressed: () {
-              carouselController.nextPage();
-            },
-            child: Icon(
-              Icons.arrow_forward_ios,
-              color: Colors.cyanAccent,
-            ),
-            style: ElevatedButton.styleFrom(
-                shape: CircleBorder(),
-                padding: EdgeInsets.all(20),
-                primary: Colors.redAccent),
-          ),
-        ],
-      ),
-    );
-  }
+  
 
   CarouselSlider buildcarousel(CarouselController carouselController) {
     return CarouselSlider.builder(
-      carouselController: carouselController,
-      itemCount: 3,
-      itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) =>
-          Container(
-        width: double.infinity,
-        color: Color.fromARGB(255, 176, 173, 173).withOpacity(1),
-        child: Center(
-          child: Column(
-            children: [
-              Text(
-                " แผน ${(itemIndex + 1).toString()}",
-                style: TextStyle(color: Colors.black, fontSize: 40),
-              ),
-              ElevatedButton(
-                  onPressed: () {
-                    // Navigator.of(context).pushReplacement(
-                    //     MaterialPageRoute(builder: (BuildContext context) {
-                    //   return InsuranceREG4();
-                    // }));
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (_) => InsuranceREG4(
-                            pet_id: (petdetail?.petId).toString())));
-                  },
-                  child: Text("สมัครแผน"))
-            ],
+      itemCount: insurancedetail?.length,
+      itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) {
+        final plan = insurancedetail?[itemIndex];
+        return Container(
+          width: double.infinity,
+          color: Color.fromARGB(255, 176, 173, 173).withOpacity(1),
+          child: Center(
+            child: Column(
+              children: [
+                Text(
+                  plan!.insurance_name.toString(),
+                  style: TextStyle(color: Colors.black, fontSize: 40),
+                ),
+                Text("${plan.price.toString()}" + "บาท"),
+                Text("ค่ารักษาจากอุบัติเหตุ(บาท)\n ${plan.medical_expenses}" +
+                    "บาท/ครั้ง\t" +
+                    "ครั้ง/ปี"),
+                Text("ค่ารักษาจากการเจ็บป่วย(บาท)\n ${plan.treatment}\t" +
+                    "บาท/ครั้ง\t" +
+                    "ครั้ง/ปี"),
+                Text("ค่าวัคซีนป้องกันโรคสัตว์เลี้ยง(บาท)\n" +
+                    "${plan.cost_of_preventive_vaccination}"),
+                ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (_) => InsuranceREG4(
+                            pet_id: (petdetail?.petId).toString(),
+                            insurance_planId:
+                                (insurancedetails?.insurance_planId).toString(),
+                          ),
+                        ),
+                      );
+                    },
+                    child: Text("สมัครแผน"))
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
       options: CarouselOptions(
         height: 300,
         aspectRatio: 16 / 9,

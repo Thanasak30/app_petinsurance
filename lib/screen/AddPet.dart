@@ -19,10 +19,12 @@ class AddPet extends StatefulWidget {
 }
 
 enum Type { Dog, Cat }
+enum TypeGender{male,female}
 
 enum TypeSpice { purebred, mixedbreed }
 
 const List<String> listanimal_Spice = <String>['1', '2'];
+
 const List<String> listAge = <String>[
   '8 สัปดาห์ - 1 ปี',
   '2 ปี',
@@ -47,10 +49,12 @@ class _AddPetState extends State<AddPet> {
 
   var type;
   var typeSpice;
+  var typegender;
 
   String? types;
   String? typespices;
   String? species;
+  String? typegenders;
 
   final PetdetailController petdetailController = PetdetailController();
   final MemberController memberController = MemberController();
@@ -92,14 +96,14 @@ class _AddPetState extends State<AddPet> {
           child: Column(
             children: [
               buildappname(),
-              buildnamepet(size),
-              buildagepet(size),
-              buildgenderpet(size),
               buildtitle(),
               buildtypepet(),
               buildtitlespice(),
               buildtypespice(),
               buildanimalspice(),
+              buildnamepet(size),
+              buildagepet(size),
+              buildgenderpet(size),
               buildbuttom(size),
             ],
           ),
@@ -109,28 +113,32 @@ class _AddPetState extends State<AddPet> {
   }
 
   Row buildgenderpet(double size) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          margin: EdgeInsets.only(top: 30),
-          width: size * 0.6,
-          child: TextFormField(
-            controller: genderpetTextController,
-            decoration: InputDecoration(
-              labelText: "เพศ",
-              prefixIcon: Icon(Icons.account_circle_outlined),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                  borderRadius: BorderRadius.circular(30)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.cyan),
-                  borderRadius: BorderRadius.circular(30)),
-            ),
-          ),
-        ),
-      ],
-    );
+    return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      Expanded(
+          child: RadioListTile<TypeGender>(
+        value: TypeGender.male,
+        groupValue: typegender,
+        title: Text("ชาย"),
+        onChanged: (TypeGender? val) {
+          setState(() {
+            typegender = TypeGender.male;
+            typegenders = "ชาย";
+          });
+        },
+      )),
+      Expanded(
+          child: RadioListTile<TypeGender>(
+        value: TypeGender.female,
+        groupValue: typegender,
+        title: Text("หญิง"),
+        onChanged: (TypeGender? val) {
+          setState(() {
+            typegender = TypeGender.female;
+            typegenders = "หญิง";
+          });
+        },
+      ))
+    ]);
   }
 
   Row buildbuttom(double size) {
@@ -149,7 +157,7 @@ class _AddPetState extends State<AddPet> {
                     "-",
                     "flase",
                     listage.toString(),
-                    genderpetTextController.text,
+                    typegenders.toString(),
                     "-",
                     namePetTextController.text,
                     typespices.toString(),
@@ -176,23 +184,36 @@ class _AddPetState extends State<AddPet> {
   Row buildanimalspice() {
     return Row(
       children: [
-        Expanded(child: Text("สายพันธุ์", style: TextStyle(fontSize: 15))),
         Expanded(
-          child: DropdownButton<String>(
-            value: listanimal,
-            isExpanded: true,
-            onChanged: (String? val) {
-              setState(() {
-                listanimal = val!;
-              });
-            },
-            items:
-                listanimal_Spice.map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
+            child: Center(
+                child: Text("สายพันธุ์", style: TextStyle(fontSize: 15)))),
+        Expanded(
+          child: Center(
+            child: Container(
+              width: 150,
+              child: DropdownButton<String>(
+                iconEnabledColor: Colors.cyan,
+                dropdownColor: Color.fromARGB(255, 106, 236, 253),
+                alignment: Alignment.centerLeft,
+                value: listanimal,
+                isExpanded: true,
+                onChanged: (String? val) {
+                  setState(() {
+                    listanimal = val!;
+                  });
+                },
+                items: listanimal_Spice
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem(
+                    value: value,
+                    child: Text(
+                      value,
+                      style: TextStyle(fontSize: 15),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
           ),
         )
       ],
@@ -276,24 +297,43 @@ class _AddPetState extends State<AddPet> {
   Row buildagepet(double size) {
     return Row(
       children: [
-        Expanded(child: Text("อายุ", style: TextStyle(fontSize: 15))),
-        Expanded(
-          child: DropdownButton<String>(
-            value: listage,
-            isExpanded: true,
-            onChanged: (String? val) {
-              setState(() {
-                listage = val!;
-              });
-            },
-            items: listAge.map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
+        const Expanded(
+          child: Center(
+            child: Text(
+              "อายุ",
+              style: TextStyle(fontSize: 15),
+            ),
           ),
-        )
+        ),
+        Expanded(
+          child: Center(
+            child: Container(
+              width: 150,
+              child: DropdownButton<String>(
+                iconEnabledColor: Colors.cyan,
+                dropdownColor: Color.fromARGB(255, 106, 236, 253),
+                alignment: Alignment.centerLeft,
+                borderRadius: BorderRadius.circular(30),
+                value: listage,
+                isExpanded: true,
+                onChanged: (String? val) {
+                  setState(() {
+                    listage = val!;
+                  });
+                },
+                items: listAge.map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem(
+                    value: value,
+                    child: Text(
+                      value,
+                      style: TextStyle(fontSize: 15),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }

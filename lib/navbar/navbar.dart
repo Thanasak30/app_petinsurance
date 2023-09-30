@@ -5,6 +5,7 @@ import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:pet_insurance/controller/MemberController.dart';
 import 'package:pet_insurance/screen/AddPet.dart';
 import 'package:pet_insurance/screen/EditProfile.dart';
+import 'package:pet_insurance/screen/ShowProfile.dart';
 import 'package:pet_insurance/screen/View_insurance.dart';
 import 'package:pet_insurance/screen/login.dart';
 
@@ -75,11 +76,11 @@ class _NavbarState extends State<Navbar> {
               }),
           ListTile(
             leading: Icon(Icons.account_circle),
-            title: Text("EditProfile"),
+            title: Text("Profile"),
             onTap: () {
               Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (BuildContext context) {
-                return EditProfile();
+                return ShowProfile();
               }));
             },
           ),

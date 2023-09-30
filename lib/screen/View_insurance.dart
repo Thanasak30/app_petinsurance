@@ -4,6 +4,8 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_options.dart';
+import 'package:pet_insurance/controller/OfficerController.dart';
+import 'package:pet_insurance/model/Insurancedetail.dart';
 import 'package:pet_insurance/screen/AddPet.dart';
 import 'package:pet_insurance/screen/insurance_reg1.dart';
 
@@ -17,6 +19,31 @@ class Viewinsurance extends StatefulWidget {
 }
 
 class _ViewinsuranceState extends State<Viewinsurance> {
+  List<Insurancedetail>? insurancedetail;
+  Insurancedetail? insurancedetails;
+  bool? isLoaded;
+
+  OfficerController officerController = OfficerController();
+
+
+  void fetcData() async {
+    setState(() {
+      isLoaded = false;
+    });
+    // var response = await officerController.getInsuranceById(insurance_planId);
+    // insurancedetails = Insurancedetail.fromJsonToInsurancedetail(response);
+    insurancedetail = await officerController.listAllInsurance();
+    setState(() {
+      isLoaded = true;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetcData();
+  }
+
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
@@ -40,70 +67,32 @@ class _ViewinsuranceState extends State<Viewinsurance> {
           const SizedBox(
             height: 20,
           ),
-          buildbutton(carouselController),
         ],
       )),
     );
   }
 
-  Center buildbutton(CarouselController carouselController) {
-    return Center(
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ElevatedButton(
-            onPressed: () {
-              carouselController.previousPage();
-            },
-            child: Icon(
-              Icons.arrow_back_ios,
-              color: Colors.cyanAccent,
-            ),
-            style: ElevatedButton.styleFrom(
-                shape: CircleBorder(),
-                padding: EdgeInsets.all(20),
-                primary: Colors.redAccent),
-          ),
-          SizedBox(
-            width: 20,
-          ),
-          ElevatedButton(
-            onPressed: () {
-              carouselController.nextPage();
-            },
-            child: Icon(
-              Icons.arrow_forward_ios,
-              color: Colors.cyanAccent,
-            ),
-            style: ElevatedButton.styleFrom(
-                shape: CircleBorder(),
-                padding: EdgeInsets.all(20),
-                primary: Colors.redAccent),
-          ),
-        ],
-      ),
-    );
-  }
-
   CarouselSlider buildcarousel(CarouselController carouselController) {
     return CarouselSlider.builder(
-      carouselController: carouselController,
-      itemCount: 3,
-      itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) =>
-          Container(
+
+      itemCount: insurancedetail?.length,
+      itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex){
+        final plan = insurancedetail?[itemIndex];
+         return Container(
         width: double.infinity,
         color: Color.fromARGB(255, 176, 173, 173).withOpacity(1),
         child: Center(
           child: Column(
             children: [
               Text(
-                " แผน ${(itemIndex + 1).toString()}",
+                plan!.insurance_name.toString(),
                 style: TextStyle(color: Colors.black, fontSize: 40),
               ),
-              Text("price บาท/ปี"),
-              Text("ค่ารักษาจากอุบัติเหตุ(บาท)\n" + "บาท/ครั้ง\n" + "ครั้ง/ปี"),
-              Text("ค่ารักษาจากการเจ็บป่วย(บาท)\n" + "บาท/ครั้ง\n" + "ครั้ง/ปี"),
-              Text("ค่าวัคซีนป้องกันโรคสัตว์เลี้ยง(บาท)"+""),
+              Text("${plan.price.toString()}"+"บาท"),
+              Text("ค่ารักษาจากอุบัติเหตุ(บาท)\n ${plan.medical_expenses}"+"บาท/ครั้ง\t" + "ครั้ง/ปี"),
+              Text(
+                  "ค่ารักษาจากการเจ็บป่วย(บาท)\n ${plan.treatment}\t" + "บาท/ครั้ง\t" + "ครั้ง/ปี"),
+              Text("ค่าวัคซีนป้องกันโรคสัตว์เลี้ยง(บาท)\n" + "${plan.cost_of_preventive_vaccination}"),
               ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).pushReplacement(
@@ -115,7 +104,8 @@ class _ViewinsuranceState extends State<Viewinsurance> {
             ],
           ),
         ),
-      ),
+      );
+      },
       options: CarouselOptions(
         height: 350,
         aspectRatio: 16 / 9,

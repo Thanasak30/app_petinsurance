@@ -5,6 +5,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:pet_insurance/model/Member.dart';
+import 'package:pet_insurance/screen/ShowProfile.dart';
 import 'package:pet_insurance/screen/View_insurance.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:intl/intl.dart';
@@ -123,7 +124,7 @@ class _EditProfileState extends State<EditProfile> {
           onPressed: () {
             Navigator.of(context).pushReplacement(
                 MaterialPageRoute(builder: (BuildContext context) {
-              return Viewinsurance();
+              return ShowProfile();
             }));
           },
         ),

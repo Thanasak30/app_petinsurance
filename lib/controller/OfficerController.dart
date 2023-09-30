@@ -53,7 +53,8 @@ class OfficerController {
   }
 
   Future getInsuranceById(String insurance_planId) async {
-    var url = Uri.parse(baseURL + '/insurancedetail/getbyid/' + insurance_planId);
+    var url =
+        Uri.parse(baseURL + '/insurancedetail/getbyid/' + insurance_planId);
 
     http.Response response = await http.get(url);
 
@@ -73,11 +74,26 @@ class OfficerController {
 
     return response;
   }
-  dynamic myDateSeriallizer(dynamic object){
-    if(object is DateTime){
+
+  dynamic myDateSeriallizer(dynamic object) {
+    if (object is DateTime) {
       return object.toIso8601String();
     }
     return object;
+  }
 
+  Future getListAllInsurancedetail() async {
+    Map data = {};
+
+    var body = json.encode(data);
+    var url = Uri.parse(baseURL + '/insurancedetail/insurance_planId');
+
+    http.Response response = await http.post(url, headers: headers, body: body);
+
+    final utf8Body = utf8.decode(response.bodyBytes);
+    List<dynamic> jsonResponse = json.decode(utf8Body);
+    List<Insurancedetail> list =
+        jsonResponse.map((e) => Insurancedetail.fromJsonToInsurancedetail(e)).toList();
+    return list;
   }
 }

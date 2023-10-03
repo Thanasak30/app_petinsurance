@@ -9,20 +9,27 @@ import '../constant/constant_value.dart';
 class OfficerController {
   Future addPlant(
     String price,
+    String accident_or_illness_compensation,
     String cost_of_preventive_vaccination,
-    String details,
     String duration,
     String insurance_name,
     String medical_expenses,
+    String pet_funeral_costs,
+    String pets_attack_outsiders,
+    String third_party_property_values_due_to_pets,
     String treatment,
   ) async {
     Map data = {
       "price": price,
+      "accident_or_illness_compensation": accident_or_illness_compensation,
+      "price": price,
       "cost_of_preventive_vaccination": cost_of_preventive_vaccination,
-      "details": details,
       "duration": duration,
       "insurance_name": insurance_name,
       "medical_expenses": medical_expenses,
+      "pet_funeral_costs": pet_funeral_costs,
+      "pets_attack_outsiders": pets_attack_outsiders,
+      "third_party_property_values_due_to_pets": third_party_property_values_due_to_pets,
       "treatment": treatment,
     };
 

@@ -8,6 +8,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:pet_insurance/controller/Insuranceregister.dart';
 import 'package:pet_insurance/controller/PetdetailController.dart';
 import 'package:pet_insurance/model/Petdetail.dart';
 import 'package:pet_insurance/screen/View_insurance.dart';
@@ -15,6 +16,8 @@ import 'package:pet_insurance/screen/insurance_reg2.dart';
 import 'package:http/http.dart' as http;
 import 'package:pet_insurance/screen/insurance_reg5.dart';
 import '../controller/MemberController.dart';
+import '../controller/OfficerController.dart';
+import '../model/Insurancedetail.dart';
 import '../model/Member.dart';
 import 'AddPet.dart';
 import 'insurance_reg3.dart';
@@ -71,6 +74,12 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
 
   final MemberController memberController = MemberController();
   final PetdetailController petdetailController = PetdetailController();
+  final InsuranceREG insuranceREG = InsuranceREG();
+
+  List<Insurancedetail>? insurancedetail;
+  Insurancedetail? insurancedetails;
+
+  OfficerController officerController = OfficerController();
 
   TextEditingController fullnameTextController = TextEditingController();
   TextEditingController AgeTextController = TextEditingController();
@@ -124,6 +133,7 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
     });
     var response = await petdetailController.getPetdetailById(petId);
     petdetail = Petdetail.fromJsonToPetdetail(response);
+    insurancedetail = await officerController.listAllInsurance();
     print(response);
     setData();
     setState(() {
@@ -136,16 +146,7 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
     super.initState();
     petdata(widget.pet_id);
     setState(() {
-      if (petdetail?.type == "สุนัข") {
-        type = "Dog";
-      } else {
-        type = "Cat";
-      }
-      if (petdetail?.species == "พันธุ์แท้") {
-        typeSpice = "purebred";
-      } else {
-        typeSpice = "mixedbreed";
-      }
+
     });
   }
 
@@ -184,7 +185,7 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
               Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (BuildContext context) {
                 return InsuranceREG2(
-                  pet_id: '',
+                  pet_id: petdetail!.petId.toString(),
                 );
               }));
             },
@@ -212,10 +213,8 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
                 buildnamepet(size),
                 buildagepet(size),
                 buildgenderpet(size),
-                buildtitle(),
-                buildtypepet(),
-                buildtitlespice(),
-                buildtypespice(),
+                buildtypepet(size),
+                buildtypespice(size),
                 buildanimalspice(size),
                 const Divider(),
                 Text("เพิ่มรูปภาพสัตว์เลี้ยง"),
@@ -223,7 +222,7 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
                 const Divider(),
                 Text("เอกสารประกอบการยื่นประกันภัย"),
                 Text("ใบรับรองการทำวัคซีนหรือใบตรวจสุขภาพ"),
-                Text("รูปภาพ"),
+                // builImage(_pickFile),
                 const Divider(),
                 Text("วิธีการรับกรมธรรม์"),
                 Text("radio"),
@@ -287,24 +286,22 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30))),
                 onPressed: () async {
-                  // http.Response response = await petdetailController.addPet(
-                  //   "-",
-                  //   "flase",
-                  //   listage.toString(),
-                  //   genderpetTextController.text,
-                  //   "-",
-                  //   namePetTextController.text,
-                  //   typespices.toString(),
-                  //   types.toString(),
-                  //   member!.memberId.toString(),
-                  //   listanimal.toString(),
-                  //   "flase",
-                  // );
-                  // if (response.statusCode == 500) {
-                  //   print("Error!");
-                  // } else {
-                  //   print("Member was added successfully!");
-                  // }
+                  print(widget.insurance_planId);
+                  print(nextYearDate);
+                  http.Response response = await insuranceREG.addInsuranceReg(
+                    widget.insurance_planId,
+                    member!.memberId.toString(),
+                    "0",
+                    dateFormat.format(nextYearDate),
+                    "",
+                    "0",
+                    fileToDisplay!
+                  );
+                  if (response.statusCode == 500) {
+                    print("Error!");
+                  } else {
+                    print("Member was added successfully!");
+                  }
                   Navigator.of(context).pushReplacement(
                       MaterialPageRoute(builder: (BuildContext context) {
                     return InsuranceREG5();
@@ -381,78 +378,54 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
     );
   }
 
-  Container buildtitlespice() {
-    return Container(
-      margin: EdgeInsets.only(top: 30),
-      child: Text("พันธุ์สัตว์"),
-    );
-  }
-
-  Row buildtypespice() {
+  Row buildtypespice(size) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Expanded(
-            child: RadioListTile<String>(
-          value: "purebred",
-          groupValue: typeSpice,
-          title: Text("พันธุ์แท้"),
-          onChanged: (String? val) {
-            setState(() {
-              typeSpice = speciesController.text;
-              typespices = "พันธุ์แท้";
-            });
-          },
-        )),
-        Expanded(
-            child: RadioListTile<String>(
-          value: "mixedbreed",
-          groupValue: typeSpice,
-          title: Text("พันธุ์ผสม"),
-          onChanged: (String? val) {
-            setState(() {
-              typeSpice = speciesController.text;
-              typespices = "พันธุ์ผสม";
-            });
-          },
-        ))
+        Container(
+          margin: EdgeInsets.only(top: 30),
+          width: size * 0.6,
+          child: TextFormField(
+            controller: animal_speciesController,
+            decoration: InputDecoration(
+              labelText: "พันธุ์สัตว์",
+              prefixIcon: Icon(Icons.account_circle_outlined),
+              enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                  borderRadius: BorderRadius.circular(30)),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.cyan),
+                  borderRadius: BorderRadius.circular(30)),
+            ),
+          ),
+        ),
       ],
     );
   }
 
-  Container buildtitle() {
-    return Container(
-      margin: EdgeInsets.only(top: 30),
-      child: Text("สัตว์เลี้ยงของท่าน"),
+  Row buildtypepet(size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          margin: EdgeInsets.only(top: 30),
+          width: size * 0.6,
+          child: TextFormField(
+            controller: TypeTextController,
+            decoration: InputDecoration(
+              labelText: "สัตว์เลี้ยงของท่าน",
+              prefixIcon: Icon(Icons.account_circle_outlined),
+              enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                  borderRadius: BorderRadius.circular(30)),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.cyan),
+                  borderRadius: BorderRadius.circular(30)),
+            ),
+          ),
+        ),
+      ],
     );
-  }
-
-  Row buildtypepet() {
-    return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-      Expanded(
-          child: RadioListTile<String>(
-        value: "Dog",
-        groupValue: type,
-        title: Text("สุนัข"),
-        onChanged: (String? val) {
-          setState(() {
-            type = TypeTextController.text;
-            types = "สุนัข";
-          });
-        },
-      )),
-      Expanded(
-          child: RadioListTile<String>(
-        value: "Cat",
-        groupValue: type,
-        title: Text("แมว"),
-        onChanged: (String? val) {
-          setState(() {
-            type = TypeTextController.text;
-            types = "แมว";
-          });
-        },
-      ))
-    ]);
   }
 
   Row buildagepet(double size) {
@@ -465,7 +438,7 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
           child: TextFormField(
             controller: agePetTextController,
             decoration: InputDecoration(
-              labelText: "อายุ",
+              labelText: "อายุของสัตว์เลี้ยง",
               prefixIcon: Icon(Icons.account_circle_outlined),
               enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
@@ -490,7 +463,7 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
           child: TextFormField(
             controller: namePetTextController,
             decoration: InputDecoration(
-              labelText: "ชื่อสัตว์",
+              labelText: "ชื่อสัตว์เลี้ยง",
               prefixIcon: Icon(Icons.account_circle_outlined),
               enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),

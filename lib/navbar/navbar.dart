@@ -5,6 +5,7 @@ import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:pet_insurance/controller/MemberController.dart';
 import 'package:pet_insurance/screen/AddPet.dart';
 import 'package:pet_insurance/screen/EditProfile.dart';
+import 'package:pet_insurance/screen/ListPet.dart';
 import 'package:pet_insurance/screen/ShowProfile.dart';
 import 'package:pet_insurance/screen/View_insurance.dart';
 import 'package:pet_insurance/screen/login.dart';
@@ -67,7 +68,7 @@ class _NavbarState extends State<Navbar> {
           // Text("${username}"),
           ListTile(
               leading: Icon(Icons.home_outlined),
-              title: Text("Home"),
+              title: Text("หน้าหลัก"),
               onTap: () {
                 Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (BuildContext context) {
@@ -76,7 +77,7 @@ class _NavbarState extends State<Navbar> {
               }),
           ListTile(
             leading: Icon(Icons.account_circle),
-            title: Text("Profile"),
+            title: Text("โปรไฟล์"),
             onTap: () {
               Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (BuildContext context) {
@@ -86,7 +87,7 @@ class _NavbarState extends State<Navbar> {
           ),
           ListTile(
             leading: Icon(Icons.pets),
-            title: Text("Addpet"),
+            title: Text("เพิ่มสัตว์เลี้ยง"),
             onTap: () {
               Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (BuildContext context) {
@@ -96,11 +97,11 @@ class _NavbarState extends State<Navbar> {
           ),
           ListTile(
             leading: Icon(Icons.view_timeline),
-            title: Text("รายการสมัคร"),
+            title: Text("รายการสัตว์เลี้ยง"),
             onTap: () {
               Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (BuildContext context) {
-                return AddPet();
+                return ListPet();
               }));
             },
           ),

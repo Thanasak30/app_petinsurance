@@ -292,7 +292,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             validator: (value) {
               // ตรวจสอบความถูกต้องของหมายเลขโทรศัพท์
               bool isMobileValid =
-                  RegExp(r'^(06|08|09)[0-9]{7}$').hasMatch(value!);
+                  RegExp(r'^(06|08|09)[0-9]{8}$').hasMatch(value!);
 
               // กรณีไม่กรอกหมายเลขโทรศัพท์
               if (value.isEmpty) {
@@ -476,7 +476,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             validator: (value) {
               // ตรวจสอบความถูกต้องของชื่อ-นามสกุล
-              bool isfullnameValid = RegExp(r'^[ก-๙]{2,30}$').hasMatch(value!);
+              bool isfullnameValid = RegExp(r'^[ก-์," "]{2,30}$').hasMatch(value!);
 
               // กรณีไม่กรอกชื่อ-นามสกุล
               if (value.isEmpty) {
@@ -503,7 +503,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: TextFormField(
             controller: passwordTextController,
             decoration: InputDecoration(
-              labelText: "Password",
+              labelText: "รหัสผ่าน",
               prefixIcon: Icon(Icons.lock_outline),
               enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
@@ -514,11 +514,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             validator: (value) {
               // ตรวจสอบความถูกต้องของรหัสผ่าน
-              // bool isPasswordValid  = RegExp(r'^[A-Za-z0-9]{8}$').hasMatch(value!);
-              bool isPasswordValid = RegExp(r'^[0-9]{4}$').hasMatch(value!);
+              bool isPasswordValid  = RegExp(r'^[A-Za-z0-9]{1,8}$').hasMatch(value!);
+              // bool isPasswordValid = RegExp(r'^[0-9]{4}$').hasMatch(value!);
 
               // กรณีไม่กรอกรหัสผ่าน
-              if (value == null || value.isEmpty) {
+              if (value.isEmpty) {
                 return "กรุณากรอกรหัสผ่าน มีอักษรภาษาอังกฤษและตัวเลข\nความยาวไม่เกิน 8 ตัวอักษร";
               }
               // กรณีรหัสผ่านไม่ถูกต้อง

@@ -8,6 +8,7 @@ import 'package:pet_insurance/model/Officer.dart';
 import 'package:pet_insurance/screen/ListAllinsurance.dart';
 
 import '../model/Member.dart';
+import '../screen/login.dart';
 
 class NavbarOficer extends StatefulWidget {
   const NavbarOficer({super.key});
@@ -17,7 +18,6 @@ class NavbarOficer extends StatefulWidget {
 }
 
 class _NavbarOficerState extends State<NavbarOficer> {
-
   MemberController memberController = MemberController();
   OfficerController officerController = OfficerController();
 
@@ -41,7 +41,7 @@ class _NavbarOficerState extends State<NavbarOficer> {
   // }
 
   @override
-  void initState()  {
+  void initState() {
     super.initState();
     // syncUser();
   }
@@ -53,7 +53,8 @@ class _NavbarOficerState extends State<NavbarOficer> {
         children: [
           UserAccountsDrawerHeader(
             accountName: Text('${username}'),
-            accountEmail: Text('${isLoaded == true? officer?.officername : null}'),
+            accountEmail:
+                Text('${isLoaded == true ? officer?.officername : null}'),
             currentAccountPicture: CircleAvatar(
               child: ClipOval(child: Image.asset('Image/pet-insurance.png')),
             ),
@@ -63,7 +64,7 @@ class _NavbarOficerState extends State<NavbarOficer> {
                     image: AssetImage('Image/background.png'),
                     fit: BoxFit.cover)),
           ),
-         // Text("${username}"),
+          // Text("${username}"),
           ListTile(
             leading: Icon(Icons.home_outlined),
             title: Text("Home"),
@@ -72,11 +73,11 @@ class _NavbarOficerState extends State<NavbarOficer> {
           ListTile(
             leading: Icon(Icons.account_circle),
             title: Text("List Applicant"),
-            onTap: (){
-               Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (BuildContext context) {
-                    return ListAllinsurance();
-                  }));
+            onTap: () {
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (BuildContext context) {
+                return ListAllinsurance();
+              }));
             },
           ),
           ListTile(
@@ -93,7 +94,12 @@ class _NavbarOficerState extends State<NavbarOficer> {
           ListTile(
             leading: Icon(Icons.logout),
             title: Text("Sing out"),
-            onTap: () => print('Sing out'),
+            onTap: () {
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (BuildContext context) {
+                return LoginScreen();
+              }));
+            },
           )
         ],
       ),

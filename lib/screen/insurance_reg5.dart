@@ -154,24 +154,7 @@ class _InsuranceREG5State extends State<InsuranceREG5> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30))),
                         onPressed: () async {
-                          // http.Response response = await petdetailController.addPet(
-                          //   "-",
-                          //   "flase",
-                          //   listage.toString(),
-                          //   genderpetTextController.text,
-                          //   "-",
-                          //   namePetTextController.text,
-                          //   typespices.toString(),
-                          //   types.toString(),
-                          //   member!.memberId.toString(),
-                          //   listanimal.toString(),
-                          //   "flase",
-                          // );
-                          // if (response.statusCode == 500) {
-                          //   print("Error!");
-                          // } else {
-                          //   print("Member was added successfully!");
-                          // }
+                          
                           // Navigator.of(context).pushReplacement(
                           //     MaterialPageRoute(
                           //         builder: (BuildContext context) {

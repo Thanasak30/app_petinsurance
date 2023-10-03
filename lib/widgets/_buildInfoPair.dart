@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 
@@ -10,20 +11,27 @@ class buileinfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          label,
-          style: TextStyle(fontWeight: FontWeight.bold),
+    return Card(
+      elevation: 4, // ความหนาของ Card
+      margin:
+          EdgeInsets.symmetric(vertical: 8, horizontal: 16), // ระยะห่างของ Card
+      child: Padding(
+        padding: EdgeInsets.all(16), // ระยะห่างของข้อมูลภายใน Card
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              label,
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            Text(
+              value,
+              style: TextStyle(fontSize: 16),
+            ),
+          ],
         ),
-        Expanded(
-          child: Text(
-            value,
-            textAlign: TextAlign.end,
-          ),
-        ),
-      ],
+      ),
+    
     );
   }
 }

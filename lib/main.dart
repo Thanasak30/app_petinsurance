@@ -2,7 +2,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:pet_insurance/screen/AddPet.dart';
+import 'package:pet_insurance/screen/EditPet.dart';
 import 'package:pet_insurance/screen/EditProfile.dart';
+import 'package:pet_insurance/screen/ListPet.dart';
 import 'package:pet_insurance/screen/OfficerAddinsurance.dart';
 import 'package:pet_insurance/screen/Register.dart';
 import 'package:pet_insurance/screen/View_insurance.dart';

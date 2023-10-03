@@ -30,6 +30,11 @@ class _AddinsuranceState extends State<Addinsurance> {
   TextEditingController preventive_vaccinationController =
       TextEditingController();
   TextEditingController PriceController = TextEditingController();
+  TextEditingController accident_or_illness = TextEditingController();
+  TextEditingController pet_funeral_costs = TextEditingController();
+  TextEditingController pets_attack_outsiders = TextEditingController();
+  TextEditingController third_party_property = TextEditingController();
+  TextEditingController duration = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -45,14 +50,139 @@ class _AddinsuranceState extends State<Addinsurance> {
             children: [
               buildPlantname(size),
               buildPrice(size),
+              buildduration(size),
               buildmedical_expenses(size),
               buildtreatment(size),
               buildcost_of_preventive_vaccination(size),
+              buildaccident_or_illness(size),
+              buildpet_funeral_costs(size),
+              buildpets_attack_outsiders(size),
+              buildthird_party_property(size),
               buildbuttom(size)
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Row buildduration(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          margin: EdgeInsets.only(top: 15),
+          width: size * 0.6,
+          child: TextFormField(
+            controller: duration,
+            decoration: InputDecoration(
+              labelText: "ระยะเวลาของแผนประกัน",
+              enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                  borderRadius: BorderRadius.circular(30)),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.cyan),
+                  borderRadius: BorderRadius.circular(30)),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildthird_party_property(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          margin: EdgeInsets.only(top: 15),
+          width: size * 0.6,
+          child: TextFormField(
+            controller: third_party_property,
+            decoration: InputDecoration(
+              labelText: "สัตว์เลี้ยงโจมตีบุคคลภายนอก ",
+              enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                  borderRadius: BorderRadius.circular(30)),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.cyan),
+                  borderRadius: BorderRadius.circular(30)),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildpets_attack_outsiders(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          margin: EdgeInsets.only(top: 15),
+          width: size * 0.6,
+          child: TextFormField(
+            controller: pets_attack_outsiders,
+            decoration: InputDecoration(
+              labelText: "ทรัพย์สินของบุคคลที่สามอันเนื่องมาจากสัตว์เลี้ยง",
+              enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                  borderRadius: BorderRadius.circular(30)),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.cyan),
+                  borderRadius: BorderRadius.circular(30)),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildpet_funeral_costs(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          margin: EdgeInsets.only(top: 15),
+          width: size * 0.6,
+          child: TextFormField(
+            controller: pet_funeral_costs,
+            decoration: InputDecoration(
+              labelText: "ค่าจัดงานศพสัตว์เลี้ยง ",
+              enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                  borderRadius: BorderRadius.circular(30)),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.cyan),
+                  borderRadius: BorderRadius.circular(30)),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildaccident_or_illness(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          margin: EdgeInsets.only(top: 15),
+          width: size * 0.6,
+          child: TextFormField(
+            controller: accident_or_illness,
+            decoration: InputDecoration(
+              labelText: "ค่าชดเชยอุบัติเหตุหรือเจ็บป่วย",
+              enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                  borderRadius: BorderRadius.circular(30)),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.cyan),
+                  borderRadius: BorderRadius.circular(30)),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -70,11 +200,14 @@ class _AddinsuranceState extends State<Addinsurance> {
                 onPressed: () async {
                   http.Response response = await officerController.addPlant(
                     PriceController.text,
+                    accident_or_illness.text,
                     preventive_vaccinationController.text,
-                    "",
-                    "",
+                    duration.text,
                     PlantnameController.text,
                     MedicalController.text,
+                    pet_funeral_costs.text,
+                    pets_attack_outsiders.text,
+                    third_party_property.text,
                     TreatmentController.text,
                   );
                   if (response.statusCode == 500) {

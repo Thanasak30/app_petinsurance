@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:pet_insurance/model/Insurancedetail.dart';
 import 'package:pet_insurance/model/Officer.dart';
+import 'package:pet_insurance/model/Petinsuranceregister.dart';
 
 import '../constant/constant_value.dart';
 
@@ -29,7 +30,8 @@ class OfficerController {
       "medical_expenses": medical_expenses,
       "pet_funeral_costs": pet_funeral_costs,
       "pets_attack_outsiders": pets_attack_outsiders,
-      "third_party_property_values_due_to_pets": third_party_property_values_due_to_pets,
+      "third_party_property_values_due_to_pets":
+          third_party_property_values_due_to_pets,
       "treatment": treatment,
     };
 
@@ -99,8 +101,63 @@ class OfficerController {
 
     final utf8Body = utf8.decode(response.bodyBytes);
     List<dynamic> jsonResponse = json.decode(utf8Body);
-    List<Insurancedetail> list =
-        jsonResponse.map((e) => Insurancedetail.fromJsonToInsurancedetail(e)).toList();
+    List<Insurancedetail> list = jsonResponse
+        .map((e) => Insurancedetail.fromJsonToInsurancedetail(e))
+        .toList();
     return list;
+  }
+
+  Future listInsurance() async {
+    Map data = {};
+
+    var body = json.encode(data);
+    var url = Uri.parse(baseURL + '/insuranceregister/list');
+
+    http.Response response = await http.post(url, headers: headers, body: body);
+
+    final utf8Body = utf8.decode(response.bodyBytes);
+    List<dynamic> jsonResponse = json.decode(utf8Body);
+    List<Petinsuranceregister> list = jsonResponse
+        .map((e) => Petinsuranceregister.fromJsonToPetregister(e))
+        .toList();
+    return list;
+  }
+
+  Future getInsuranceregById(int insurance_regId) async {
+    var url = Uri.parse(
+        baseURL + '/insuranceregister/getbyid/' + insurance_regId.toString());
+
+    http.Response response = await http.get(url);
+
+    final utf8Body = utf8.decode(response.bodyBytes);
+    var jsonResponse = json.decode(utf8Body);
+
+    return jsonResponse;
+  }
+
+  Future updateInsurancereg(Petinsuranceregister petinsuranceregister) async {
+    Map<String, dynamic> data = petinsuranceregister.fromPetregisterToJson();
+
+    var body = json.encode(data, toEncodable: myDateSeriallizers);
+    var url = Uri.parse(baseURL + '/insuranceregister/update/');
+    http.Response response = await http.put(url, headers: headers, body: body);
+
+    return response;
+  }
+    dynamic myDateSeriallizers(dynamic object) {
+    if (object is DateTime) {
+      return object.toIso8601String();
+    }
+    return object;
+  }
+
+  Future getOfficerByUsername(String username) async {
+    var url = Uri.parse(baseURL + '/officer/getbyusername/' + username);
+
+    http.Response response = await http.get(url);
+
+    final utf8Body = utf8.decode(response.bodyBytes);
+    var jsonResponse = json.decode(utf8Body);
+    return jsonResponse;
   }
 }

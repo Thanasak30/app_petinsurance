@@ -4,6 +4,8 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:pet_insurance/screen/ListPet.dart';
 import 'package:pet_insurance/screen/View_insurance.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 import '../controller/Insuranceregister.dart';
 import '../controller/MemberController.dart';
@@ -17,7 +19,9 @@ import 'AddPet.dart';
 
 class EditPet extends StatefulWidget {
   final String pet_id;
-  const EditPet({Key? key, required this.pet_id}) : super(key: key);
+  final String member_Id;
+  const EditPet({Key? key, required this.pet_id, required this.member_Id})
+      : super(key: key);
 
   @override
   State<EditPet> createState() => _EditPetState();
@@ -29,13 +33,41 @@ enum TypeGender { male, female }
 
 enum TypeSpice { purebred, mixedbreed }
 
-const List<String> listanimal_Spice = <String>['1', '2'];
+const List<String> listanimal_Spice = <String>[
+  'เชาเชา',
+  'อิงลิชบูลด็อก',
+  'ซาลูกิ',
+  'ไจแอนท์ชเนาเซอร์',
+  'อัฟกัน',
+  'อาคิตะ',
+  'ทิเบตัน มาสทิฟ'
+];
+const List<String> listanimal_Spice_mixedbreed = <String>[
+  'ดอร์กี',
+  'พิตสกี้',
+  'ชูสกี้',
+  'ดัลมัชชุนด์',
+  'ลาบสกี้',
+  'จุง',
+  'ฮอร์กี'
+];
+const List<String> listanimal_Spice_Cat = <String>[
+  'อเมริกัน ช็อตแฮร์ ',
+  'บริติช ช็อตแฮร์',
+  'สก็อตติช โฟลด์ ',
+  'มันช์กิ้น',
+  'เบงกอล',
+  'อเมริกัน เคิร์ล',
+  'เปอร์เซีย',
+  'เมนคูน'
+];
 
 class _EditPetState extends State<EditPet> {
-  String? user;
+  String? pet;
   bool? isLoaded;
   Member? member;
   Petdetail? petdetail;
+  String? user;
 
   TextEditingController namePetTextController = TextEditingController();
   TextEditingController agePetTextController = TextEditingController();
@@ -49,15 +81,25 @@ class _EditPetState extends State<EditPet> {
 
   var type;
   var typeSpice;
-  var typegender;
+  // var typegender;
 
   String? types;
   String? typespices;
-  String? species;
+
   String? typegenders;
+  String? species;
+
+  dynamic dropdownanimal;
+  dynamic dropdownage;
+
+  TypeGender? typeGender;
+  Type? Types;
+  TypeSpice? typeSpices;
+
+  
 
   void setData() async {
-    namePetTextController.text = petdetail?.namepet??"";
+    namePetTextController.text = petdetail?.namepet ?? "";
     agePetTextController.text = petdetail?.agepet ?? "";
     genderpetTextController.text = petdetail?.gender ?? "";
     TypeTextController.text = petdetail?.type ?? "";
@@ -65,35 +107,118 @@ class _EditPetState extends State<EditPet> {
     animal_speciesController.text = petdetail?.animal_species ?? "";
   }
 
-  void petdata(String petId) async {
-    setState(() {
-      isLoaded = false;
-    });
+  void petdata(String petId, String member_Id) async {
     var response = await petdetailController.getPetdetailById(petId);
     petdetail = Petdetail.fromJsonToPetdetail(response);
     print(response);
-    setData;
+    print(petdetail?.type);
+
+    user = await SessionManager().get("username");
+    print(user);
+    member = await memberController.getMemberById(user!);
+    print(member?.memberId);
+
+    dropdownanimal = petdetail?.animal_species;
+    dropdownage = petdetail?.agepet;
+    types = petdetail?.type;
+    typegenders = petdetail?.gender;
+    typespices = petdetail?.species;
+
+    print("gender" + dropdownanimal);
+    switchradio();
     setState(() {
+      setData();
       isLoaded = true;
     });
+  }
+
+  void switchradio() async {
+    Type? convertToType(String? value) {
+      switch (value) {
+        case 'สุนัข':
+          return Type.Dog;
+        case 'แมว':
+          return Type.Cat;
+      }
+    }
+
+    String? type = petdetail?.type;
+    Types = convertToType(type);
+/*-------------------------------------------------- */
+    TypeSpice? convertToTypeSpice(String? value) {
+      switch (value) {
+        case 'พันธุ์แท้':
+          return TypeSpice.purebred;
+        case 'พันธุ์ผสม':
+          return TypeSpice.mixedbreed;
+      }
+    }
+
+    String? typespices = petdetail?.species;
+    typeSpices = convertToTypeSpice(typespices);
+/*-------------------------------------------------- */
+    TypeGender? convertToTypeGender(String? value) {
+      switch (value) {
+        case 'ชาย':
+          return TypeGender.male;
+        case 'หญิง':
+          return TypeGender.female;
+      }
+    }
+
+    String? typegender = petdetail?.gender;
+    typeGender = convertToTypeGender(typegender);
+  }
+
+  void showSureToUpdateMemberAlert(Petdetail uPetdetail) {
+    QuickAlert.show(
+        context: context,
+        title: "คุณแน่ใจหรือไม่ ? ",
+        text: "คุณต้องการอัพเดทข้อมูลสมาชิกหรือไม่ ? ",
+        type: QuickAlertType.warning,
+        confirmBtnText: "แก้ไข",
+        onConfirmBtnTap: () async {
+          http.Response response =
+              await petdetailController.updatePetdetail(uPetdetail);
+
+          if (response.statusCode == 200) {
+            Navigator.pop(context);
+            showUpdateMemberSuccessAlert();
+          } else {
+            showFailToUpdateMemberAlert();
+          }
+        },
+        cancelBtnText: "ยกเลิก",
+        showCancelBtn: true);
+  }
+
+  void showFailToUpdateMemberAlert() {
+    QuickAlert.show(
+        context: context,
+        title: "เกิดข้อผิดพลาด",
+        text: "ไม่สามารถอัพเดทข้อมูลสมาชิกได้",
+        type: QuickAlertType.error);
+  }
+
+  void showUpdateMemberSuccessAlert() {
+    QuickAlert.show(
+        context: context,
+        title: "สำเร็จ",
+        text: "อัพเดทข้อมูลสำเร็จ",
+        type: QuickAlertType.success,
+        confirmBtnText: "ตกลง",
+        onConfirmBtnTap: () {
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => const ListPet()));
+        });
   }
 
   @override
   void initState() {
     super.initState();
-    petdata(widget.pet_id);
+    petdata(widget.pet_id, widget.member_Id);
     setState(() {
-      if (petdetail?.type == "สุนัข") {
-        type = "Dog";
-      } else {
-        type = "Cat";
-      }
-      if (petdetail?.species == "พันธุ์แท้") {
-        typeSpice = "purebred";
-      } else {
-        typeSpice = "mixedbreed";
-      }
-      isLoaded = true;
+      // isLoaded = true;
     });
   }
 
@@ -122,16 +247,15 @@ class _EditPetState extends State<EditPet> {
           child: Column(
             children: [
               buildappname(),
-              // Text(widget.pet_id),
               buildtitle(),
-              // buildtypepet(),
-              // buildtitlespice(),
-              // buildtypespice(),
-              // buildanimalspice(),
+              buildtypepet(),
+              buildtitlespice(),
+              buildtypespice(),
+              buildanimalspice(),
               buildnamepet(size),
-              // buildagepet(size),
-              // buildgenderpet(size),
-              // buildbuttom(size),
+              buildagepet(size),
+              buildgenderpet(size),
+              buildbuttom(size),
             ],
           ),
         ),
@@ -144,11 +268,11 @@ class _EditPetState extends State<EditPet> {
       Expanded(
           child: RadioListTile<TypeGender>(
         value: TypeGender.male,
-        groupValue: typegender,
+        groupValue: typeGender,
         title: Text("ชาย"),
         onChanged: (TypeGender? val) {
           setState(() {
-            typegender = TypeGender.male;
+            typeGender = val;
             typegenders = "ชาย";
           });
         },
@@ -156,11 +280,11 @@ class _EditPetState extends State<EditPet> {
       Expanded(
           child: RadioListTile<TypeGender>(
         value: TypeGender.female,
-        groupValue: typegender,
+        groupValue: typeGender,
         title: Text("หญิง"),
         onChanged: (TypeGender? val) {
           setState(() {
-            typegender = TypeGender.female;
+            typeGender = val;
             typegenders = "หญิง";
           });
         },
@@ -180,12 +304,21 @@ class _EditPetState extends State<EditPet> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30))),
                 onPressed: () async {
-                  Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (BuildContext context) {
-                    return Viewinsurance();
-                  }));
+                  print("MemberId ${member?.memberId}");
+                  Petdetail updatePetdetail = Petdetail(
+                      petId: petdetail?.petId,
+                      agepet: agePetTextController.text = dropdownage,
+                      gender: typegenders,
+                      namepet: namePetTextController.text,
+                      species: typespices,
+                      type: types,
+                      member: member,
+                      animal_species: animal_speciesController.text =
+                          dropdownanimal,);
+
+                  showSureToUpdateMemberAlert(updatePetdetail);
                 },
-                child: Text("เพิ่มสัตว์เลี้ยง"))),
+                child: Text("แก้ไขข้อมูลสัตว์เลี้ยง"))),
       ],
     );
   }
@@ -204,11 +337,11 @@ class _EditPetState extends State<EditPet> {
                 iconEnabledColor: Colors.cyan,
                 dropdownColor: Color.fromARGB(255, 106, 236, 253),
                 alignment: Alignment.centerLeft,
-                value: listanimal,
+                value: dropdownanimal,
                 isExpanded: true,
                 onChanged: (String? val) {
                   setState(() {
-                    listanimal = val!;
+                    dropdownanimal = val!;
                   });
                 },
                 items: listanimal_Spice
@@ -240,25 +373,25 @@ class _EditPetState extends State<EditPet> {
     return Row(
       children: [
         Expanded(
-            child: RadioListTile<String>(
-          value: "purebred",
-          groupValue: typeSpice,
+            child: RadioListTile<TypeSpice>(
+          value: TypeSpice.purebred,
+          groupValue: typeSpices,
           title: Text("พันธุ์แท้"),
-          onChanged: (String? val) {
+          onChanged: (TypeSpice? val) {
             setState(() {
-              typeSpice = speciesController.text;
+              typeSpices = val;
               typespices = "พันธุ์แท้";
             });
           },
         )),
         Expanded(
-            child: RadioListTile<String>(
-          value: "mixedbreed",
-          groupValue: typeSpice,
+            child: RadioListTile<TypeSpice>(
+          value: TypeSpice.mixedbreed,
+          groupValue: typeSpices,
           title: Text("พันธุ์ผสม"),
-          onChanged: (String? val) {
+          onChanged: (TypeSpice? val) {
             setState(() {
-              typeSpice = speciesController.text;
+              typeSpices = val;
               typespices = "พันธุ์ผสม";
             });
           },
@@ -277,25 +410,25 @@ class _EditPetState extends State<EditPet> {
   Row buildtypepet() {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Expanded(
-          child: RadioListTile<String>(
-        value: "Dog",
-        groupValue: type,
+          child: RadioListTile<Type>(
+        value: Type.Dog,
+        groupValue: Types,
         title: Text("สุนัข"),
-        onChanged: (String? val) {
+        onChanged: (Type? val) {
           setState(() {
-            type = TypeTextController.text;
+            Types = val;
             types = "สุนัข";
           });
         },
       )),
       Expanded(
-          child: RadioListTile<String>(
-        value: "Cat",
-        groupValue: type,
+          child: RadioListTile<Type>(
+        value: Type.Cat,
+        groupValue: Types,
         title: Text("แมว"),
-        onChanged: (String? val) {
+        onChanged: (Type? val) {
           setState(() {
-            type = TypeTextController.text;
+            Types = val;
             types = "แมว";
           });
         },
@@ -323,11 +456,11 @@ class _EditPetState extends State<EditPet> {
                 dropdownColor: Color.fromARGB(255, 106, 236, 253),
                 alignment: Alignment.centerLeft,
                 borderRadius: BorderRadius.circular(30),
-                value: listage,
+                value: dropdownage,
                 isExpanded: true,
                 onChanged: (String? val) {
                   setState(() {
-                    listage = val!;
+                    dropdownage = val!;
                   });
                 },
                 items: listAge.map<DropdownMenuItem<String>>((String value) {

@@ -42,6 +42,7 @@ class _EditProfileState extends State<EditProfile> {
   TextEditingController AdddressTextController = TextEditingController();
   TextEditingController IDlineTextController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
+  
   void fetcData() async {
     user = await SessionManager().get("username");
     print(user);

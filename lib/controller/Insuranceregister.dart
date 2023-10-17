@@ -1,67 +1,82 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:http_parser/http_parser.dart';
 import '../constant/constant_value.dart';
 import 'package:http/http.dart' as http;
 
 class InsuranceREG {
   Future addInsuranceReg(
+
     String insurance_planId,
     String memberId,
     String receivedByEmail,
-    String date,
-    String officer_id,
+    String startdate,
+    String enddate,
     String status,
     File vaccine_documents,
+    File ImgPet,
+    File health_certificate,
+    String pet_id
   ) async {
-    Map data = {
-      // "insurance_planId": "3",
-      // // "memberId": "1",
-      // "receivedByEmail": "5",
-      // "Status": "2",
-      "officer_id": "OF001",
-      // "insurance_regId": "203",
-      // "insurance_plan_id": insurance_plan_id,
+    var data = {
       "memberId": memberId,
       "receivedByEmail": receivedByEmail,
-      "date": date,
-      "Status": status,
-      // "officer_id": officer_id,
+      "startdate": startdate,
+      "enddate" : enddate,
+      "status": status,
       "insurance_planId": insurance_planId,
-      "vaccine_documents": vaccine_documents,
+      "pet_id" : pet_id
+
+   
     };
-    var path = await upload(vaccine_documents);
-    print("testpath ${path}");
+    // อัปโหลดไฟล์และรับพาธของไฟล์
+    var pathVaccine = await uploadImages(vaccine_documents);
+    var pathImgPet = await uploadImages(ImgPet);
+    var pathHealthCertificate = await uploadImages(health_certificate);
 
-    data["vaccine_documents"] = path;
+    // เพิ่มพาธของไฟล์ลงในข้อมูล
+    data["vaccine_documents"] = pathVaccine;
+    data["ImgPet"] = pathImgPet;
+    data["health_certificate"] = pathHealthCertificate;
 
-    print("testdata ${data}");
-
+    // แปลงข้อมูลเป็น JSON
     var jsonData = json.encode(data);
+
+    // ส่งข้อมูลไปยังเซิร์ฟเวอร์
     var url = Uri.parse(baseURL + "/insuranceregister/add");
-    http.Response response =
-        await http.post(url, headers: headers, body: jsonData);
+    var response = await http.post(url, headers: headers, body: jsonData);
 
     print(response.body);
     return response;
   }
 
-  Future upload(File file) async {
-    if (file == null) return;
+  Future<String> uploadImages(File? image) async {
+    // ตรวจสอบว่า image ไม่เป็น null ก่อนใช้
+    if (image != null) {
+      var uri = Uri.parse(baseURL + "/insuranceregister/upload");
 
-    var uri = Uri.parse(baseURL + "/insuranceregister/upload");
-    var length = await file.length();
-    //print(length);
-    http.MultipartRequest request = new http.MultipartRequest('POST', uri)
-      ..headers.addAll(headers)
-      ..files.add(
-        // replace file with your field name exampe: image
-        http.MultipartFile('image', file.openRead(), length,
-            filename: 'test.png'),
+      var request = http.MultipartRequest('POST', uri);
+      var stream = http.ByteStream(image.openRead());
+      var length = await image.length();
+      var multipartFile = http.MultipartFile(
+        'images',
+        stream,
+        length,
+        filename: image.path.split('/').last,
+        contentType: MediaType('image', 'png'),
       );
-    var response = await http.Response.fromStream(await request.send());
-    //var jsonResponse = jsonDecode(response.body);
-    print("test ${response.body}");
-    return response.body;
+      request.files.add(multipartFile);
+
+      var response = await request.send();
+      if (response.statusCode == 200) {
+        var jsonResponse = await response.stream.bytesToString();
+        return jsonResponse; // รีเทิร์น URL ของไฟล์ภาพที่ถูกอัปโหลด
+      } else {
+        throw Exception('Failed to upload image');
+      }
+    } else {
+      throw Exception('Image file is null');
+    }
   }
 }

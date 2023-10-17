@@ -2,6 +2,8 @@ import 'package:pet_insurance/model/Member.dart';
 import 'package:pet_insurance/model/Officer.dart';
 import 'package:pet_insurance/model/Petinsuranceregister.dart';
 
+import 'Petdetail.dart';
+
 class Insurancedetail {
 
   int? insurance_planId;
@@ -17,6 +19,7 @@ class Insurancedetail {
   double? price;
   Member? member;
   Officer? officer;
+  // Petdetail? petdetail;
   Petinsuranceregister? petinsuranceregister;
 
   Insurancedetail({

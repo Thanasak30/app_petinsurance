@@ -11,11 +11,11 @@ import '../controller/PetdetailController.dart';
 import '../model/Member.dart';
 import 'Register.dart';
 
-class AddPet extends StatefulWidget {
-  const AddPet({super.key});
+class AddPet2 extends StatefulWidget {
+  const AddPet2({super.key});
 
   @override
-  State<AddPet> createState() => _AddPetState();
+  State<AddPet2> createState() => _AddPet2State();
 }
 
 enum Type { Dog, Cat }
@@ -43,7 +43,7 @@ const List<String> listAge = <String>[
   '7 ปี'
 ];
 
-class _AddPetState extends State<AddPet> {
+class _AddPet2State extends State<AddPet2> {
   String? user;
   bool? isLoaded;
   Member? member;
@@ -179,7 +179,7 @@ class _AddPetState extends State<AddPet> {
                   }
                   Navigator.of(context).pushReplacement(
                       MaterialPageRoute(builder: (BuildContext context) {
-                    return Viewinsurance();
+                    return InsuranceREG();
                   }));
                 },
                 child: Text("เพิ่มสัตว์เลี้ยง"))),

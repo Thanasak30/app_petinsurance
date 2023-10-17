@@ -3,14 +3,18 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:pet_insurance/controller/MemberController.dart';
+import 'package:pet_insurance/controller/PetdetailController.dart';
+import 'package:pet_insurance/model/Petdetail.dart';
 import 'package:pet_insurance/screen/AddPet.dart';
 import 'package:pet_insurance/screen/EditProfile.dart';
 import 'package:pet_insurance/screen/ListPet.dart';
 import 'package:pet_insurance/screen/ShowProfile.dart';
 import 'package:pet_insurance/screen/View_insurance.dart';
+import 'package:pet_insurance/screen/insurance_reg5.dart';
 import 'package:pet_insurance/screen/login.dart';
 
 import '../model/Member.dart';
+import '../screen/Listinsurance.dart';
 
 class Navbar extends StatefulWidget {
   const Navbar({super.key});
@@ -21,9 +25,12 @@ class Navbar extends StatefulWidget {
 
 class _NavbarState extends State<Navbar> {
   MemberController memberController = MemberController();
+  PetdetailController petdetailController = PetdetailController();
+  
 
   String? username;
   Member? member;
+  Petdetail? petdetail;
 
   bool? isLoaded;
 
@@ -102,6 +109,16 @@ class _NavbarState extends State<Navbar> {
               Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (BuildContext context) {
                 return ListPet();
+              }));
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.view_timeline),
+            title: Text("รายการที่ทำประกัน"),
+            onTap: () {
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (BuildContext context) {
+                return ListInsurance();
               }));
             },
           ),

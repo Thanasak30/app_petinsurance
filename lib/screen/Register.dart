@@ -94,30 +94,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 onPressed: () async {
                   if (formkey.currentState!.validate()) {
                     http.Response response = await memberController.addMember(
-                        AgeTextController.text,
-                        MobilenumberTextController.text,
-                        EmailTextController.text,
-                        GenderTextController.text,
-                        fullnameTextController.text,
-                        IdCardTextController.text,
-                        AdddressTextController.text,
-                        birthdayTextController.text,
-                        passwordTextController.text,
-                        nationalityTextController.text,
-                        IDlineTextController.text,
-                        userNameTextController.text);
+                      birthdayTextController.text,
+                      AdddressTextController.text,
+                      AgeTextController.text,
+                      fullnameTextController.text,
+                      GenderTextController.text,
+                      IDlineTextController.text,
+                      IdCardTextController.text,
+                      EmailTextController.text,
+                      MobilenumberTextController.text,
+                      nationalityTextController.text,
+                      passwordTextController.text,
+                      userNameTextController.text,
+                    );
                     if (response.statusCode == 500) {
                       print("Error!");
                     } else {
                       print("Member was added successfully!");
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (BuildContext context) {
+                            return LoginScreen();
+                          },
+                        ),
+                      );
                     }
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (BuildContext context) {
-                          return LoginScreen();
-                        },
-                      ),
-                    );
                   }
                 },
                 child: Text("สร้างบัญชี"))),
@@ -476,7 +477,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             validator: (value) {
               // ตรวจสอบความถูกต้องของชื่อ-นามสกุล
-              bool isfullnameValid = RegExp(r'^[ก-์," "]{2,30}$').hasMatch(value!);
+              bool isfullnameValid =
+                  RegExp(r'^[ก-์," "]{2,30}$').hasMatch(value!);
 
               // กรณีไม่กรอกชื่อ-นามสกุล
               if (value.isEmpty) {
@@ -514,7 +516,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             validator: (value) {
               // ตรวจสอบความถูกต้องของรหัสผ่าน
-              bool isPasswordValid  = RegExp(r'^[A-Za-z0-9]{1,8}$').hasMatch(value!);
+              bool isPasswordValid =
+                  RegExp(r'^[A-Za-z0-9]{1,8}$').hasMatch(value!);
               // bool isPasswordValid = RegExp(r'^[0-9]{4}$').hasMatch(value!);
 
               // กรณีไม่กรอกรหัสผ่าน

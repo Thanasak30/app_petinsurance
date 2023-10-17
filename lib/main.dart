@@ -12,6 +12,7 @@ import 'package:pet_insurance/screen/insurance_reg1.dart';
 import 'package:pet_insurance/screen/insurance_reg2.dart';
 import 'package:pet_insurance/screen/insurance_reg3.dart';
 import 'package:pet_insurance/screen/insurance_reg4.dart';
+import 'package:pet_insurance/screen/insurance_reg5.dart';
 import 'package:pet_insurance/screen/login.dart';
 
 void main() {

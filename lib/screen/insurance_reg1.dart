@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:pet_insurance/controller/PetdetailController.dart';
 import 'package:pet_insurance/model/Petdetail.dart';
 import 'package:pet_insurance/screen/View_insurance.dart';
 
+import '../controller/MemberController.dart';
+import '../model/Member.dart';
 import 'insurance_reg2.dart';
 
 class InsuranceREG extends StatefulWidget {
@@ -18,15 +21,21 @@ class InsuranceREG extends StatefulWidget {
 
 class _InsuranceREGState extends State<InsuranceREG> {
   final PetdetailController petdetailController = PetdetailController();
+  final MemberController memberController = MemberController();
 
   List<Petdetail>? petdetail;
+  Member? member;
+  String? user;
 
   bool? isLoade;
   void fetcData() async {
     setState(() {
       isLoade = false;
     });
-    petdetail = await petdetailController.listAllPetdetail();
+    user = await SessionManager().get("username");
+    print(user);
+    member = await memberController.getMemberById(user!);
+    petdetail = await petdetailController.listAllPetdetailByMember(member!.memberId.toString());
     setState(() {
       isLoade = true;
     });

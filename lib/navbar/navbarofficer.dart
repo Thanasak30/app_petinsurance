@@ -6,9 +6,11 @@ import 'package:pet_insurance/controller/MemberController.dart';
 import 'package:pet_insurance/controller/OfficerController.dart';
 import 'package:pet_insurance/model/Officer.dart';
 import 'package:pet_insurance/screen/ListAllinsurance.dart';
+import 'package:pet_insurance/screen/Listinsurance.dart';
 
 import '../model/Member.dart';
 import '../screen/login.dart';
+import '../screen/officer/Listinsuranceofficer.dart';
 
 class NavbarOficer extends StatefulWidget {
   const NavbarOficer({super.key});
@@ -26,24 +28,24 @@ class _NavbarOficerState extends State<NavbarOficer> {
 
   bool? isLoaded;
 
-  // void syncUser() async {
-  //   setState(() {
-  //     isLoaded = false;
-  //   });
-  //   var usernameSession = await SessionManager().get("username");
-  //   username = usernameSession.toString();
-  //   var response = await memberController.getMemberByUsername(username??"");
-  //   officer = Officer.fromJsonToOfficer(response);
-  //   print(officer?.officername);
-  //   setState(() {
-  //     isLoaded = true;
-  //   });
-  // }
+  void syncUser() async {
+    setState(() {
+      isLoaded = false;
+    });
+    var usernameSession = await SessionManager().get("username");
+    username = usernameSession.toString();
+    var response = await officerController.getOfficerByUsername(username??"");
+    officer = Officer.fromJsonToOfficer(response);
+    print(officer?.officername);
+    setState(() {
+      isLoaded = true;
+    });
+  }
 
   @override
   void initState() {
     super.initState();
-    // syncUser();
+    syncUser();
   }
 
   @override
@@ -82,8 +84,13 @@ class _NavbarOficerState extends State<NavbarOficer> {
           ),
           ListTile(
             leading: Icon(Icons.settings),
-            title: Text("Add insurance"),
-            onTap: () => print('Add insurance'),
+            title: Text("ListInsurance"),
+            onTap: (){
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (BuildContext context) {
+                return ListInsuranceScreen();
+              }));
+            },
           ),
           ListTile(
             leading: Icon(Icons.settings),

@@ -7,17 +7,17 @@ import '../model/Member.dart';
 
 class MemberController {
   Future addMember(
-    String age,
-    String mobileno,
-    String member_email,
-    String gender,
-    String fullname,
-    String idcard,
-    String address,
     String brithday,
-    String password,
-    String nationality,
+    String address,
+    String age,
+    String fullname,
+    String gender,
     String id_line,
+    String idcard,
+    String member_email,
+    String mobileno,
+    String nationality,
+    String password,
     String username
   ) async {
     Map data = {

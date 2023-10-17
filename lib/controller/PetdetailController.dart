@@ -6,8 +6,6 @@ import '../model/Petdetail.dart';
 
 class PetdetailController {
   Future addPet(
-    String hasGenderDisease,
-    String isSick,
     String agepet,
     String gender,
     String listpicture,
@@ -16,7 +14,6 @@ class PetdetailController {
     String type,
     String memberId,
     String animal_species,
-    String Checkforinsurance,
   ) async {
     Map data = {
       "namepet": namepet,
@@ -25,9 +22,6 @@ class PetdetailController {
       "gender": gender,
       "listpicture": listpicture,
       "species": species,
-      "isSick": isSick,
-      'hasGenderDisease': hasGenderDisease,
-      'Check': Checkforinsurance,
       'animal_species': animal_species,
       'memberId': memberId
     };
@@ -44,7 +38,7 @@ class PetdetailController {
 
   Future updatePetdetail(Petdetail petdetail) async {
     Map<String, dynamic> data = petdetail.fromPetdetailToJson();
-
+    print("DATA FROM CONTROLLER ${data}");
     var body = json.encode(data);
 
     var url = Uri.parse(baseURL + '/petdetail/update');
@@ -78,11 +72,11 @@ class PetdetailController {
       required String TypeSpice,
       required String listValue}) {}
 
-  Future listAllPetdetail() async {
+  Future listAllPetdetailByMember(String memberId) async {
     Map data = {};
 
     var body = json.encode(data);
-    var url = Uri.parse(baseURL + '/petdetail/list');
+    var url = Uri.parse(baseURL + '/petdetail/list/'+ memberId);
 
     http.Response response = await http.post(url, headers: headers, body: body);
 

@@ -2,51 +2,74 @@ import 'package:pet_insurance/model/Insurancedetail.dart';
 import 'package:pet_insurance/model/Officer.dart';
 
 import 'Member.dart';
+import 'Petdetail.dart';
 
 class Petinsuranceregister {
-  String? insurance_regId;
-  String? date;
+  int? insurance_regId;
+  DateTime? startdate;
+  DateTime? enddate;
   bool? receivedByEmail;
   String? id_line;
   String? vaccine_documents;
   Member? member;
   Officer? officer;
   Insurancedetail? insurancedetail;
+  String? health_certificate;
+  String? ImgPet;
+  String? status;
+  Petdetail? petdetail;
 
-  Petinsuranceregister({
-    this.insurance_regId,
-    this.date,
-    this.receivedByEmail,
-    this.id_line,
-    this.vaccine_documents,
-    this.member,
-    this.officer,
-    this.insurancedetail
-  });
+  Petinsuranceregister(
+      {this.insurance_regId,
+      this.startdate,
+      this.enddate,
+      this.receivedByEmail,
+      this.id_line,
+      this.vaccine_documents,
+      this.member,
+      this.officer,
+      this.insurancedetail,
+      this.health_certificate,
+      this.ImgPet,
+      this.status,
+      this.petdetail});
 
-    Map<String, dynamic> fromPetregisterToJson() {
+  Map<String, dynamic> fromPetregisterToJson() {
     return <String, dynamic>{
       'insurance_regId': insurance_regId,
-      'date': date,
+      'startdate': startdate,
+      'enddate' : enddate,
       'receivedByEmail': receivedByEmail,
       'id_line': id_line,
       'vaccine_documents': vaccine_documents,
       'member': member,
       'officer': officer,
       'insurancedetail': insurancedetail,
+      'health_certificate': health_certificate,
+      'ImgPet': ImgPet,
+      'status': status,
+      'petdetail': petdetail
     };
   }
 
-  factory Petinsuranceregister.fromJsonToPetregister(Map<String, dynamic> json) {
+  factory Petinsuranceregister.fromJsonToPetregister(
+      Map<String, dynamic> json) {
     return Petinsuranceregister(
-      insurance_regId: json["insurance_regId"],
-      date: json["date"],
-      receivedByEmail: json["receivedByEmail"],
-      id_line: json["id_line"],
-      vaccine_documents: json["vaccine_documents"],
-      member: Member.fromJsonToMember(json["member_id"]),
-      officer: Officer.fromJsonToOfficer(json["officer_id"]),
-      insurancedetail: Insurancedetail.fromJsonToInsurancedetail(json["insurance_plan_id"])
-    );
+        insurance_regId: json["insurance_regId"],
+        startdate: DateTime.parse(json["startdate"]),
+        enddate: DateTime.parse(json["enddate"]),
+        receivedByEmail: json["receivedByEmail"],
+        id_line: json["id_line"],
+        vaccine_documents: json["vaccine_documents"],
+        member: Member.fromJsonToMember(json["memberId"]),
+        officer: json["officerId"] == null
+            ? null
+            : Officer.fromJsonToOfficer(json["officerId"]),
+        insurancedetail:
+            Insurancedetail.fromJsonToInsurancedetail(json["insurance_planId"]),
+        health_certificate: json["health_certificate"],
+        ImgPet: json["ImgPet"],
+        status: json["status"],
+        petdetail: Petdetail.fromJsonToPetdetail(json["petid"]));
   }
 }

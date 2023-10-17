@@ -4,17 +4,24 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_options.dart';
+import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:pet_insurance/controller/OfficerController.dart';
 import 'package:pet_insurance/model/Insurancedetail.dart';
+import 'package:pet_insurance/model/Officer.dart';
 import 'package:pet_insurance/screen/AddPet.dart';
 import 'package:pet_insurance/screen/insurance_reg1.dart';
 
+import '../controller/MemberController.dart';
 import '../controller/PetdetailController.dart';
+import '../model/Member.dart';
 import '../model/Petdetail.dart';
 import '../navbar/navbar.dart';
+import 'AddPet2.dart';
 
 class Viewinsurance extends StatefulWidget {
-  const Viewinsurance({super.key});
+  const Viewinsurance({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<Viewinsurance> createState() => _ViewinsuranceState();
@@ -23,32 +30,65 @@ class Viewinsurance extends StatefulWidget {
 class _ViewinsuranceState extends State<Viewinsurance> {
   final petdetailController = PetdetailController();
   List<Petdetail>? petdetail;
+  Member? member;
+  String? user;
 
   List<Insurancedetail>? insurancedetail;
   Insurancedetail? insurancedetails;
   bool? isLoaded;
 
   OfficerController officerController = OfficerController();
-
+  final MemberController memberController = MemberController();
 
   void fetcData() async {
     setState(() {
       isLoaded = false;
     });
-    petdetail = await petdetailController.listAllPetdetail();
+    user = await SessionManager().get("username");
+    print(user);
+    member = await memberController.getMemberById(user!);
+    petdetail = await petdetailController
+        .listAllPetdetailByMember(member!.memberId.toString());
     insurancedetail = await officerController.listAllInsurance();
     setState(() {
       isLoaded = true;
     });
   }
 
-
+  void _showPopup(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(""),
+          content: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text("ชื่อผู้เอาประกันภัย"),
+                  Text("${member?.fullname}")
+                ],
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
 
   @override
   void initState() {
     super.initState();
     fetcData();
-
   }
 
   @override
@@ -134,10 +174,7 @@ class _ViewinsuranceState extends State<Viewinsurance> {
               SizedBox(height: 16),
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (BuildContext context) {
-                    return InsuranceREG();
-                  }));
+                  _showPopup(context);
                 },
                 child: Text("รายละเอียด"),
               ),
@@ -146,7 +183,6 @@ class _ViewinsuranceState extends State<Viewinsurance> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30))),
                 onPressed: () {
-
                   if (petdetail != null) {
                     Navigator.of(context).pushReplacement(
                         MaterialPageRoute(builder: (BuildContext context) {
@@ -154,9 +190,9 @@ class _ViewinsuranceState extends State<Viewinsurance> {
                     }));
                   } else {
                     Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (BuildContext context) {
-                    return AddPet();
-                  }));
+                        MaterialPageRoute(builder: (BuildContext context) {
+                      return AddPet2();
+                    }));
                   }
                 },
                 child: Text("สมัครแผน"),

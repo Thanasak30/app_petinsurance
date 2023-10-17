@@ -43,7 +43,7 @@ class Member {
       'fullname': fullname,
       'idcard': idcard,
       'address': address,
-      'brithday': brithday,
+      'brithday': brithday!.toIso8601String(),
       'nationality' : nationality,
       'id_line' : id_line,
       'username': username?.fromLoginToJson()

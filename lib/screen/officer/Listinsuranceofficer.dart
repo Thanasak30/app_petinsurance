@@ -19,7 +19,7 @@ class _ListInsuranceScreenState extends State<ListInsuranceScreen> {
 
   List<Petinsuranceregister>? petinsuranceregister;
 
-  bool? isLoade;
+  bool? isLoade = false;
   void fetcData() async {
     setState(() {
       isLoade = false;
@@ -51,7 +51,7 @@ class _ListInsuranceScreenState extends State<ListInsuranceScreen> {
           },
         ),
       ),
-      body: ListView.builder(
+      body: isLoade == true? ListView.builder(
           itemCount: petinsuranceregister?.length,
           itemBuilder: (context, index) {
             return Padding(
@@ -67,11 +67,11 @@ class _ListInsuranceScreenState extends State<ListInsuranceScreen> {
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
                           builder: (_) => UpdateStatus(
                               insurance_regId: (petinsuranceregister?[index].insurance_regId?? 0), 
-                              insurance_planId: (petinsuranceregister![index].insurancedetail!.insurance_planId.toString()),)));
+                              insurance_planId: (petinsuranceregister?[index].insurancedetail?.insurance_planId.toString()??""),)));
                     },
                   )),
             );
-          }),
+          }) : Container(),
     ));
   }
 }

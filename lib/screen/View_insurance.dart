@@ -32,6 +32,8 @@ class _ViewinsuranceState extends State<Viewinsurance> {
   List<Petdetail>? petdetail;
   Member? member;
   String? user;
+  String? substring;
+  String? strprice;
 
   List<Insurancedetail>? insurancedetail;
   Insurancedetail? insurancedetails;
@@ -55,22 +57,135 @@ class _ViewinsuranceState extends State<Viewinsurance> {
     });
   }
 
-  void _showPopup(BuildContext context) {
+  void _showPopup(BuildContext context, int i) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
+        substring = insurancedetail?[i]
+            .price
+            .toString()
+            .substring(0, insurancedetail?[i].price.toString().indexOf('.'));
         return AlertDialog(
-          title: Text(""),
-          content: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text("ชื่อผู้เอาประกันภัย"),
-                  Text("${member?.fullname}")
-                ],
-              ),
-            ],
+          title: Text("รายละเอียดเพิ่มเติม"),
+          content: Container(
+            height: 480,
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("ชื่อแผนประกันภัย"),
+                    Text("${insurancedetail?[i].insurance_name}"),
+                  ],
+                ),
+                Divider(
+                  indent: 2,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("ราคาแผน"),
+                    Text("$substring บาท"),
+                  ],
+                ),
+                Divider(
+                  indent: 2,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("ค่ารักษาพยาบาล"),
+                    insurancedetail?[i].medical_expenses == "ไม่คุ้มครอง"
+                        ? Text("${insurancedetail?[i].medical_expenses} ")
+                        : Text("${insurancedetail?[i].medical_expenses} บาท"),
+                  ],
+                ),
+                Divider(
+                  indent: 2,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("ค่ารักษาพยาบาลจาก\nการเจ็บป่วย"),
+                    insurancedetail?[i].treatment == "ไม่คุ้มครอง"
+                        ? Text("${insurancedetail?[i].treatment} ")
+                        : Text("${insurancedetail?[i].treatment} บาท"),
+                  ],
+                ),
+                Divider(
+                  indent: 2,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("ชีวิตและร่างกายของ\nบุคคลภายนอก"),
+                    insurancedetail?[i].pets_attack_outsiders == "ไม่คุ้มครอง"
+                        ? Text("${insurancedetail?[i].pets_attack_outsiders} ")
+                        : Text(
+                            "${insurancedetail?[i].pets_attack_outsiders} บาท"),
+                  ],
+                ),
+                Divider(
+                  indent: 2,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("ทรัพย์สินบุคคลภายนอก"),
+                    insurancedetail?[i]
+                                .third_party_property_values_due_to_pets ==
+                            "ไม่ค้มครอง"
+                        ? Text(
+                            "${insurancedetail?[i].third_party_property_values_due_to_pets} ")
+                        : Text(
+                            "${insurancedetail?[i].third_party_property_values_due_to_pets} บาท"),
+                  ],
+                ),
+                Divider(
+                  indent: 2,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("ค่าใช้จ่ายจัดพิธีศพ\nสัตว์เลี้ยง"),
+                    insurancedetail?[i].pet_funeral_costs == "ไม่คุ้มครอง"
+                        ? Text("${insurancedetail?[i].pet_funeral_costs} ")
+                        : Text("${insurancedetail?[i].pet_funeral_costs} บาท"),
+                  ],
+                ),
+                Divider(
+                  indent: 2,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                        "ค่าชดเชยกรณีสัตว์เลี้ยง\nเสียชีวิตจากอุบัติเหตุ\nหรือการป่วย"),
+                    insurancedetail?[i].accident_or_illness_compensation ==
+                            "ไม่คุ้มครอง"
+                        ? Text(
+                            "${insurancedetail?[i].accident_or_illness_compensation}")
+                        : Text(
+                            "${insurancedetail?[i].accident_or_illness_compensation} บาท"),
+                  ],
+                ),
+                Divider(
+                  indent: 2,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("ค่าวัคซีนป้องกันโรค\nในสัตว์เลี้ยง"),
+                    insurancedetail?[i].cost_of_preventive_vaccination ==
+                            "ไม่คุ้มครอง"
+                        ? Text(
+                            "${insurancedetail?[i].cost_of_preventive_vaccination}")
+                        : Text(
+                            "${insurancedetail?[i].cost_of_preventive_vaccination} บาท")
+                  ],
+                ),
+              ],
+            ),
           ),
           actions: <Widget>[
             TextButton(
@@ -129,6 +244,9 @@ class _ViewinsuranceState extends State<Viewinsurance> {
           0, // ให้ itemCount เป็น 0 ถ้า insurancedetail เป็น null
       itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) {
         final plan = insurancedetail?[itemIndex];
+        strprice = plan?.price
+            .toString()
+            .substring(0, plan.price.toString().indexOf('.'));
         return Container(
           width: double.infinity,
           margin: EdgeInsets.all(16),
@@ -141,40 +259,58 @@ class _ViewinsuranceState extends State<Viewinsurance> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                decoration: BoxDecoration(
+              SizedBox(
+                width: 140, // กำหนดความกว้างของ Container ที่ต้องการ
+                child: Container(
+                  decoration: BoxDecoration(
                     color: plan?.insurance_name != null
                         ? Colors.cyan
                         : Colors.transparent,
-                    borderRadius: BorderRadius.circular(30)),
-                child: Center(
-                  child: Text(
-                    plan?.insurance_name ?? "",
-                    style: TextStyle(color: Colors.black, fontSize: 40),
+                    borderRadius: BorderRadius.circular(180),
+                  ),
+                  child: Center(
+                    child: Text(
+                      plan?.insurance_name ?? "",
+                      style: TextStyle(color: Colors.black, fontSize: 30),
+                    ),
                   ),
                 ),
               ),
               SizedBox(height: 16),
-              Text("${plan?.price ?? ""} บาท", style: TextStyle(fontSize: 18)),
+              Text("$strprice บาท", style: TextStyle(fontSize: 18)),
               SizedBox(height: 8),
               Text(
-                "ค่ารักษาจากอุบัติเหตุ(บาท)\n ${plan?.medical_expenses ?? ""}",
+                "ค่ารักษาจากอุบัติเหตุ(บาท)",
                 style: TextStyle(fontSize: 14),
               ),
               SizedBox(height: 8),
               Text(
-                "ค่ารักษาจากการเจ็บป่วย(บาท)\n ${plan?.treatment ?? ""}",
+                "${plan?.medical_expenses ?? ""}",
+                style: TextStyle(fontSize: 14),
+              ),
+              Text(
+                "ค่ารักษาจากการเจ็บป่วย(บาท) ",
                 style: TextStyle(fontSize: 14),
               ),
               SizedBox(height: 8),
               Text(
-                "ค่าวัคซีนป้องกันโรคสัตว์เลี้ยง(บาท)\n ${plan?.cost_of_preventive_vaccination ?? ""}",
+                "${plan?.treatment} ",
+                style: TextStyle(fontSize: 14),
+              ),
+              SizedBox(height: 8),
+              Text(
+                "ค่าวัคซีนป้องกันโรคสัตว์เลี้ยง(บาท)",
+                style: TextStyle(fontSize: 14),
+              ),
+              SizedBox(height: 8),
+              Text(
+                "${plan?.cost_of_preventive_vaccination}",
                 style: TextStyle(fontSize: 14),
               ),
               SizedBox(height: 16),
               TextButton(
                 onPressed: () {
-                  _showPopup(context);
+                  _showPopup(context, itemIndex);
                 },
                 child: Text("รายละเอียด"),
               ),
@@ -202,7 +338,7 @@ class _ViewinsuranceState extends State<Viewinsurance> {
         );
       },
       options: CarouselOptions(
-        height: 550,
+        height: 530,
         aspectRatio: 16 / 9,
         viewportFraction: 0.6,
         initialPage: 0,
@@ -217,7 +353,7 @@ class _ViewinsuranceState extends State<Viewinsurance> {
   Container builddata2(double width) {
     return Container(
       margin: const EdgeInsets.only(top: 20),
-      height: 200,
+      height: 250,
       width: width * width * 0.05,
       padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
       child: Container(
@@ -236,26 +372,64 @@ class _ViewinsuranceState extends State<Viewinsurance> {
         ),
         padding: const EdgeInsets.only(
           left: 32,
-          top: 50.0,
+          top: 20.0,
           bottom: 20,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: const <Widget>[
             Text(
-              "ข้อมมูลทั่วไป",
-              style: TextStyle(color: Colors.white, fontSize: 12),
+              "จุดเด่นของประกันสัตว์เลี้ยง",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
             ),
             const SizedBox(
               height: 2,
             ),
             Text(
-              "data",
+              " - ค่ารักษาพยาบาล",
               style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold),
-            )
+                color: Colors.white,
+                fontSize: 15,
+              ),
+            ),
+            Text(
+              " - ค่ารับผิดต่อบุคคลภายนอก",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 15,
+              ),
+            ),
+            Text(
+              " - ค่าใช้จ่ายการจัดพิธีศพ",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 15,
+              ),
+            ),
+            Text(
+              " - ค่าวัคซีน",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 15,
+              ),
+            ),
+            Text(
+              " - ค่าประกาศติดตามสัตว์เลี้ยงสูญหาย",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 15,
+              ),
+            ),
+            Text(
+              " - ค่าชดเชยกรณีเสียชีวิต",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 15,
+              ),
+            ),
           ],
         ),
       ),
@@ -265,7 +439,7 @@ class _ViewinsuranceState extends State<Viewinsurance> {
   Container builddata(double width) {
     return Container(
       margin: const EdgeInsets.only(top: 20),
-      height: 200,
+      height: 250,
       width: width * width * 0.05,
       padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
       child: Container(
@@ -284,25 +458,28 @@ class _ViewinsuranceState extends State<Viewinsurance> {
         ),
         padding: const EdgeInsets.only(
           left: 32,
-          top: 50.0,
+          top: 20.0,
           bottom: 20,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: const <Widget>[
             Text(
-              "ข้อมมูลทั่วไป",
-              style: TextStyle(color: Colors.white, fontSize: 12),
+              "ทำไมต้องซื้อประกันสัตว์เลี้ยง",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
             ),
             const SizedBox(
               height: 2,
             ),
             Text(
-              "data",
+              "สัตว์เลี้ยงก็เป็นอีกหนึ่งชีวิตที่สามารถเจ็บป่วยหรือเกิดอุบัติเหตุได้ แต่อย่างที่เรารู้กันดีว่าค่าใช้จ่ายเรื่องค่ารักษาพยาบาลของสุนัขหรือแมวในแต่ละครั้งค่อนข้างสูง ทำให้เจ้าของสัตว์เลี้ยงหลายคนเป็นกังวลในเรื่องค่าใช้จ่าย แต่จะให้เลือกวิธีการที่จะเสียค่าใช้จ่ายน้อยที่สุดเพื่อรักษาและดูแลสัตว์เลี้ยงก็อาจไม่ใช่ทางเลือกที่ดีต่อสุขภาพร่างกายของสัตว์เลี้ยง",
               style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold),
+                color: Colors.white,
+                // fontSize: 22,
+              ),
             )
           ],
         ),

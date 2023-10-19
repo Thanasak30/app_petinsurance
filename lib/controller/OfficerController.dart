@@ -135,21 +135,17 @@ class OfficerController {
     return jsonResponse;
   }
 
-  Future updateInsurancereg(Petinsuranceregister petinsuranceregister) async {
-    Map<String, dynamic> data = petinsuranceregister.fromPetregisterToJson();
+  Future updateInsurancereg(String office_id,String inusrance_regId) async {
 
-    var body = json.encode(data, toEncodable: myDateSeriallizers);
-    var url = Uri.parse(baseURL + '/insuranceregister/update/');
-    http.Response response = await http.put(url, headers: headers, body: body);
+    var url = Uri.parse(baseURL + '/insuranceregister/update/'+ office_id + '/' + inusrance_regId);
+    print("URL IS ${url}");
+    http.Response response = await http.put(url, headers: headers);
+
+    print("RES CODE IS : ${response.statusCode}");
 
     return response;
   }
-    dynamic myDateSeriallizers(dynamic object) {
-    if (object is DateTime) {
-      return object.toIso8601String();
-    }
-    return object;
-  }
+
 
   Future getOfficerByUsername(String username) async {
     var url = Uri.parse(baseURL + '/officer/getbyusername/' + username);

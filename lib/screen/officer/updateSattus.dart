@@ -32,8 +32,8 @@ class _UpdateStatusState extends State<UpdateStatus> {
 
   Petinsuranceregister? petinsuranceregister;
   Insurancedetail? insurancedetail;
-    String? username;
-    Officer? officer;
+  String? username;
+  Officer? officer;
 
   var dateFormat = DateFormat('dd-MM-yyyy');
   DateTime currentDate = DateTime.now();
@@ -43,10 +43,16 @@ class _UpdateStatusState extends State<UpdateStatus> {
     setState(() {
       isLoade = false;
     });
-     var usernameSession = await SessionManager().get("username");
+    var usernameSession = await SessionManager().get("username");
     username = usernameSession.toString();
-    var response = await officerController.getOfficerByUsername(username??"");
+    print("USERNAME IS ${username}");
+    var response = await officerController.getOfficerByUsername(username ?? "");
+    print("RESPONSE IS ${response}");
     officer = Officer.fromJsonToOfficer(response);
+    print("OFFICER IS ${officer}");
+    print("OFFICER ID IS : ${officer?.OfficerId}");
+    print("OFFICER NAME IS : ${officer?.officername}");
+
     var responses = await officerController.getInsuranceById(insurance_planId);
     insurancedetail = Insurancedetail.fromJsonToInsurancedetail(responses);
     var updatestatus =
@@ -62,7 +68,7 @@ class _UpdateStatusState extends State<UpdateStatus> {
     QuickAlert.show(
         context: context,
         title: "เกิดข้อผิดพลาด",
-        text: "ไม่สามารถอัพเดทข้อมูลสมาชิกได้",
+        text: "ไม่สามารถอนุมัติได้ได้",
         type: QuickAlertType.error);
   }
 
@@ -79,16 +85,16 @@ class _UpdateStatusState extends State<UpdateStatus> {
         });
   }
 
-  void showSureToUpdateStatusAlert(Petinsuranceregister petinsuranceregister) {
+  void showSureToUpdateStatusAlert(String office_id, String inusrance_regId) {
     QuickAlert.show(
         context: context,
         title: "คุณแน่ใจหรือไม่ ? ",
-        text: "คุณต้องการอัพเดทข้อมูลสมาชิกหรือไม่ ? ",
+        text: "คุณต้องการอนุมัติแผนประกันภัย ? ",
         type: QuickAlertType.warning,
-        confirmBtnText: "แก้ไข",
+        confirmBtnText: "อนุมัติ",
         onConfirmBtnTap: () async {
-          http.Response response =
-              await officerController.updateInsurancereg(petinsuranceregister);
+          http.Response response = await officerController.updateInsurancereg(
+              office_id, inusrance_regId);
 
           if (response.statusCode == 200) {
             Navigator.pop(context);
@@ -114,9 +120,10 @@ class _UpdateStatusState extends State<UpdateStatus> {
       total +=
           (insurancedetail!.accident_or_illness_compensation as num).toInt();
     }
-    if (insurancedetail?.cost_of_preventive_vaccination != null) {
-      total +=
-          int.parse(insurancedetail!.cost_of_preventive_vaccination.toString());
+    if (insurancedetail?.cost_of_preventive_vaccination == "ไม่คุ้มครอง") {
+      total += 0;
+    }else{
+      total += int.parse(insurancedetail?.cost_of_preventive_vaccination.toString() ?? "");
     }
     if (insurancedetail?.medical_expenses != null) {
       total += int.parse(insurancedetail!.medical_expenses.toString());
@@ -311,22 +318,13 @@ class _UpdateStatusState extends State<UpdateStatus> {
                       onPressed: () async {
                         Petinsuranceregister updatePetdetail =
                             Petinsuranceregister(
-                              insurancedetail: petinsuranceregister?.insurancedetail,
-                              insurance_regId: widget.insurance_regId,
-                              member: petinsuranceregister?.member,
-                              petdetail: petinsuranceregister?.petdetail,
-                              receivedByEmail: petinsuranceregister?.receivedByEmail,
-                              enddate: petinsuranceregister?.enddate,
-                              startdate: petinsuranceregister?.startdate,
-                              health_certificate: petinsuranceregister?.health_certificate,
-                              ImgPet: petinsuranceregister?.ImgPet,
-                              officer: officer,
-                              status: petinsuranceregister?.status,
-                              vaccine_documents: petinsuranceregister?.vaccine_documents
-                              
-
-                            );
-                        showSureToUpdateStatusAlert(updatePetdetail);
+                          insurance_regId: widget.insurance_regId,
+                          officer: officer,
+                        );
+                        showSureToUpdateStatusAlert(
+                            officer?.OfficerId ?? "",
+                            petinsuranceregister?.insurance_regId.toString() ??
+                                "");
                       },
                       child: Text("อนุมัติการสมัคร"))),
             ],

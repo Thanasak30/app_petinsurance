@@ -24,7 +24,7 @@ class Officer {
 
     factory Officer.fromJsonToOfficer(Map<String, dynamic> json) {
     return Officer(
-      OfficerId: json["OfficerId"],
+      OfficerId: json["officerId"],
       officername: json["officername"],
       username :Login.fromJsonToLogin(json["username"])
     );

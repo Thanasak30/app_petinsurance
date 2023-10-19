@@ -26,6 +26,7 @@ class _InsuranceREGState extends State<InsuranceREG> {
   List<Petdetail>? petdetail;
   Member? member;
   String? user;
+  String? checkpet;
 
   bool? isLoade;
   void fetcData() async {
@@ -65,6 +66,10 @@ class _InsuranceREGState extends State<InsuranceREG> {
       body: ListView.builder(
           itemCount: petdetail?.length,
           itemBuilder: (context, index) {
+            // if(petdetail?[index].status == "รอการอนุมัติ"){
+            //   checkpet = petdetail?[index].namepet;
+            // }
+            // print(checkpet);
             return Padding(
               padding:
                   const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),

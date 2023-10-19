@@ -5,7 +5,7 @@ import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:pet_insurance/controller/MemberController.dart';
 import 'package:pet_insurance/controller/OfficerController.dart';
 import 'package:pet_insurance/model/Officer.dart';
-import 'package:pet_insurance/screen/ListAllinsurance.dart';
+import 'package:pet_insurance/screen/officer/ListAllinsurance.dart';
 import 'package:pet_insurance/screen/Listinsurance.dart';
 
 import '../model/Member.dart';

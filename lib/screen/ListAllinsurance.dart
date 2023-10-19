@@ -3,10 +3,11 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:pet_insurance/controller/OfficerController.dart';
 import 'package:pet_insurance/model/Insurancedetail.dart';
-import 'package:pet_insurance/screen/EditInsurance.dart';
-import 'package:pet_insurance/screen/OfficerAddinsurance.dart';
+
 
 import 'insurance_reg2.dart';
+import 'officer/EditInsurance.dart';
+import 'officer/OfficerAddinsurance.dart';
 
 class ListAllinsurance extends StatefulWidget {
   const ListAllinsurance({super.key});

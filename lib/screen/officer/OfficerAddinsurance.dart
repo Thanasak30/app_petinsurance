@@ -5,8 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:pet_insurance/navbar/navbarofficer.dart';
 import 'package:pet_insurance/screen/View_insurance.dart';
 
-import '../controller/OfficerController.dart';
-import '../navbar/navbar.dart';
+import '../../controller/OfficerController.dart';
 import 'package:http/http.dart' as http;
 
 class Addinsurance extends StatefulWidget {

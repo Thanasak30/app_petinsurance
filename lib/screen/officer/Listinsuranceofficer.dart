@@ -5,7 +5,7 @@ import 'package:pet_insurance/model/Petinsuranceregister.dart';
 import 'package:pet_insurance/screen/officer/updateSattus.dart';
 
 import '../../controller/OfficerController.dart';
-import '../OfficerAddinsurance.dart';
+import 'OfficerAddinsurance.dart';
 
 class ListInsuranceScreen extends StatefulWidget {
   const ListInsuranceScreen({super.key});

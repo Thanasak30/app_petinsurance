@@ -319,11 +319,12 @@ class _ViewinsuranceState extends State<Viewinsurance> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30))),
                 onPressed: () {
+                  print("${plan?.insurance_planId}");
                   if (petdetail != null) {
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (BuildContext context) {
-                      return InsuranceREG();
-                    }));
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (_) => InsuranceREG(
+                              insurance_planId: plan?.insurance_planId ?? 0,
+                            )));
                   } else {
                     Navigator.of(context).pushReplacement(
                         MaterialPageRoute(builder: (BuildContext context) {

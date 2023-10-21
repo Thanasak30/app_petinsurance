@@ -5,25 +5,27 @@ import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:pet_insurance/controller/PetdetailController.dart';
 import 'package:pet_insurance/model/Petdetail.dart';
 import 'package:pet_insurance/screen/View_insurance.dart';
+import 'package:pet_insurance/screen/insurance_reg4.dart';
 
 import '../controller/MemberController.dart';
+import '../model/Insurancedetail.dart';
 import '../model/Member.dart';
 import 'insurance_reg2.dart';
 
 class InsuranceREG extends StatefulWidget {
-  const InsuranceREG({super.key});
+  final int insurance_planId;
+  const InsuranceREG({super.key, required this.insurance_planId});
 
   @override
   State<InsuranceREG> createState() => _InsuranceREGState();
 }
-
-
 
 class _InsuranceREGState extends State<InsuranceREG> {
   final PetdetailController petdetailController = PetdetailController();
   final MemberController memberController = MemberController();
 
   List<Petdetail>? petdetail;
+  Insurancedetail? insurancedetails;
   Member? member;
   String? user;
   String? checkpet;
@@ -36,7 +38,9 @@ class _InsuranceREGState extends State<InsuranceREG> {
     user = await SessionManager().get("username");
     print(user);
     member = await memberController.getMemberById(user!);
-    petdetail = await petdetailController.listAllPetdetailByMember(member!.memberId.toString());
+    petdetail = await petdetailController
+        .listShowPetdetailByMember(member!.memberId.toString());
+        print(member!.memberId.toString());
     setState(() {
       isLoade = true;
     });
@@ -80,9 +84,11 @@ class _InsuranceREGState extends State<InsuranceREG> {
                     onTap: () {
                       print("pet_id ${petdetail?[index].petId}");
                       print("Click at ${index}");
+                      print(widget.insurance_planId);
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (_) => InsuranceREG2(
-                              pet_id: (petdetail?[index].petId).toString())));
+                          builder: (_) => InsuranceREG4(
+                              pet_id: (petdetail?[index].petId).toString(),
+                              insurance_planId: widget.insurance_planId.toString())));
                     },
                   )),
             );

@@ -24,7 +24,7 @@ class _ListInsuranceScreenState extends State<ListInsuranceScreen> {
     setState(() {
       isLoade = false;
     });
-    petinsuranceregister = await officerController.listInsurance();
+    petinsuranceregister = await officerController.listInsurancereg();
     setState(() {
       isLoade = true;
     });

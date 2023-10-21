@@ -122,6 +122,16 @@ class _NavbarState extends State<Navbar> {
               }));
             },
           ),
+          ListTile(
+            leading: Icon(Icons.receipt_long),
+            title: Text("รายการกรรมธรรม์"),
+            onTap: () {
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (BuildContext context) {
+                return Viewinsurance();
+              }));
+            },
+          ),
           const Divider(),
           ListTile(
               leading: Icon(Icons.logout),

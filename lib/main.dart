@@ -9,10 +9,11 @@ import 'package:pet_insurance/screen/Register.dart';
 import 'package:pet_insurance/screen/View_insurance.dart';
 import 'package:pet_insurance/screen/insurance_reg1.dart';
 import 'package:pet_insurance/screen/insurance_reg2.dart';
-import 'package:pet_insurance/screen/insurance_reg3.dart';
 import 'package:pet_insurance/screen/insurance_reg4.dart';
 import 'package:pet_insurance/screen/insurance_reg5.dart';
 import 'package:pet_insurance/screen/login.dart';
+
+import 'screen/Payment.dart';
 
 void main() {
   runApp(const MainApp());

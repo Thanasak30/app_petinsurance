@@ -33,7 +33,7 @@ class Petdetail {
       'species': species,
       'type': type,
       'Status' : status,
-      'member': member?.fromMemberToJson(),
+      'members': member?.fromMemberToJson(),
     };
   }
 
@@ -52,6 +52,6 @@ class Petdetail {
         status: json["status"],
         member: json["member"] == null
             ? null
-            : Member.fromJsonToMember(json["member_id"]));
+            : Member.fromJsonToMember(json["memberId"]));
   }
 }

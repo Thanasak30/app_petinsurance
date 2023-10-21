@@ -69,8 +69,8 @@ class MemberController {
     return response;
   }
 
-  Future getMemberById(String username) async {
-    var url = Uri.parse(baseURL + '/member/getbyid/' + username);
+  Future getMemberById(String memberId) async {
+    var url = Uri.parse(baseURL + '/member/getbyid/' + memberId);
 
     http.Response response = await http.get(url);
 

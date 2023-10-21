@@ -22,7 +22,6 @@ import '../controller/OfficerController.dart';
 import '../model/Insurancedetail.dart';
 import '../model/Member.dart';
 import 'AddPet.dart';
-import 'insurance_reg3.dart';
 
 class InsuranceREG4 extends StatefulWidget {
   final String pet_id;
@@ -87,7 +86,6 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
   final PetdetailController petdetailController = PetdetailController();
   final InsuranceREG insuranceREG = InsuranceREG();
 
-  final String baseURL = 'https://example.com';
 
   List<Insurancedetail>? insurancedetail;
   Insurancedetail? insurancedetails;
@@ -165,7 +163,9 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
     user = await SessionManager().get("username");
     member = await memberController.getMemberById(user!);
     print("testusername ${member?.username?.username}");
+    print("testusername ${member?.memberId}");
     print(user);
+    print(widget.insurance_planId);
     setState(() {
       isLoaded = false;
     });

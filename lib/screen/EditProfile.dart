@@ -25,6 +25,9 @@ class _EditProfileState extends State<EditProfile> {
   Member? member;
   bool? isLoaded;
 
+  String? substring;
+  int? age;
+
   var dateFormat = DateFormat('dd-MM-yyyy');
   DateTime currentDate = DateTime.now();
   DateTime? birthday;
@@ -42,7 +45,7 @@ class _EditProfileState extends State<EditProfile> {
   TextEditingController AdddressTextController = TextEditingController();
   TextEditingController IDlineTextController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
-  
+
   void fetcData() async {
     user = await SessionManager().get("username");
     print(user);
@@ -58,7 +61,8 @@ class _EditProfileState extends State<EditProfile> {
       IdCardTextController.text = member?.idcard ?? "";
       AdddressTextController.text = member?.address ?? "";
       IDlineTextController.text = member?.id_line ?? "";
-      birthdayTextController.text = dateFormat.format(member?.brithday?? DateTime.now());
+      birthdayTextController.text =
+          dateFormat.format(member?.brithday ?? DateTime.now());
       isLoaded = false;
     });
   }
@@ -68,50 +72,47 @@ class _EditProfileState extends State<EditProfile> {
     super.initState();
     fetcData();
   }
-  void showSureToUpdateMemberAlert (Member uMember) {
+
+  void showSureToUpdateMemberAlert(Member uMember) {
     QuickAlert.show(
-      context: context,
-      title: "คุณแน่ใจหรือไม่ ? ",
-      text: "คุณต้องการอัพเดทข้อมูลสมาชิกหรือไม่ ? ",
-      type: QuickAlertType.warning,
-      confirmBtnText: "แก้ไข",
-      onConfirmBtnTap: () async {
-        http.Response response = await memberController.updateMember(uMember);
-                  
-        if (response.statusCode == 200){
-          Navigator.pop(context);
-          showUpdateMemberSuccessAlert();
-        }else {
-          showFailToUpdateMemberAlert();
-        }
-      },
-      cancelBtnText: "ยกเลิก",
-      showCancelBtn: true
-    );
+        context: context,
+        title: "คุณแน่ใจหรือไม่ ? ",
+        text: "คุณต้องการอัพเดทข้อมูลสมาชิกหรือไม่ ? ",
+        type: QuickAlertType.warning,
+        confirmBtnText: "แก้ไข",
+        onConfirmBtnTap: () async {
+          http.Response response = await memberController.updateMember(uMember);
+
+          if (response.statusCode == 200) {
+            Navigator.pop(context);
+            showUpdateMemberSuccessAlert();
+          } else {
+            showFailToUpdateMemberAlert();
+          }
+        },
+        cancelBtnText: "ยกเลิก",
+        showCancelBtn: true);
   }
 
-  void showFailToUpdateMemberAlert () {
+  void showFailToUpdateMemberAlert() {
     QuickAlert.show(
-      context: context, 
-      title: "เกิดข้อผิดพลาด",
-      text: "ไม่สามารถอัพเดทข้อมูลสมาชิกได้",
-      type: QuickAlertType.error
-    );
+        context: context,
+        title: "เกิดข้อผิดพลาด",
+        text: "ไม่สามารถอัพเดทข้อมูลสมาชิกได้",
+        type: QuickAlertType.error);
   }
 
-  void showUpdateMemberSuccessAlert () {
+  void showUpdateMemberSuccessAlert() {
     QuickAlert.show(
-      context: context, 
-      title: "สำเร็จ",
-      text: "อัพเดทข้อมูลสำเร็จ",
-      type: QuickAlertType.success,
-      confirmBtnText: "ตกลง",
-      onConfirmBtnTap: (){
-        Navigator.of(context).pushReplacement(       
-          MaterialPageRoute(builder: (context) => const EditProfile())
-        );
-      }
-    );
+        context: context,
+        title: "สำเร็จ",
+        text: "อัพเดทข้อมูลสำเร็จ",
+        type: QuickAlertType.success,
+        confirmBtnText: "ตกลง",
+        onConfirmBtnTap: () {
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => const EditProfile()));
+        });
   }
 
   @override
@@ -134,12 +135,12 @@ class _EditProfileState extends State<EditProfile> {
         child: Column(
           children: [
             buildfullname(size),
-            buildage(size),
             buildgender(size),
             buildnationality(size),
             buildIDcard(size),
             buildmobile(size),
             buildbirthday(size),
+            buildage(size),
             buildemail(size),
             buildaddress(size),
             buildidline(size),
@@ -149,8 +150,8 @@ class _EditProfileState extends State<EditProfile> {
       ),
     );
   }
+
   Row buildbuttom(double size) {
-   
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -161,22 +162,20 @@ class _EditProfileState extends State<EditProfile> {
                 style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30))),
-                      
                 onPressed: () async {
                   Member updateMember = Member(
-                    memberId: member?.memberId,
-                    age: AgeTextController.text,
-                    mobileno: MobilenumberTextController.text,
-                    member_email: EmailTextController.text,
-                    gender: GenderTextController.text,
-                    fullname: fullnameTextController.text,
-                    idcard: IdCardTextController.text,
-                    address: AdddressTextController.text,
-                    brithday: dateFormat.parse(birthdayTextController.text),
-                    nationality: nationalityTextController.text,
-                    id_line: IDlineTextController.text,
-                    username: member?.username
-                  );
+                      memberId: member?.memberId,
+                      age: AgeTextController.text,
+                      mobileno: MobilenumberTextController.text,
+                      member_email: EmailTextController.text,
+                      gender: GenderTextController.text,
+                      fullname: fullnameTextController.text,
+                      idcard: IdCardTextController.text,
+                      address: AdddressTextController.text,
+                      brithday: dateFormat.parse(birthdayTextController.text),
+                      nationality: nationalityTextController.text,
+                      id_line: IDlineTextController.text,
+                      username: member?.username);
                   // print(updateMember?.username?.username);
                   showSureToUpdateMemberAlert(updateMember);
                 },
@@ -268,18 +267,22 @@ class _EditProfileState extends State<EditProfile> {
           margin: EdgeInsets.only(top: 15),
           width: size * 0.6,
           child: TextFormField(
-             onTap: () async {
+            onTap: () async {
               DateTime? tempDate = await showDatePicker(
                   context: context,
                   initialDate: currentDate,
                   firstDate: DateTime(1950),
-                  lastDate: DateTime(2100));
-                  setState(() {
-                    birthday = tempDate;
-                    birthdayTextController.text = 
-                    dateFormat.format(birthday!);
-                  });
-                  print(birthday);
+                  lastDate: DateTime.now());
+              setState(() {
+                birthday = tempDate;
+                birthdayTextController.text = dateFormat.format(birthday!);
+                AgeTextController.text = age.toString();
+              });
+              print(birthday);
+              substring = birthday.toString().substring(0,4);
+              age =    int.parse( DateTime.now().year.toString())- int.parse(substring.toString());
+              print(age);
+              
             },
             readOnly: true,
             controller: birthdayTextController,
@@ -408,6 +411,7 @@ class _EditProfileState extends State<EditProfile> {
           width: size * 0.6,
           child: TextFormField(
             controller: AgeTextController,
+            enabled: false,
             decoration: InputDecoration(
               labelText: "อายุ",
               prefixIcon: Icon(Icons.account_circle_outlined),

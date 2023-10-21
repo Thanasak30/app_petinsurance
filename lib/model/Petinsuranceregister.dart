@@ -9,7 +9,6 @@ class Petinsuranceregister {
   DateTime? startdate;
   DateTime? enddate;
   bool? receivedByEmail;
-  String? id_line;
   String? vaccine_documents;
   Member? member;
   Officer? officer;
@@ -24,7 +23,6 @@ class Petinsuranceregister {
       this.startdate,
       this.enddate,
       this.receivedByEmail,
-      this.id_line,
       this.vaccine_documents,
       this.member,
       this.officer,
@@ -40,7 +38,6 @@ class Petinsuranceregister {
       'startdate': startdate,
       'enddate' : enddate,
       'receivedByEmail': receivedByEmail,
-      'id_line': id_line,
       'vaccine_documents': vaccine_documents,
       'member': member,
       'officer': officer,
@@ -56,10 +53,9 @@ class Petinsuranceregister {
       Map<String, dynamic> json) {
     return Petinsuranceregister(
         insurance_regId: json["insurance_regId"],
-        startdate: DateTime.parse(json["startdate"]),
-        enddate: DateTime.parse(json["enddate"]),
+        startdate: DateTime.parse(json["startdate"]).toLocal(),
+        enddate: DateTime.parse(json["enddate"]).toLocal(),
         receivedByEmail: json["receivedByEmail"],
-        id_line: json["id_line"],
         vaccine_documents: json["vaccine_documents"],
         member: Member.fromJsonToMember(json["memberId"]),
         officer: json["officerId"] == null

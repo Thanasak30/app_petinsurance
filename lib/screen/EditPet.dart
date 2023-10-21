@@ -67,6 +67,8 @@ class _EditPetState extends State<EditPet> {
   bool? isLoaded;
   Member? member;
   Petdetail? petdetail;
+  List<Petdetail>? petdetails;
+
   String? user;
 
   TextEditingController namePetTextController = TextEditingController();
@@ -96,8 +98,6 @@ class _EditPetState extends State<EditPet> {
   Type? Types;
   TypeSpice? typeSpices;
 
-  
-
   void setData() async {
     namePetTextController.text = petdetail?.namepet ?? "";
     agePetTextController.text = petdetail?.agepet ?? "";
@@ -110,12 +110,18 @@ class _EditPetState extends State<EditPet> {
   void petdata(String petId, String member_Id) async {
     var response = await petdetailController.getPetdetailById(petId);
     petdetail = Petdetail.fromJsonToPetdetail(response);
+    // petdetails = await petdetailController.listAllPetdetailByMember(member!.memberId.toString());
     print(response);
     print(petdetail?.type);
 
     user = await SessionManager().get("username");
     print(user);
     member = await memberController.getMemberById(user!);
+    if (member != null) {
+      member?.memberId == user!; // ให้ memberId เป็นค่าของ user ที่คุณได้จาก SessionManager
+    }
+    //     var members = await memberController.getMemberById(member_Id);
+    // member = Member.fromJsonToMember(members);
     print(member?.memberId);
 
     dropdownanimal = petdetail?.animal_species;
@@ -171,6 +177,7 @@ class _EditPetState extends State<EditPet> {
   }
 
   void showSureToUpdateMemberAlert(Petdetail uPetdetail) {
+    print("Member ${uPetdetail.member?.memberId}");
     QuickAlert.show(
         context: context,
         title: "คุณแน่ใจหรือไม่ ? ",
@@ -218,7 +225,7 @@ class _EditPetState extends State<EditPet> {
     super.initState();
     petdata(widget.pet_id, widget.member_Id);
     setState(() {
-      // isLoaded = true;
+      isLoaded = true;
     });
   }
 
@@ -314,7 +321,7 @@ class _EditPetState extends State<EditPet> {
                       type: types,
                       member: member,
                       animal_species: animal_speciesController.text =
-                          dropdownanimal,);
+                          dropdownanimal);
 
                   showSureToUpdateMemberAlert(updatePetdetail);
                 },

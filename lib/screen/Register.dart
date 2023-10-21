@@ -35,6 +35,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController AdddressTextController = TextEditingController();
   TextEditingController IDlineTextController = TextEditingController();
 
+  String? substring;
+  int? age;
+  bool checkage = false;
+
   @override
   Widget build(BuildContext context) {
     double size = MediaQuery.of(context).size.width;
@@ -63,12 +67,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
               buildusername(size),
               buildPassword(size),
               buildfullname(size),
-              buildage(size),
               buildgender(size),
               buildnationality(size),
               buildIDcard(size),
               buildmobile(size),
               buildbirthday(size),
+              buildage(size),
               buildemail(size),
               buildaddress(size),
               buildidline(size),
@@ -241,12 +245,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   context: context,
                   initialDate: currentDate,
                   firstDate: DateTime(1950),
-                  lastDate: DateTime(2100));
+                  lastDate: DateTime.now());
               setState(() {
                 birthday = tempDate;
+                substring = birthday.toString().substring(0, 4);
+                age = int.parse(DateTime.now().year.toString()) -
+                    int.parse(substring.toString());
                 birthdayTextController.text = dateFormat.format(birthday!);
+                AgeTextController.text = age.toString();
+                checkage = true;
               });
               print(birthday);
+
+              print(age);
             },
             readOnly: true,
             controller: birthdayTextController,
@@ -423,35 +434,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          margin: EdgeInsets.only(top: 15),
-          width: size * 0.6,
-          child: TextFormField(
-            controller: AgeTextController,
-            decoration: InputDecoration(
-              labelText: "อายุ",
-              prefixIcon: Icon(Icons.account_circle_outlined),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                  borderRadius: BorderRadius.circular(30)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.cyan),
-                  borderRadius: BorderRadius.circular(30)),
-            ),
-            validator: (value) {
-              // ตรวจสอบความถูกต้องของอายุ
-              bool isageValid = RegExp(r'^[0-9]{2,3}$').hasMatch(value!);
-
-              // กรณีไม่กรอกอายุ
-              if (value.isEmpty) {
-                return "กรุณากรอกอายุของคุณ";
-              }
-              //อายุไม่ถูกต้อง
-              else if (!isageValid) {
-                return "กรุณากรอกอายุให้ถูกต้อง";
-              }
-            },
-          ),
-        ),
+            margin: EdgeInsets.only(top: 15),
+            width: size * 0.6,
+            child: buildCheckage()),
       ],
     );
   }
@@ -466,7 +451,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: TextFormField(
             controller: fullnameTextController,
             decoration: InputDecoration(
-              labelText: "fullname",
+              labelText: "ชื่อ - นามสกุล ",
               prefixIcon: Icon(Icons.account_circle_outlined),
               enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
@@ -547,7 +532,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: TextFormField(
             controller: userNameTextController,
             decoration: InputDecoration(
-              labelText: "Username",
+              labelText: "ชื่อผู้ใช้",
               prefixIcon: Icon(Icons.account_circle_outlined),
               enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
@@ -590,5 +575,56 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
       ],
     );
+  }
+
+  Widget buildCheckage() {
+    if (checkage) {
+      return TextFormField(
+        controller: AgeTextController,
+        enabled: false,
+        decoration: InputDecoration(
+          labelText: "อายุ",
+          prefixIcon: Icon(Icons.account_circle_outlined),
+          enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.black),
+              borderRadius: BorderRadius.circular(30)),
+          focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.cyan),
+              borderRadius: BorderRadius.circular(30)),
+        ),
+        validator: (value) {
+          // ตรวจสอบความถูกต้องของอายุ
+          if (age! < 18) {
+            // ถ้าอายุน้อยกว่า 18 ปีให้แสดงข้อความผิดพลาด
+            // และล้างค่าวันเกิดและอายุ
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text("ข้อผิดพลาด"),
+                  content: Text("คุณต้องมีอายุมากกว่า 18 ปี"),
+                  actions: <Widget>[
+                    TextButton(
+                      child: Text("ตกลง"),
+                      onPressed: () {
+                        setState(() {
+                          birthday = null;
+                          birthdayTextController.clear();
+                          age = 0;
+                        });
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          }
+        },
+      );
+    } else {
+      return const SizedBox
+          .shrink(); // ถ้าไม่ควรแสดง QRCODE ให้ใช้ SizedBox.shrink() เพื่อซ่อน
+    }
   }
 }

@@ -1,12 +1,14 @@
 
 
+import 'dart:io';
+
 import 'package:pet_insurance/model/Petinsuranceregister.dart';
 
 class Payment {
 
   String?paymentId;
   String?reference_number;
-  String?policy_number;
+  String?imgpayment;
   double?total;
   Petinsuranceregister? insuranceregister;
   
@@ -14,7 +16,7 @@ class Payment {
   Payment({
   this.paymentId,
   this.reference_number,
-  this.policy_number,
+  this.imgpayment,
   this.total,
   this.insuranceregister,
 });
@@ -23,7 +25,7 @@ class Payment {
     return <String, dynamic>{
       'paymentId': paymentId,
       'reference_number': reference_number,
-      'policy_number': policy_number,
+      'policy_number': imgpayment,
       'total': total,
       'insuranceregister' : insuranceregister,
 
@@ -34,7 +36,7 @@ class Payment {
     return Payment(
       paymentId: json["paymentId"],
       reference_number: json["reference_number"],
-      policy_number: json["policy_number"],
+      imgpayment: json["policy_number"],
       total: json["total"],
       insuranceregister: Petinsuranceregister.fromJsonToPetregister(json["insurance_reg_id"])
     );

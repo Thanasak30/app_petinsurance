@@ -37,13 +37,16 @@ class PetdetailController {
   }
 
   Future updatePetdetail(Petdetail petdetail) async {
+
     Map<String, dynamic> data = petdetail.fromPetdetailToJson();
     print("DATA FROM CONTROLLER ${data}");
     var body = json.encode(data);
+    print(body);
 
     var url = Uri.parse(baseURL + '/petdetail/update');
 
     http.Response response = await http.put(url, headers: headers, body: body);
+
 
     return response;
   }
@@ -77,6 +80,21 @@ class PetdetailController {
 
     var body = json.encode(data);
     var url = Uri.parse(baseURL + '/petdetail/list/'+ memberId);
+
+    http.Response response = await http.post(url, headers: headers, body: body);
+
+    final utf8Body = utf8.decode(response.bodyBytes);
+    List<dynamic> jsonResponse = json.decode(utf8Body);
+    List<Petdetail> list =
+        jsonResponse.map((e) => Petdetail.fromJsonToPetdetail(e)).toList();
+    return list;
+  }
+
+  Future listShowPetdetailByMember(String memberId) async {
+    Map data = {};
+
+    var body = json.encode(data);
+    var url = Uri.parse(baseURL + '/petdetail/listshow/'+ memberId);
 
     http.Response response = await http.post(url, headers: headers, body: body);
 

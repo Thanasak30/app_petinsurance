@@ -60,7 +60,7 @@ class Member {
       fullname: json["fullname"],
       idcard: json["idcard"],
       address: json["address"],
-      brithday: DateTime.parse(json["brithday"]),
+      brithday: DateTime.parse(json["brithday"]).toLocal(),
       nationality: json["nationality"],
       id_line: json["id_line"],
       username: Login.fromJsonToLogin(json["username"])

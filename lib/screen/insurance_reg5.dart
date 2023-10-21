@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:pet_insurance/controller/OfficerController.dart';
 import 'package:pet_insurance/model/Insurancedetail.dart';
 import 'package:pet_insurance/model/Officer.dart';
+import 'package:pet_insurance/screen/Payment.dart';
 import 'package:pet_insurance/screen/View_insurance.dart';
 import 'package:pet_insurance/screen/insurance_reg4.dart';
 
@@ -19,11 +20,12 @@ class InsuranceREG5 extends StatefulWidget {
   final String pet_id;
   final String insurance_planId;
   final int insurance_regId;
-  const InsuranceREG5({
-    Key? key,
-    required this.pet_id,
-    required this.insurance_planId, required this.insurance_regId
-  }) : super(key: key);
+  const InsuranceREG5(
+      {Key? key,
+      required this.pet_id,
+      required this.insurance_planId,
+      required this.insurance_regId})
+      : super(key: key);
 
   @override
   State<InsuranceREG5> createState() => _InsuranceREG5State();
@@ -45,10 +47,9 @@ class _InsuranceREG5State extends State<InsuranceREG5> {
   final MemberController memberController = MemberController();
   final PetdetailController petdetailController = PetdetailController();
   final OfficerController officerController = OfficerController();
-   
 
-
-  void fetcData(String petId, String insurance_planId,int insurance_regId) async {
+  void fetcData(
+      String petId, String insurance_planId, int insurance_regId) async {
     user = await SessionManager().get("username");
     print(user);
     member = await memberController.getMemberById(user!);
@@ -59,8 +60,10 @@ class _InsuranceREG5State extends State<InsuranceREG5> {
     print(response);
     var responses = await officerController.getInsuranceById(insurance_planId);
     insurancedetail = Insurancedetail.fromJsonToInsurancedetail(responses);
-    var insurancereg = await officerController.getInsuranceregById(insurance_regId);
-     petinsuranceregister = Petinsuranceregister.fromJsonToPetregister(insurancereg);
+    var insurancereg =
+        await officerController.getInsuranceregById(insurance_regId);
+    petinsuranceregister =
+        Petinsuranceregister.fromJsonToPetregister(insurancereg);
     setState(() {
       isLoaded = false;
     });
@@ -69,7 +72,7 @@ class _InsuranceREG5State extends State<InsuranceREG5> {
   @override
   void initState() {
     super.initState();
-    fetcData(widget.pet_id, widget.insurance_planId,widget.insurance_regId);
+    fetcData(widget.pet_id, widget.insurance_planId, widget.insurance_regId);
   }
 
   int Total() {
@@ -92,7 +95,8 @@ class _InsuranceREG5State extends State<InsuranceREG5> {
       total += int.parse(insurancedetail!.pets_attack_outsiders.toString());
     }
     if (insurancedetail?.third_party_property_values_due_to_pets != null) {
-      total += int.parse(insurancedetail!.third_party_property_values_due_to_pets.toString());
+      total += int.parse(
+          insurancedetail!.third_party_property_values_due_to_pets.toString());
     }
     if (insurancedetail?.treatment != null) {
       total += int.parse(insurancedetail!.treatment.toString());
@@ -219,14 +223,16 @@ class _InsuranceREG5State extends State<InsuranceREG5> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Text("วันเริ่มต้นคุ้มครอง"),
-                Text("${dateFormat.format(petinsuranceregister?.startdate ?? DateTime.now())}")
+                Text(
+                    "${dateFormat.format(petinsuranceregister?.startdate ?? DateTime.now())}")
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Text("วันสิ้นสุดคุ้มครอง"),
-                Text("${dateFormat.format(petinsuranceregister?.enddate ?? DateTime.now())}")
+                Text(
+                    "${dateFormat.format(petinsuranceregister?.enddate ?? DateTime.now())}")
               ],
             ),
             Divider(),
@@ -239,7 +245,8 @@ class _InsuranceREG5State extends State<InsuranceREG5> {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text("${petinsuranceregister?.insurancedetail!.price}", style: TextStyle(fontSize: 20)),
+                Text("${petinsuranceregister?.insurancedetail!.price}",
+                    style: TextStyle(fontSize: 20)),
               ],
             ),
             Row(
@@ -253,13 +260,13 @@ class _InsuranceREG5State extends State<InsuranceREG5> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30))),
                         onPressed: () async {
-                          // Navigator.of(context).pushReplacement(
-                          //     MaterialPageRoute(
-                          //         builder: (BuildContext context) {
-                          //   return InsuranceREG5();
-                          // }));
+                          Navigator.of(context)
+                              .pushReplacement(MaterialPageRoute(
+                                  builder: (_) => Payment(
+                                        insurance_regId: widget.insurance_regId,
+                                      )));
                         },
-                        child: Text("ชำระเงิน"))),
+                        child: Text("ไปหน้าชำระเงิน"))),
               ],
             )
           ],

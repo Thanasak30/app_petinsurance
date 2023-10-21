@@ -8,6 +8,7 @@ import 'package:pet_insurance/screen/insurance_reg1.dart';
 
 import '../controller/MemberController.dart';
 import '../controller/PetdetailController.dart';
+import '../model/Insurancedetail.dart';
 import '../model/Member.dart';
 import 'Register.dart';
 
@@ -54,6 +55,8 @@ class _AddPet2State extends State<AddPet2> {
 
   String listanimal = listanimal_Spice_DOG.first;
   String listage = listAge.first;
+
+Insurancedetail? insurancedetails;
 
   var type;
   var typeSpice;
@@ -179,7 +182,7 @@ class _AddPet2State extends State<AddPet2> {
                   }
                   Navigator.of(context).pushReplacement(
                       MaterialPageRoute(builder: (BuildContext context) {
-                    return InsuranceREG();
+                    return InsuranceREG(insurance_planId: insurancedetails?.insurance_planId ?? 0,);
                   }));
                 },
                 child: Text("เพิ่มสัตว์เลี้ยง"))),

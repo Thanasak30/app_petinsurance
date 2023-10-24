@@ -1,15 +1,15 @@
 
-
 import 'dart:io';
 
 import 'package:pet_insurance/model/Petinsuranceregister.dart';
 
 class Payment {
 
-  String?paymentId;
-  String?reference_number;
-  String?imgpayment;
-  double?total;
+  String? paymentId;
+  String? reference_number;
+  String? imgpayment;
+  double? total;
+  String? status;
   Petinsuranceregister? insuranceregister;
   
 
@@ -18,6 +18,7 @@ class Payment {
   this.reference_number,
   this.imgpayment,
   this.total,
+  this.status,
   this.insuranceregister,
 });
 
@@ -25,8 +26,9 @@ class Payment {
     return <String, dynamic>{
       'paymentId': paymentId,
       'reference_number': reference_number,
-      'policy_number': imgpayment,
+      'imgpayment': imgpayment,
       'total': total,
+      'status' : status,
       'insuranceregister' : insuranceregister,
 
     };
@@ -34,11 +36,12 @@ class Payment {
 
     factory Payment.fromJsonToPayment(Map<String, dynamic> json) {
     return Payment(
-      paymentId: json["paymentId"],
+      paymentId: json["paymentId"].toString(),
       reference_number: json["reference_number"],
-      imgpayment: json["policy_number"],
+      imgpayment: json["reference_number"],
       total: json["total"],
-      insuranceregister: Petinsuranceregister.fromJsonToPetregister(json["insurance_reg_id"])
+      status: json["status"],
+      insuranceregister: Petinsuranceregister.fromJsonToPetregister(json["insurance_regId"])
     );
   }
 }

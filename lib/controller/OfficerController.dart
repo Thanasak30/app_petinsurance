@@ -107,11 +107,11 @@ class OfficerController {
     return list;
   }
 
-  Future listInsurance() async {
+  Future listInsurance(String memberId) async {
     Map data = {};
 
     var body = json.encode(data);
-    var url = Uri.parse(baseURL + '/insuranceregister/list');
+    var url = Uri.parse(baseURL + '/insuranceregister/list/' + memberId);
 
     http.Response response = await http.post(url, headers: headers, body: body);
 

@@ -10,24 +10,25 @@ import 'package:pet_insurance/model/Insurancedetail.dart';
 import 'package:pet_insurance/model/Officer.dart';
 import 'package:pet_insurance/screen/AddPet.dart';
 import 'package:pet_insurance/screen/insurance_reg1.dart';
+import 'package:pet_insurance/screen/login.dart';
 
-import '../controller/MemberController.dart';
-import '../controller/PetdetailController.dart';
-import '../model/Member.dart';
-import '../model/Petdetail.dart';
-import '../navbar/navbar.dart';
-import 'AddPet2.dart';
+import '../../controller/MemberController.dart';
+import '../../controller/PetdetailController.dart';
+import '../../model/Member.dart';
+import '../../model/Petdetail.dart';
+import '../../navbar/navbar.dart';
+import '../../navbar/navbar2.dart';
 
-class Viewinsurance extends StatefulWidget {
-  const Viewinsurance({
+class Viewinsurance2 extends StatefulWidget {
+  const Viewinsurance2({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<Viewinsurance> createState() => _ViewinsuranceState();
+  State<Viewinsurance2> createState() => _Viewinsurance2State();
 }
 
-class _ViewinsuranceState extends State<Viewinsurance> {
+class _Viewinsurance2State extends State<Viewinsurance2> {
   final petdetailController = PetdetailController();
   List<Petdetail>? petdetail;
   Member? member;
@@ -46,11 +47,6 @@ class _ViewinsuranceState extends State<Viewinsurance> {
     setState(() {
       isLoaded = false;
     });
-    user = await SessionManager().get("username");
-    print(user);
-    member = await memberController.getMemberById(user!);
-    petdetail = await petdetailController
-        .listAllPetdetailByMember(member!.memberId.toString());
     insurancedetail = await officerController.listAllInsurance();
     setState(() {
       isLoaded = true;
@@ -214,7 +210,7 @@ class _ViewinsuranceState extends State<Viewinsurance> {
 
     return SafeArea(
       child: Scaffold(
-        drawer: Navbar(),
+        drawer: Navbars(),
         appBar: AppBar(
           title: Center(child: const Text("หน้าหลัก")),
         ),
@@ -253,11 +249,11 @@ class _ViewinsuranceState extends State<Viewinsurance> {
           planColor = Colors.red; // สีสำหรับแผนที่ 2
         } else if (itemIndex == 2) {
           planColor = Colors.green; // สีสำหรับแผนที่ 3
-        }else if (itemIndex == 3) {
+        } else if (itemIndex == 3) {
           planColor = Colors.orange; // สีสำหรับแผนที่ 4
-        }else if (itemIndex == 4) {
+        } else if (itemIndex == 4) {
           planColor = Colors.pink; // สีสำหรับแผนที่ 5
-        }else if (itemIndex == 5) {
+        } else if (itemIndex == 5) {
           planColor = Colors.purple; // สีสำหรับแผนที่ 6
         }
         return Container(
@@ -276,7 +272,9 @@ class _ViewinsuranceState extends State<Viewinsurance> {
                 width: 140, // กำหนดความกว้างของ Container ที่ต้องการ
                 child: Container(
                   decoration: BoxDecoration(
-                    color: plan?.insurance_name != null ? planColor : Colors.transparent,
+                    color: plan?.insurance_name != null
+                        ? planColor
+                        : Colors.transparent,
                     borderRadius: BorderRadius.circular(180),
                   ),
                   child: Center(
@@ -331,17 +329,10 @@ class _ViewinsuranceState extends State<Viewinsurance> {
                         borderRadius: BorderRadius.circular(30))),
                 onPressed: () {
                   print("${plan?.insurance_planId}");
-                  if (petdetail != null) {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (_) => InsuranceREG(
-                              insurance_planId: plan?.insurance_planId ?? 0,
-                            )));
-                  } else {
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (BuildContext context) {
-                      return AddPet2();
-                    }));
-                  }
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (BuildContext context) {
+                    return LoginScreen();
+                  }));
                 },
                 child: Text("สมัครแผน"),
               ),

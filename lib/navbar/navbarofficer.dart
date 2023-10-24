@@ -7,6 +7,7 @@ import 'package:pet_insurance/controller/OfficerController.dart';
 import 'package:pet_insurance/model/Officer.dart';
 import 'package:pet_insurance/screen/officer/ListAllinsurance.dart';
 import 'package:pet_insurance/screen/Listinsurance.dart';
+import 'package:pet_insurance/screen/officer/OfficerAddinsurance.dart';
 
 import '../model/Member.dart';
 import '../screen/login.dart';
@@ -73,18 +74,8 @@ class _NavbarOficerState extends State<NavbarOficer> {
             onTap: () => print('Home'),
           ),
           ListTile(
-            leading: Icon(Icons.account_circle),
-            title: Text("List Applicant"),
-            onTap: () {
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (BuildContext context) {
-                return ListAllinsurance();
-              }));
-            },
-          ),
-          ListTile(
             leading: Icon(Icons.settings),
-            title: Text("ListInsurance"),
+            title: Text("List Applicant"),
             onTap: (){
               Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (BuildContext context) {
@@ -94,8 +85,13 @@ class _NavbarOficerState extends State<NavbarOficer> {
           ),
           ListTile(
             leading: Icon(Icons.settings),
-            title: Text("List All insurance"),
-            onTap: () => print('List All insurance'),
+            title: Text("Add insurance"),
+            onTap: () {
+               Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (BuildContext context) {
+                return Addinsurance();
+              }));
+            }
           ),
           const Divider(),
           ListTile(

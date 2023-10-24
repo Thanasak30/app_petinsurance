@@ -44,8 +44,8 @@ class _ListInsuranceState extends State<ListInsurance> {
     member = await memberController.getMemberById(user!);
     petdetail = await petdetailController
         .listAllPetdetailByMember(member!.memberId.toString());
-    // insurancedetail = await officerController.listAllInsurance();
-    petinsuranceregister = await officerController.listInsurance();
+    petinsuranceregister =
+        await officerController.listInsurance(member!.memberId.toString());
     setState(() {
       isLoade = true;
     });
@@ -82,17 +82,37 @@ class _ListInsuranceState extends State<ListInsurance> {
                 child: Card(
                     elevation: 10,
                     child: ListTile(
-                      leading: Text("${petdetail?[index].namepet}" +
-                          "${petdetail?[index].status}"),
+                      contentPadding: EdgeInsets.symmetric(
+                          horizontal:
+                              16), // ใส่ Padding เพื่อให้ข้อมูลอยู่ตามตำแหน่งที่ต้องการ
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("${petdetail?[index].namepet}"),
+                          Text("${petinsuranceregister?[index].status}",
+                              style: TextStyle(
+                                color: petinsuranceregister?[index].status ==
+                                        'รอการอนุมัติ'
+                                    ? Colors.red
+                                    : Colors.green,
+                              ) // เปลี่ยนสีข้อความเป็นสีแดง
+                              ),
+                        ],
+                      ),
                       onTap: () {
                         print("pet_id ${petdetail?[index].petId}");
                         print("Click at ${index}");
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (_) => InsuranceREG5(
-                                  pet_id: (petdetail?[index].petId).toString(),
-                                  insurance_planId: (petinsuranceregister![index].insurancedetail!.insurance_planId.toString()), 
-                                  insurance_regId: (petinsuranceregister![index].insurance_regId?? 0),
-                                )));
+                          builder: (_) => InsuranceREG5(
+                            pet_id: (petdetail?[index].petId).toString(),
+                            insurance_planId: (petinsuranceregister![index]
+                                .insurancedetail!
+                                .insurance_planId ?? 0),
+                            insurance_regId:
+                                (petinsuranceregister![index].insurance_regId ??
+                                    0),
+                          ),
+                        ));
                       },
                     )),
               );

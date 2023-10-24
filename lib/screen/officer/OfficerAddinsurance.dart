@@ -4,9 +4,12 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:intl/intl.dart';
 import 'package:pet_insurance/navbar/navbarofficer.dart';
 import 'package:pet_insurance/screen/View_insurance.dart';
+import 'package:pet_insurance/screen/officer/ListAllinsurance.dart';
 
 import '../../controller/OfficerController.dart';
 import 'package:http/http.dart' as http;
+
+import 'ListAllinsurance2.dart';
 
 class Addinsurance extends StatefulWidget {
   const Addinsurance({super.key});
@@ -42,6 +45,15 @@ class _AddinsuranceState extends State<Addinsurance> {
       drawer: NavbarOficer(),
       appBar: AppBar(
         title: const Text("เลือกสัตว์เลี้ยงที่ต้องการทำประกัน"),
+        leading: BackButton(
+          color: Colors.white,
+          onPressed: () {
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (BuildContext context) {
+              return ListAllinsurance2();
+            }));
+          },
+        ),
       ),
       body: Form(
         child: SingleChildScrollView(

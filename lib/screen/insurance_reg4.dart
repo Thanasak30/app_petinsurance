@@ -25,7 +25,7 @@ import 'AddPet.dart';
 
 class InsuranceREG4 extends StatefulWidget {
   final String pet_id;
-  final String insurance_planId;
+  final int insurance_planId;
   const InsuranceREG4(
       {Key? key, required this.pet_id, required this.insurance_planId})
       : super(key: key);
@@ -197,13 +197,10 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
           leading: BackButton(
             color: Colors.white,
             onPressed: () {
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (BuildContext context) {
-                  return InsuranceREG2(
-                    pet_id: petdetail!.petId.toString(),
-                  );
-                },
-              ));
+               Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (BuildContext context) {
+              return Viewinsurance();
+            }));
             },
           ),
         ),
@@ -408,7 +405,7 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
                   print(widget.pet_id);
                   if (formKey.currentState!.validate()) {
                   http.Response response = await insuranceREG.addInsuranceReg(
-                    widget.insurance_planId,
+                    widget.insurance_planId.toString(),
                     member!.memberId.toString(),
                     typesreceived.toString(),
                     dateFormat.format(currentDate),

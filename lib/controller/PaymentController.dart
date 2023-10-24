@@ -7,16 +7,16 @@ import '../constant/constant_value.dart';
 class PaymentController {
   Future addimgPayment(
     String insurance_regId,
-    // String total,
-    // String policy_nu[mber,
+    String total,
+    String reference_number,
     File imgpayment,
   
   ) async {
     var data = {
       "imgpayment" : imgpayment,
       "insurance_regId": insurance_regId,
-      // "total": total,
-      // "policy_number": policy_number,
+      "total": total,
+      "reference_number": reference_number,
     };
     // อัปโหลดไฟล์และรับพาธของไฟล์
     var pathimgpayment = await uploadImages(imgpayment);
@@ -61,5 +61,16 @@ class PaymentController {
     } else {
       throw Exception('Image file is null');
     }
+  }
+
+  Future getReferentById(String? insurance_regId) async {
+    var url = Uri.parse(baseURL + '/payment/getbyinsid/' + insurance_regId.toString());
+
+    http.Response response = await http.get(url);
+
+    final utf8Body = utf8.decode(response.bodyBytes);
+    var jsonResponse = json.decode(utf8Body);
+
+    return jsonResponse;
   }
 }

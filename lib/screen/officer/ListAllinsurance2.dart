@@ -1,24 +1,25 @@
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:pet_insurance/controller/OfficerController.dart';
 import 'package:pet_insurance/model/Insurancedetail.dart';
-import 'package:pet_insurance/screen/officer/ListAllinsurance2.dart';
 
 
+import '../../navbar/navbarofficer.dart';
 import '../insurance_reg2.dart';
 import 'EditInsurance.dart';
 import 'OfficerAddinsurance.dart';
 
-class ListAllinsurance extends StatefulWidget {
-  const ListAllinsurance({super.key});
+class ListAllinsurance2 extends StatefulWidget {
+  const ListAllinsurance2({super.key});
 
   @override
-  State<ListAllinsurance> createState() => _ListAllinsuranceState();
+  State<ListAllinsurance2> createState() => _ListAllinsurance2State();
 }
 
-class _ListAllinsuranceState extends State<ListAllinsurance> {
-
+class _ListAllinsurance2State extends State<ListAllinsurance2> {
   final OfficerController officerController = OfficerController();
 
   List<Insurancedetail>? insurancedetail;
@@ -43,17 +44,9 @@ class _ListAllinsuranceState extends State<ListAllinsurance> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: NavbarOficer(),
       appBar: AppBar(
         title: Text("รายการแผนประกัน"),
-        leading: BackButton(
-          color: Colors.white,
-          onPressed: () {
-            Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (BuildContext context) {
-              return ListAllinsurance2();
-            }));
-          },
-        ),
       ),
       body: ListView.builder(
           itemCount: insurancedetail?.length,
@@ -66,11 +59,14 @@ class _ListAllinsuranceState extends State<ListAllinsurance> {
                   child: ListTile(
                     leading: Text("${insurancedetail?[index].insurance_name}"),
                     onTap: () {
-                      print("insurance_planId ${insurancedetail?[index].insurance_planId}");
+                      print(
+                          "insurance_planId ${insurancedetail?[index].insurance_planId}");
                       print("Click at ${index}");
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
                           builder: (_) => EditInsurance(
-                              insurance_planId: (insurancedetail?[index].insurance_planId).toString())));
+                              insurance_planId:
+                                  (insurancedetail?[index].insurance_planId)
+                                      .toString())));
                     },
                   )),
             );

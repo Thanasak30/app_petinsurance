@@ -1,5 +1,6 @@
 import 'package:pet_insurance/model/Insurancedetail.dart';
 import 'package:pet_insurance/model/Officer.dart';
+import 'package:pet_insurance/model/Payment.dart';
 
 import 'Member.dart';
 import 'Petdetail.dart';
@@ -17,6 +18,7 @@ class Petinsuranceregister {
   String? ImgPet;
   String? status;
   Petdetail? petdetail;
+  // Payment? payment;
 
   Petinsuranceregister(
       {this.insurance_regId,
@@ -30,7 +32,9 @@ class Petinsuranceregister {
       this.health_certificate,
       this.ImgPet,
       this.status,
-      this.petdetail});
+      this.petdetail,
+      // this.payment
+      });
 
   Map<String, dynamic> fromPetregisterToJson() {
     return <String, dynamic>{
@@ -45,7 +49,8 @@ class Petinsuranceregister {
       'health_certificate': health_certificate,
       'ImgPet': ImgPet,
       'status': status,
-      'petdetail': petdetail
+      'petid': petdetail,
+      // 'paymentId' : payment
     };
   }
 
@@ -67,5 +72,6 @@ class Petinsuranceregister {
         ImgPet: json["ImgPet"],
         status: json["status"],
         petdetail: Petdetail.fromJsonToPetdetail(json["petid"]));
+        
   }
 }

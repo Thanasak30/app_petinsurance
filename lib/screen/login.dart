@@ -15,6 +15,8 @@ import 'Register.dart';
 // import 'Veiw_insurance.dart';
 import 'package:http/http.dart' as http;
 
+import 'officer/ListAllinsurance.dart';
+import 'officer/ListAllinsurance2.dart';
 import 'officer/OfficerAddinsurance.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -106,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             "username", jsonResponse["username"].toString());
                         Navigator.of(context).pushReplacement(
                             MaterialPageRoute(builder: (BuildContext context) {
-                          return Addinsurance();
+                          return ListAllinsurance2();
                         }));
                       }
                     }

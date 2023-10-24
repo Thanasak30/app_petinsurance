@@ -88,7 +88,7 @@ class _InsuranceREGState extends State<InsuranceREG> {
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
                           builder: (_) => InsuranceREG4(
                               pet_id: (petdetail?[index].petId).toString(),
-                              insurance_planId: widget.insurance_planId.toString())));
+                              insurance_planId: widget.insurance_planId)));
                     },
                   )),
             );

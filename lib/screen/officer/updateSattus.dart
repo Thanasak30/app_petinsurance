@@ -14,6 +14,7 @@ import '../../controller/OfficerController.dart';
 import '../../model/Petinsuranceregister.dart';
 import 'package:http/http.dart' as http;
 
+import 'ListAllinsurance2.dart';
 import 'OfficerAddinsurance.dart';
 
 class UpdateStatus extends StatefulWidget {
@@ -35,6 +36,8 @@ class _UpdateStatusState extends State<UpdateStatus> {
   Insurancedetail? insurancedetail;
   String? username;
   Officer? officer;
+
+   String? substring;
 
   var dateFormat = DateFormat('dd-MM-yyyy');
   DateTime currentDate = DateTime.now();
@@ -61,6 +64,9 @@ class _UpdateStatusState extends State<UpdateStatus> {
     petinsuranceregister =
         Petinsuranceregister.fromJsonToPetregister(updatestatus);
     setState(() {
+      substring = insurancedetail?.price
+          .toString()
+          .substring(0, insurancedetail!.price.toString().indexOf('.'));
       isLoade = true;
     });
   }
@@ -116,196 +122,153 @@ class _UpdateStatusState extends State<UpdateStatus> {
 
   int Total() {
     int total = 0;
-    if (insurancedetail?.accident_or_illness_compensation != null &&
-        insurancedetail!.accident_or_illness_compensation is num) {
-      total +=
-          (insurancedetail!.accident_or_illness_compensation as num).toInt();
-    }
-    if (insurancedetail?.cost_of_preventive_vaccination == "ไม่คุ้มครอง") {
-      total += 0;
-    }else{
-      total += int.parse(insurancedetail?.cost_of_preventive_vaccination.toString() ?? "");
-    }
-    if (insurancedetail?.medical_expenses != null) {
-      total += int.parse(insurancedetail!.medical_expenses.toString());
-    }
-    if (insurancedetail?.pet_funeral_costs != null) {
-      total += int.parse(insurancedetail!.pet_funeral_costs.toString());
-    }
-    if (insurancedetail?.pets_attack_outsiders != null) {
-      total += int.parse(insurancedetail!.pets_attack_outsiders.toString());
-    }
-    if (insurancedetail?.third_party_property_values_due_to_pets != null) {
-      total += int.parse(
-          insurancedetail!.third_party_property_values_due_to_pets.toString());
-    }
-    if (insurancedetail?.treatment != null) {
-      total += int.parse(insurancedetail!.treatment.toString());
-    }
+
+    total +=
+        parseAndAddToTotal(insurancedetail?.accident_or_illness_compensation);
+    total +=
+        parseAndAddToTotal(insurancedetail?.cost_of_preventive_vaccination);
+    total += parseAndAddToTotal(insurancedetail?.medical_expenses);
+    total += parseAndAddToTotal(insurancedetail?.pet_funeral_costs);
+    total += parseAndAddToTotal(insurancedetail?.pets_attack_outsiders);
+    total += parseAndAddToTotal(
+        insurancedetail?.third_party_property_values_due_to_pets);
+    total += parseAndAddToTotal(insurancedetail?.treatment);
+
     return total;
+  }
+
+  int parseAndAddToTotal(String? value) {
+    if (value != null && value != "ไม่คุ้มครอง") {
+      int parsedValue = int.tryParse(value) ?? 0;
+      return parsedValue;
+    }
+    return 0;
   }
 
   @override
   Widget build(BuildContext context) {
     double size = MediaQuery.of(context).size.width;
-    return SafeArea(
-        child: Scaffold(
+    return Scaffold(
       appBar: AppBar(
-        title: Text("รายการที่ทำประกัน"),
+        title: Text("สรุปความคุ้มครองและชำระเงิน"),
         leading: BackButton(
           color: Colors.white,
           onPressed: () {
             Navigator.of(context).pushReplacement(
                 MaterialPageRoute(builder: (BuildContext context) {
-              return Addinsurance();
+              return ListInsuranceScreen();
             }));
           },
         ),
       ),
-      body: Form(
-          child: SingleChildScrollView(
-        child: Column(children: [
-          Text(
-            "ข้อมูลผู้เอาประกัน",
-            style: TextStyle(fontSize: 20),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text("ชื่อผู้เอาประกันภัย"),
-              Text("${petinsuranceregister?.member?.fullname}")
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text("วัน/เดือน/ปีเกิด"),
-              Text(
-                  "${dateFormat.format(petinsuranceregister?.member?.brithday ?? DateTime.now())}")
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text("เลขบัตรประชาชน"),
-              Text("${petinsuranceregister?.member?.idcard}")
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text("ที่อยู่ผู้เอาประกัน"),
-              Text("${petinsuranceregister?.member?.address}")
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text("เบอร์โทรศัพท์"),
-              Text("${petinsuranceregister?.member?.mobileno}")
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text("ที่อยู่จัดส่งใบเสร็จ"),
-              Text("${petinsuranceregister?.member?.member_email}")
-            ],
-          ),
-          Divider(),
-          Text(
-            "อีเมลสำหรับจัดส่งเอกสาร",
-            style: TextStyle(fontSize: 20),
-          ),
-          Text("${petinsuranceregister?.member?.member_email}"),
-          Divider(),
-          Text(
-            "รายละเอียดสัตว์เลี้ยง",
-            style: TextStyle(fontSize: 20),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text("ชื่อสัตว์เลี้ยง"),
-              Text("${petinsuranceregister?.petdetail?.agepet}")
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text("สายพันธุ์"),
-              Text("${petinsuranceregister?.petdetail?.animal_species}")
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text("พันธุ์สัตว์"),
-              Text("${petinsuranceregister?.petdetail?.species}")
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text("อายุ"),
-              Text("${petinsuranceregister?.petdetail?.agepet}")
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text("เพศ"),
-              Text("${petinsuranceregister?.petdetail?.gender}")
-            ],
-          ),
-          Divider(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text("รายละเอียดกรมธรรม์", style: TextStyle(fontSize: 20))
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text("แผนประกันภัย"),
-              Text("${insurancedetail?.insurance_name}")
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [Text("ทุนประกันภัย"), Text("${Total()}")],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text("วันเริ่มต้นคุ้มครอง"),
-              Text(
-                  "${dateFormat.format(petinsuranceregister?.startdate ?? DateTime.now())}")
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text("วันสิ้นสุดคุ้มครอง"),
-              Text(
-                  "${dateFormat.format(petinsuranceregister?.enddate ?? DateTime.now())}")
-            ],
-          ),
-          Divider(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text("ราคาเบี้ยประกันรวม", style: TextStyle(fontSize: 20)),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text("${petinsuranceregister?.insurancedetail!.price}",
-                  style: TextStyle(fontSize: 20)),
-            ],
-          ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ListView(
+          children: [
+            // เริ่มต้นส่วนข้อมูลผู้เอาประกัน
+            Card(
+              child: Container(
+                padding: EdgeInsets.all(16),
+                color: Colors.grey[300],
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "ข้อมูลผู้เอาประกัน",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 10),
+                    Text("ชื่อผู้เอาประกันภัย: ${petinsuranceregister?.member?.fullname ?? ''}"),
+                    Text(
+                        "วัน/เดือน/ปีเกิด: ${dateFormat.format(petinsuranceregister?.member?.brithday ?? DateTime.now())}"),
+                    Text("เลขบัตรประชาชน: ${petinsuranceregister?.member?.idcard ?? ''}"),
+                    Text("ที่อยู่ผู้เอาประกัน: ${petinsuranceregister?.member?.address ?? ''}"),
+                    Text("เบอร์โทรศัพท์: ${petinsuranceregister?.member?.mobileno ?? ''}"),
+                  ],
+                ),
+              ),
+            ),
+            // ส่วนข้อมูลผู้เอาประกันจบที่นี่
+
+            // เริ่มต้นส่วนข้อมูลสัตว์เลี้ยง
+            Card(
+              child: Container(
+                padding: EdgeInsets.all(16),
+                color: Colors.grey[300],
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "รายละเอียดสัตว์เลี้ยง",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 10),
+                    Text("ชื่อสัตว์เลี้ยง: ${petinsuranceregister?.petdetail?.namepet ?? ''}"),
+                    Text("อายุ: ${petinsuranceregister?.petdetail?.agepet ?? ''}"),
+                    Text("สายพันธุ์: ${petinsuranceregister?.petdetail?.animal_species ?? ''}"),
+                    Text("เพศ: ${petinsuranceregister?.petdetail?.gender ?? ''}"),
+                  ],
+                ),
+              ),
+            ),
+            // ส่วนข้อมูลสัตว์เลี้ยงจบที่นี่
+
+            // เริ่มต้นส่วนข้อมูลกรมธรรม์
+            Card(
+                child: Container(
+                  padding: EdgeInsets.all(16),
+                  color: Colors.grey[300],
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "รายละเอียดกรมธรรม์",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                          "แผนประกันภัย: ${insurancedetail?.insurance_name ?? ''}"),
+                      Text("ทุนประกันภัย: ${Total()}"),
+                      Text(
+                          "วันเริ่มต้นคุ้มครอง: ${dateFormat.format(petinsuranceregister?.startdate ?? DateTime.now())}"),
+                      Text(
+                          "วันสิ้นสุดคุ้มครอง: ${dateFormat.format(petinsuranceregister?.enddate ?? DateTime.now())}"),
+                      // Text("เลขกรรมธรรม์: ${payment?.reference_number}"),
+                    ],
+                  ),
+                ),
+              
+            ),
+            // ส่วนข้อมูลกรมธรรม์จบที่นี่
+
+            // ราคาเบี้ยประกันรวม
+            Card(
+              child: Container(
+                padding: EdgeInsets.all(16),
+                color: Colors.blue,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "ราคาเบี้ยประกันรวม",
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      "$substring",
+                      style: TextStyle(fontSize: 20, color: Colors.white),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            // ส่วนของราคาเบี้ยประกันรวมจบที่นี่
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -331,7 +294,6 @@ class _UpdateStatusState extends State<UpdateStatus> {
             ],
           )
         ]),
-      )),
-    ));
+      ));
   }
 }

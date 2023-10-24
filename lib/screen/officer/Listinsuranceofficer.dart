@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:pet_insurance/model/Petinsuranceregister.dart';
+import 'package:pet_insurance/screen/officer/ListAllinsurance2.dart';
 import 'package:pet_insurance/screen/officer/updateSattus.dart';
 
 import '../../controller/OfficerController.dart';
@@ -46,7 +47,7 @@ class _ListInsuranceScreenState extends State<ListInsuranceScreen> {
           onPressed: () {
             Navigator.of(context).pushReplacement(
                 MaterialPageRoute(builder: (BuildContext context) {
-              return Addinsurance();
+              return ListAllinsurance2();
             }));
           },
         ),

@@ -61,42 +61,43 @@ class _ListInsuranceState extends State<ListInsurance> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: Text("รายการที่ทำประกัน"),
-          leading: BackButton(
-            color: Colors.white,
-            onPressed: () {
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (BuildContext context) {
-                return Viewinsurance();
-              }));
-            },
+          appBar: AppBar(
+            title: Text("รายการที่ทำประกัน"),
+            leading: BackButton(
+              color: Colors.white,
+              onPressed: () {
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (BuildContext context) {
+                  return Viewinsurance();
+                }));
+              },
+            ),
           ),
-        ),
-        body: ListView.builder(
-            itemCount: petdetail?.length,
+          body: ListView.builder(
+            itemCount: petdetail?.length ??
+                0, // กำหนดให้ itemCount เป็น 0 ถ้า petdetail เป็น null
             itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.only(
-                    left: 10, right: 10, top: 5, bottom: 5),
-                child: Card(
+
+                return Padding(
+                  padding: const EdgeInsets.only(
+                      left: 10, right: 10, top: 5, bottom: 5),
+                  child: Card(
                     elevation: 10,
                     child: ListTile(
-                      contentPadding: EdgeInsets.symmetric(
-                          horizontal:
-                              16), // ใส่ Padding เพื่อให้ข้อมูลอยู่ตามตำแหน่งที่ต้องการ
+                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
                       title: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text("${petdetail?[index].namepet}"),
-                          Text("${petinsuranceregister?[index].status}",
-                              style: TextStyle(
-                                color: petinsuranceregister?[index].status ==
-                                        'รอการอนุมัติ'
-                                    ? Colors.red
-                                    : Colors.green,
-                              ) // เปลี่ยนสีข้อความเป็นสีแดง
-                              ),
+                          Text(
+                            "${petinsuranceregister?[index].status}",
+                            style: TextStyle(
+                              color: petinsuranceregister?[index].status !=
+                                      'อนุมัติ'
+                                  ? Colors.red
+                                  : Colors.green,
+                            ),
+                          ),
                         ],
                       ),
                       onTap: () {
@@ -105,19 +106,20 @@ class _ListInsuranceState extends State<ListInsurance> {
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                           builder: (_) => InsuranceREG5(
                             pet_id: (petdetail?[index].petId).toString(),
-                            insurance_planId: (petinsuranceregister![index]
-                                .insurancedetail!
-                                .insurance_planId ?? 0),
+                            insurance_planId:
+                                (petinsuranceregister?[index].insurancedetail?.insurance_planId ??
+                                    0),
                             insurance_regId:
-                                (petinsuranceregister![index].insurance_regId ??
+                                (petinsuranceregister?[index].insurance_regId ??
                                     0),
                           ),
                         ));
                       },
-                    )),
-              );
-            }),
-      ),
+                    ),
+                  ),
+                );
+            },
+          )),
     );
   }
 }

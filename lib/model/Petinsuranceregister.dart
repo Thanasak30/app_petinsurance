@@ -69,7 +69,7 @@ class Petinsuranceregister {
         insurancedetail:
             Insurancedetail.fromJsonToInsurancedetail(json["insurance_planId"]),
         health_certificate: json["health_certificate"],
-        ImgPet: json["ImgPet"],
+        ImgPet: json["imgPet"],
         status: json["status"],
         petdetail: Petdetail.fromJsonToPetdetail(json["petid"]));
         

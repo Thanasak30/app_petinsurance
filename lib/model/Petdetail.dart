@@ -3,7 +3,6 @@ import "package:pet_insurance/model/Member.dart";
 class Petdetail {
   int? petId;
   String? agepet;
-  String? animal_species;
   String? gender;
   String? namepet;
   String? species;
@@ -14,7 +13,6 @@ class Petdetail {
   Petdetail({
     this.petId,
     this.agepet,
-    this.animal_species,
     this.gender,
     this.namepet,
     this.species,
@@ -27,7 +25,6 @@ class Petdetail {
     return <String, dynamic>{
       'petId': petId,
       'agepet': agepet,
-      'animal_species': animal_species,
       'gender': gender,
       'namepet': namepet,
       'species': species,
@@ -42,10 +39,7 @@ class Petdetail {
 
         petId: json["petId"],
         agepet: json["agepet"],
-        animal_species: json["animal_species"],
-
         gender: json["gender"],
-        
         namepet: json["namepet"],
         species: json["species"],
         type: json["type"],

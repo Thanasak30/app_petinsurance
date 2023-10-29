@@ -6,7 +6,6 @@ import 'package:pet_insurance/model/Insurancedetail.dart';
 import 'package:pet_insurance/screen/officer/ListAllinsurance2.dart';
 
 
-import '../insurance_reg2.dart';
 import 'EditInsurance.dart';
 import 'OfficerAddinsurance.dart';
 
@@ -70,7 +69,7 @@ class _ListAllinsuranceState extends State<ListAllinsurance> {
                       print("Click at ${index}");
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
                           builder: (_) => EditInsurance(
-                              insurance_planId: (insurancedetail?[index].insurance_planId).toString())));
+                              insurance_planId: (insurancedetail?[index].insurance_planId) ?? 0)));
                     },
                   )),
             );

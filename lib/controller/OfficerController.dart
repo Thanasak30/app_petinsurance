@@ -61,9 +61,9 @@ class OfficerController {
     return list;
   }
 
-  Future getInsuranceById(String insurance_planId) async {
+  Future getInsuranceById(int insurance_planId) async {
     var url =
-        Uri.parse(baseURL + '/insurancedetail/getbyid/' + insurance_planId);
+        Uri.parse(baseURL + '/insurancedetail/getbyid/' + insurance_planId.toString());
 
     http.Response response = await http.get(url);
 
@@ -139,6 +139,22 @@ class OfficerController {
     return list;
   }
 
+   Future getlistInsurancereg() async {
+    Map data = {};
+
+    var body = json.encode(data);
+    var url = Uri.parse(baseURL + '/insuranceregister/list');
+
+    http.Response response = await http.post(url, headers: headers, body: body);
+
+    final utf8Body = utf8.decode(response.bodyBytes);
+    List<dynamic> jsonResponse = json.decode(utf8Body);
+    List<Petinsuranceregister> list = jsonResponse
+        .map((e) => Petinsuranceregister.fromJsonToPetregister(e))
+        .toList();
+    return list;
+  }
+
   Future getInsuranceregById(int insurance_regId) async {
     var url = Uri.parse(
         baseURL + '/insuranceregister/getbyid/' + insurance_regId.toString());
@@ -154,6 +170,17 @@ class OfficerController {
   Future updateInsurancereg(String office_id,String inusrance_regId) async {
 
     var url = Uri.parse(baseURL + '/insuranceregister/update/'+ office_id + '/' + inusrance_regId);
+    print("URL IS ${url}");
+    http.Response response = await http.put(url, headers: headers);
+
+    print("RES CODE IS : ${response.statusCode}");
+
+    return response;
+  }
+
+  Future updateFailInsurancereg(String office_id,String inusrance_regId) async {
+
+    var url = Uri.parse(baseURL + '/insuranceregister/updatefal/'+ office_id + '/' + inusrance_regId);
     print("URL IS ${url}");
     http.Response response = await http.put(url, headers: headers);
 

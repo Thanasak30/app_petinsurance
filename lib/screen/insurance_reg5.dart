@@ -7,6 +7,7 @@ import 'package:pet_insurance/controller/OfficerController.dart';
 import 'package:pet_insurance/controller/PaymentController.dart';
 import 'package:pet_insurance/model/Insurancedetail.dart';
 import 'package:pet_insurance/model/Officer.dart';
+import 'package:pet_insurance/screen/Listinsurance.dart';
 import 'package:pet_insurance/screen/View_insurance.dart';
 import 'package:pet_insurance/screen/insurance_reg4.dart';
 
@@ -63,20 +64,31 @@ class _InsuranceREG5State extends State<InsuranceREG5> {
     var response = await petdetailController.getPetdetailById(petId);
     petdetail = Petdetail.fromJsonToPetdetail(response);
     print(response);
+
+  print("TEST IS ${insurance_planId}" );
     var responses =
-        await officerController.getInsuranceById(insurance_planId.toString());
+        await officerController.getInsuranceById(insurance_planId);
     insurancedetail = Insurancedetail.fromJsonToInsurancedetail(responses);
+    print(" test ${insurancedetail?.insurance_planId}");
+
     var insurancereg =
         await officerController.getInsuranceregById(insurance_regId);
     petinsuranceregister =
         Petinsuranceregister.fromJsonToPetregister(insurancereg);
-    var payments =
-        await paymentController.getReferentById(insurance_regId.toString());
-    payment = Payment.fromJsonToPayment(payments);
+    substring = petinsuranceregister?.insurancedetail?.price
+        .toString()
+        .substring(
+            0,
+            petinsuranceregister?.insurancedetail?.price
+                .toString()
+                .indexOf('.'));
+
+    if (petinsuranceregister?.status == "อนุมัติ") {
+      var payments =
+          await paymentController.getReferentById(insurance_regId.toString());
+      payment = Payment.fromJsonToPayment(payments);
+    }
     setState(() {
-      substring = insurancedetail?.price
-          .toString()
-          .substring(0, insurancedetail!.price.toString().indexOf('.'));
       isLoaded = false;
     });
   }
@@ -123,7 +135,7 @@ class _InsuranceREG5State extends State<InsuranceREG5> {
           onPressed: () {
             Navigator.of(context).pushReplacement(
                 MaterialPageRoute(builder: (BuildContext context) {
-              return Viewinsurance();
+              return ListInsurance();
             }));
           },
         ),
@@ -174,7 +186,6 @@ class _InsuranceREG5State extends State<InsuranceREG5> {
                     SizedBox(height: 10),
                     Text("ชื่อสัตว์เลี้ยง: ${petdetail?.namepet ?? ''}"),
                     Text("อายุ: ${petdetail?.agepet ?? ''}"),
-                    Text("สายพันธุ์: ${petdetail?.animal_species ?? ''}"),
                     Text("เพศ: ${petdetail?.gender ?? ''}"),
                   ],
                 ),
@@ -184,8 +195,6 @@ class _InsuranceREG5State extends State<InsuranceREG5> {
 
             // เริ่มต้นส่วนข้อมูลกรมธรรม์
             Card(
-              child: Visibility(
-                visible: payment?.status == "ชำระเงินแล้ว",
                 child: Container(
                   padding: EdgeInsets.all(16),
                   color: Colors.grey[300],
@@ -210,7 +219,6 @@ class _InsuranceREG5State extends State<InsuranceREG5> {
                   ),
                 ),
               ),
-            ),
             // ส่วนข้อมูลกรมธรรม์จบที่นี่
 
             // ราคาเบี้ยประกันรวม
@@ -230,7 +238,7 @@ class _InsuranceREG5State extends State<InsuranceREG5> {
                     ),
                     SizedBox(height: 10),
                     Text(
-                      "$substring",
+                      "${substring}",
                       style: TextStyle(fontSize: 20, color: Colors.white),
                     ),
                   ],
@@ -241,7 +249,7 @@ class _InsuranceREG5State extends State<InsuranceREG5> {
 
             // ปุ่มไปหน้าชำระเงิน
             Visibility(
-              visible: petinsuranceregister?.status == "อนุมัติ",
+              visible: petinsuranceregister?.status == "รอการอนุมัติ",
               child: Container(
                 margin: EdgeInsets.symmetric(vertical: 16),
                 width: size * 0.6,

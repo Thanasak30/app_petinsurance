@@ -3,12 +3,16 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:http/http.dart' as http;
+import 'package:pet_insurance/model/Petdetail.dart';
 import 'package:pet_insurance/screen/View_insurance.dart';
 import 'package:pet_insurance/screen/insurance_reg1.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 import '../controller/MemberController.dart';
 import '../controller/PetdetailController.dart';
 import '../model/Member.dart';
+import 'ListPet.dart';
 import 'Register.dart';
 
 class AddPet extends StatefulWidget {
@@ -19,11 +23,20 @@ class AddPet extends StatefulWidget {
 }
 
 enum Type { Dog, Cat }
-enum TypeGender{male,female}
 
-enum TypeSpice { purebred, mixedbreed }
+enum TypeGender { male, female }
 
 const List<String> listanimal_Spice_DOG = <String>[
+  'เชาเชา',
+  'อิงลิชบูลด็อก',
+  'ซาลูกิ',
+  'ไจแอนท์ชเนาเซอร์',
+  'อัฟกัน',
+  'อาคิตะ',
+  'ทิเบตัน มาสทิฟ'
+];
+
+const List<String> listanimal_Spice_Cat = <String>[
   'เชาเชา',
   'อิงลิชบูลด็อก',
   'ซาลูกิ',
@@ -64,6 +77,8 @@ class _AddPetState extends State<AddPet> {
   String? species;
   String? typegenders;
 
+  Petdetail? petdetail;
+
   final PetdetailController petdetailController = PetdetailController();
   final MemberController memberController = MemberController();
 
@@ -81,6 +96,56 @@ class _AddPetState extends State<AddPet> {
   void initState() {
     super.initState();
     fetcData();
+  }
+
+  void showSureToAddPetAlert(String memberId, String agepet, String gender,
+      String namepet, String species, String type) {
+    QuickAlert.show(
+        context: context,
+        title: "คุณแน่ใจหรือไม่ ? ",
+        text: "คุณต้องการเพิ่มสัตว์เลี้ยงหรือไม่ ? ",
+        type: QuickAlertType.warning,
+        confirmBtnText: "ใช่",
+        onConfirmBtnTap: () async {
+          http.Response response = await petdetailController.addPet(
+            memberId,
+            agepet,
+            gender,
+            namepet,
+            species,
+            type,
+          );
+
+          if (response.statusCode == 200) {
+            Navigator.pop(context);
+            showUpAddPetSuccessAlert();
+          } else {
+            showFailToAddPetAlert();
+          }
+        },
+        cancelBtnText: "ยกเลิก",
+        showCancelBtn: true);
+  }
+
+  void showFailToAddPetAlert() {
+    QuickAlert.show(
+        context: context,
+        title: "เกิดข้อผิดพลาด",
+        text: "ไม่สามารถเพิ่มสัตว์เลี้ยงได้",
+        type: QuickAlertType.error);
+  }
+
+  void showUpAddPetSuccessAlert() {
+    QuickAlert.show(
+        context: context,
+        title: "สำเร็จ",
+        text: "เพิ่มสัตว์เลี้ยงสำเร็จ",
+        type: QuickAlertType.success,
+        confirmBtnText: "ตกลง",
+        onConfirmBtnTap: () {
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => const ListPet()));
+        });
   }
 
   @override
@@ -106,8 +171,6 @@ class _AddPetState extends State<AddPet> {
               buildappname(),
               buildtitle(),
               buildtypepet(),
-              buildtitlespice(),
-              buildtypespice(),
               buildanimalspice(),
               buildnamepet(size),
               buildagepet(size),
@@ -161,26 +224,21 @@ class _AddPetState extends State<AddPet> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30))),
                 onPressed: () async {
-                  http.Response response = await petdetailController.addPet(
-
-                    listage.toString(),
-                    typegenders.toString(),
-                    "-",
-                    namePetTextController.text,
-                    typespices.toString(),
-                    types.toString(),
-                    member!.memberId.toString(),
-                    listanimal.toString(),
+                  Petdetail addPets = Petdetail(
+                    member: member,
+                    agepet: listage.toString(),
+                    gender: typegenders.toString(),
+                    namepet: namePetTextController.text,
+                    species: listanimal.toString(),
+                    type: types.toString(),
                   );
-                  if (response.statusCode == 500) {
-                    print("Error!");
-                  } else {
-                    print("Member was added successfully!");
-                  }
-                  Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (BuildContext context) {
-                    return Viewinsurance();
-                  }));
+                  showSureToAddPetAlert(
+                      member!.memberId.toString(),
+                      addPets.agepet.toString(),
+                      addPets.gender.toString(),
+                      addPets.namepet.toString(),
+                      addPets.species.toString(),
+                      addPets.type.toString());
                 },
                 child: Text("เพิ่มสัตว์เลี้ยง"))),
       ],
@@ -222,44 +280,6 @@ class _AddPetState extends State<AddPet> {
             ),
           ),
         )
-      ],
-    );
-  }
-
-  Container buildtitlespice() {
-    return Container(
-      margin: EdgeInsets.only(top: 30),
-      child: Text("พันธุ์สัตว์"),
-    );
-  }
-
-  Row buildtypespice() {
-    return Row(
-      children: [
-        Expanded(
-            child: RadioListTile<TypeSpice>(
-          value: TypeSpice.purebred,
-          groupValue: typeSpice,
-          title: Text("พันธุ์แท้"),
-          onChanged: (TypeSpice? val) {
-            setState(() {
-              typeSpice = TypeSpice.purebred;
-              typespices = "พันธุ์แท้";
-            });
-          },
-        )),
-        Expanded(
-            child: RadioListTile<TypeSpice>(
-          value: TypeSpice.mixedbreed,
-          groupValue: typeSpice,
-          title: Text("พันธุ์ผสม"),
-          onChanged: (TypeSpice? val) {
-            setState(() {
-              typeSpice = TypeSpice.mixedbreed;
-              typespices = "พันธุ์ผสม";
-            });
-          },
-        ))
       ],
     );
   }

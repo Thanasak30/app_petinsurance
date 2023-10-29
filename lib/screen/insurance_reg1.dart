@@ -10,7 +10,6 @@ import 'package:pet_insurance/screen/insurance_reg4.dart';
 import '../controller/MemberController.dart';
 import '../model/Insurancedetail.dart';
 import '../model/Member.dart';
-import 'insurance_reg2.dart';
 
 class InsuranceREG extends StatefulWidget {
   final int insurance_planId;

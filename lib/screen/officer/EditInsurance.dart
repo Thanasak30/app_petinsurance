@@ -12,7 +12,7 @@ import 'package:http/http.dart' as http;
 import 'OfficerAddinsurance.dart';
 
 class EditInsurance extends StatefulWidget {
-  final String insurance_planId;
+  final int insurance_planId;
   const EditInsurance({Key? key, required this.insurance_planId});
 
   @override
@@ -40,7 +40,7 @@ class _EditInsuranceState extends State<EditInsurance> {
     PriceController.text = insurancedetail?.price.toString()??"";
   }
 
-  void fetcData(String insurance_planId) async {
+  void fetcData(int insurance_planId) async {
     print(insurance_planId);
     var response = await officerController.getInsuranceById(insurance_planId);
     insurancedetail = Insurancedetail.fromJsonToInsurancedetail(response);
@@ -101,7 +101,7 @@ class _EditInsuranceState extends State<EditInsurance> {
         onConfirmBtnTap: () {
           Navigator.of(context).pushReplacement(MaterialPageRoute(
               builder: (context) =>  EditInsurance(
-                insurance_planId: insurancedetail!.insurance_planId.toString(),
+                insurance_planId: insurancedetail!.insurance_planId ?? 0,
                   )));
         });
   }

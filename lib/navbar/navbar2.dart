@@ -26,7 +26,6 @@ class Navbars extends StatefulWidget {
 class _NavbarsState extends State<Navbars> {
   MemberController memberController = MemberController();
   PetdetailController petdetailController = PetdetailController();
-  
 
   String? username;
   Member? member;
@@ -56,10 +55,10 @@ class _NavbarsState extends State<Navbars> {
         children: [
           UserAccountsDrawerHeader(
             accountName: Text("ผุ้ใช้ทั่วไป"),
-            accountEmail:
-                Text("ผุ้ใช้ทั่วไป"),
+            accountEmail: Text("ผุ้ใช้ทั่วไป"),
             currentAccountPicture: CircleAvatar(
-              child: ClipOval(child: Image.asset('Image/pet-insurance (1).png')),
+              child:
+                  ClipOval(child: Image.asset('Image/pet-insurance (1).png')),
             ),
             decoration: BoxDecoration(
                 color: Colors.teal,
@@ -117,6 +116,17 @@ class _NavbarsState extends State<Navbars> {
               }));
             },
           ),
+          ListTile(
+              leading: Icon(Icons.login),
+              title: Text("Login in"),
+              onTap: () {
+                SessionManager().remove("username");
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (BuildContext context) {
+                  return LoginScreen();
+                }));
+              }),
+
           const Divider(),
           ListTile(
               leading: Icon(Icons.logout),

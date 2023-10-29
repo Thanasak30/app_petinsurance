@@ -14,7 +14,6 @@ import 'package:pet_insurance/controller/PetdetailController.dart';
 import 'package:pet_insurance/model/Petdetail.dart';
 import 'package:pet_insurance/model/Petinsuranceregister.dart';
 import 'package:pet_insurance/screen/View_insurance.dart';
-import 'package:pet_insurance/screen/insurance_reg2.dart';
 import 'package:http/http.dart' as http;
 import 'package:pet_insurance/screen/insurance_reg5.dart';
 import '../controller/MemberController.dart';
@@ -156,7 +155,6 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
     genderpetTextController.text = petdetail?.gender ?? "";
     TypeTextController.text = petdetail?.type ?? "";
     speciesController.text = petdetail?.species ?? "";
-    animal_speciesController.text = petdetail?.animal_species ?? "";
   }
 
   void petdata(String petId) async {

@@ -11,7 +11,6 @@ import '../controller/PetdetailController.dart';
 import '../model/Member.dart';
 import '../model/Petdetail.dart';
 import 'View_insurance.dart';
-import 'insurance_reg2.dart';
 
 class ListPet extends StatefulWidget {
   const ListPet({super.key});
@@ -34,7 +33,8 @@ class _ListPetState extends State<ListPet> {
     user = await SessionManager().get("username");
     print(user);
     member = await memberController.getMemberById(user!);
-    petdetail = await petdetailController.listAllPetdetailByMember(member!.memberId.toString());
+    petdetail = await petdetailController
+        .listAllPetdetailByMember(member!.memberId.toString());
     print(petdetail);
     setState(() {
       isLoade = true;
@@ -115,7 +115,8 @@ class _ListPetState extends State<ListPet> {
               child: Card(
                   elevation: 10,
                   child: ListTile(
-                    leading: Text("${petdetail?[index].namepet}"),
+                    leading: _buildPetImage(petdetail?[index].type),
+                    title: Text("${petdetail?[index].namepet}"),
                     onTap: () {
                       print("pet_id ${petdetail?[index].petId}");
                       print("member_Id ${member?.memberId.toString()}");
@@ -129,7 +130,8 @@ class _ListPetState extends State<ListPet> {
                     },
                     trailing: GestureDetector(
                       onTap: () {
-                        showSureToDeletePetAlert(petdetail?[index].petId.toString() ?? "");
+                        showSureToDeletePetAlert(
+                            petdetail?[index].petId.toString() ?? "");
                       },
                       child: Icon(
                         Icons.delete,
@@ -139,5 +141,21 @@ class _ListPetState extends State<ListPet> {
             );
           }),
     ));
+  }
+
+  Widget _buildPetImage(String? petType) {
+    String imagePath =
+        'Image/pet.png'; // รูปภาพเริ่มต้นสำหรับสัตว์เลี้ยงประเภทอื่น ๆ
+
+    if (petType == 'สุนัข') {
+      imagePath = 'Image/dog.png'; // รูปภาพสำหรับสุนัข
+    }
+
+    return Image.asset(
+      imagePath,
+      width: 30, // กำหนดขนาดความกว้างของรูปภาพ
+      height: 50, // กำหนดขนาดความสูงของรูปภาพ
+      color: Colors.black, // ตั้งค่าสีพื้นหลัง
+    );
   }
 }

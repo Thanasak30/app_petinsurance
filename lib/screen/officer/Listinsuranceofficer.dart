@@ -36,6 +36,7 @@ class _ListInsuranceScreenState extends State<ListInsuranceScreen> {
     super.initState();
     fetcData();
   }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -52,27 +53,42 @@ class _ListInsuranceScreenState extends State<ListInsuranceScreen> {
           },
         ),
       ),
-      body: isLoade == true? ListView.builder(
-          itemCount: petinsuranceregister?.length,
-          itemBuilder: (context, index) {
-            return Padding(
-              padding:
-                  const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
-              child: Card(
-                  elevation: 10,
-                  child: ListTile(
-                    leading: Text("${petinsuranceregister?[index].member?.fullname}" +
-                        "${petinsuranceregister?[index].status}"),
-                    onTap: () {
-                      print("Click at ${index}");
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (_) => UpdateStatus(
-                              insurance_regId: (petinsuranceregister?[index].insurance_regId?? 0), 
-                              insurance_planId: (petinsuranceregister?[index].insurancedetail?.insurance_planId.toString()??""),)));
-                    },
-                  )),
-            );
-          }) : Container(),
+      body: isLoade == true
+          ? ListView.builder(
+              itemCount: petinsuranceregister?.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.only(
+                      left: 10, right: 10, top: 5, bottom: 5),
+                  child: Card(
+                      elevation: 10,
+                      child: ListTile(
+                          leading: Text(
+                              "${petinsuranceregister?[index].member?.fullname}" +
+                                  "${petinsuranceregister?[index].status}"),
+                          onTap: () {
+                            print("Click at ${index}");
+                            if (petinsuranceregister != null &&
+                                petinsuranceregister?[index] != null &&
+                                petinsuranceregister?[index].insurancedetail !=
+                                    null) {
+                              Navigator.of(context)
+                                  .pushReplacement(MaterialPageRoute(
+                                builder: (_) => UpdateStatus(
+                                  insurance_regId: petinsuranceregister?[index]
+                                          .insurance_regId ??
+                                      0,
+                                  insurance_planId: petinsuranceregister?[index]
+                                          .insurancedetail
+                                          ?.insurance_planId ??
+                                      0,
+                                ),
+                              ));
+                            }
+                          })),
+                );
+              })
+          : Container(),
     ));
   }
 }

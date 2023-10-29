@@ -219,7 +219,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             validator: (value) {
               // ตรวจสอบความถูกต้องของรหัสผ่าน
-              bool isPasswordValid  = RegExp(r'^[A-Za-z0-9]{1,8}$').hasMatch(value!);
+              bool isPasswordValid  = RegExp(r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])[A-Za-z0-9]{8,}$').hasMatch(value!);
               // bool isPasswordValid = RegExp(r'^[0-9]{4}$').hasMatch(value!);
 
               // กรณีไม่กรอกรหัสผ่าน

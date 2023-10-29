@@ -9,6 +9,7 @@ import 'package:pet_insurance/screen/AddPet.dart';
 import 'package:pet_insurance/screen/EditProfile.dart';
 import 'package:pet_insurance/screen/ListPet.dart';
 import 'package:pet_insurance/screen/ShowProfile.dart';
+import 'package:pet_insurance/screen/User/View_insurance2.dart';
 import 'package:pet_insurance/screen/View_insurance.dart';
 import 'package:pet_insurance/screen/insurance_reg5.dart';
 import 'package:pet_insurance/screen/login.dart';
@@ -64,17 +65,17 @@ class _NavbarState extends State<Navbar> {
             accountEmail:
                 Text('${isLoaded == true ? member?.member_email : null}'),
             currentAccountPicture: CircleAvatar(
-              child: ClipOval(child: Image.asset('Image/pet-insurance.png')),
+              child: ClipOval(child: Image.asset('Image/pet-insurance (1).png')),
             ),
             decoration: BoxDecoration(
                 color: Colors.teal,
                 image: DecorationImage(
-                    image: AssetImage('Image/background.png'),
+                    image: AssetImage('Image/backgroundnavbar.jpg'),
                     fit: BoxFit.cover)),
           ),
           // Text("${username}"),
           ListTile(
-              leading: Icon(Icons.home_outlined),
+              leading: Icon(Icons.home_outlined,color: Colors.cyan),
               title: Text("หน้าหลัก"),
               onTap: () {
                 Navigator.of(context).pushReplacement(
@@ -83,7 +84,7 @@ class _NavbarState extends State<Navbar> {
                 }));
               }),
           ListTile(
-            leading: Icon(Icons.account_circle),
+            leading: Icon(Icons.account_circle,color: Colors.cyan),
             title: Text("โปรไฟล์"),
             onTap: () {
               Navigator.of(context).pushReplacement(
@@ -93,7 +94,7 @@ class _NavbarState extends State<Navbar> {
             },
           ),
           ListTile(
-            leading: Icon(Icons.pets),
+            leading: Icon(Icons.pets,color: Colors.cyan),
             title: Text("เพิ่มสัตว์เลี้ยง"),
             onTap: () {
               Navigator.of(context).pushReplacement(
@@ -103,7 +104,7 @@ class _NavbarState extends State<Navbar> {
             },
           ),
           ListTile(
-            leading: Icon(Icons.view_timeline),
+            leading: Icon(Icons.view_timeline,color: Colors.cyan),
             title: Text("รายการสัตว์เลี้ยง"),
             onTap: () {
               Navigator.of(context).pushReplacement(
@@ -113,8 +114,8 @@ class _NavbarState extends State<Navbar> {
             },
           ),
           ListTile(
-            leading: Icon(Icons.view_timeline),
-            title: Text("รายการที่ทำประกัน"),
+            leading: Icon(Icons.receipt_long,color: Colors.cyan),
+            title: Text("รายการกรรมธรรม์"),
             onTap: () {
               Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (BuildContext context) {
@@ -122,25 +123,15 @@ class _NavbarState extends State<Navbar> {
               }));
             },
           ),
-          ListTile(
-            leading: Icon(Icons.receipt_long),
-            title: Text("รายการกรรมธรรม์"),
-            onTap: () {
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (BuildContext context) {
-                return Viewinsurance();
-              }));
-            },
-          ),
           const Divider(),
           ListTile(
-              leading: Icon(Icons.logout),
+              leading: Icon(Icons.logout,color: Colors.cyan),
               title: Text("Sing out"),
               onTap: () {
                 SessionManager().remove("username");
                 Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (BuildContext context) {
-                  return LoginScreen();
+                  return Viewinsurance2();
                 }));
               })
         ],

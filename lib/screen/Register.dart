@@ -14,6 +14,8 @@ class RegisterScreen extends StatefulWidget {
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
+enum TypeGender { male, female }
+
 class _RegisterScreenState extends State<RegisterScreen> {
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
@@ -38,6 +40,109 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String? substring;
   int? age;
   bool checkage = false;
+  bool checkgender = false;
+
+  var typegender;
+  String? typegenders;
+
+  // String? validateGender(TypeGender? value) {
+  //   if (value == null) {
+  //     return 'กรุณาเลือกเพศ';
+  //   }
+  //   return null;
+  // }
+
+  String? validateUsername(String? value) {
+    bool usernameValid =
+        RegExp(r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])[A-Za-z0-9]{4,16}$')
+            .hasMatch(value!);
+
+    if (value.isEmpty) {
+      return "กรุณากรอกชื่อผู้ใช้";
+    } else if (!usernameValid) {
+      return "ชื่อผู้ใช้ต้องประกอบด้วยตัวอักษร A-Z, a-z, และตัวเลข 0-9";
+    }
+    return null;
+  }
+
+  String? validatePassword(String? value) {
+    bool isPasswordValid =
+        RegExp(r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])[A-Za-z0-9]{8,}$')
+            .hasMatch(value!);
+
+    if (value.isEmpty) {
+      return "กรุณากรอกรหัสผ่าน";
+    } else if (!isPasswordValid) {
+      return "รหัสผ่านต้องประกอบด้วย\n ตัวอักษร A-Z, a-z, และตัวเลข 0-9";
+    }
+    return null;
+  }
+
+  String? validateFullname(String? value) {
+    bool isfullnameValid = RegExp(r'^[ก-์," "]{2,30}$').hasMatch(value!);
+
+    if (value.isEmpty) {
+      return "กรุณากรอกชื่อ-นามสกุล เป็นภาษาไทย";
+    } else if (!isfullnameValid) {
+      return "ชื่อ-นามสกุลไม่ถูกต้อง";
+    }
+    return null;
+  }
+
+  String? validatenationality(String? value) {
+    if (value!.isEmpty) {
+      return "กรุณากรอกสัญชาติของคุณ";
+    }
+    return null;
+  }
+
+  String? validateIDcard(String? value) {
+    bool isIdcardValid = RegExp(r'^[0-9]{13}$').hasMatch(value!);
+
+    if (value.isEmpty) {
+      return "กรุณากรอกเลขบัตรประชาชน 13 หลักของคุณ";
+    } else if (!isIdcardValid) {
+      return "กรุณากรอกเลขบัตรประชาชน 13 หลักของคุณเป็นตัวเลขเท่านั้น";
+    }
+    return null;
+  }
+
+  String? validatemobile(String? value) {
+    bool isMobileValid = RegExp(r'^(06|08|09)[0-9]{8}$').hasMatch(value!);
+
+    if (value.isEmpty) {
+      return "กรุณากรอกหมายเลขโทรศัพท์ของคุณ";
+    } else if (!isMobileValid) {
+      return "กรุณากรอกหมายเลขโทรศัพท์ของคุณให้ถูกต้อง\n (06/08/09)";
+    }
+    return null;
+  }
+
+  String? validateemail(String? value) {
+    bool isEmailValid = RegExp(r"^(?=.*[A-Za-z0-9@._-])[A-Za-z0-9@._-]{5,60}$")
+        .hasMatch(value!);
+
+    if (value.isEmpty) {
+      return "กรุณากรอกอีเมลล์ของคุณ";
+    } else if (!isEmailValid) {
+      return "กรุณากรอกอีเมลล์ของคุณให้ถูกต้อง";
+    }
+    return null;
+  }
+
+  String? validateidline(String? value) {
+    if (value!.isEmpty) {
+      return "กรุณากรอกไอดีไลน์ของคุณ";
+    }
+    return null;
+  }
+
+  String? validateaddress(String? value) {
+    if (value!.isEmpty) {
+      return "กรุณากรอกที่อยู่ของคุณ";
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,28 +163,129 @@ class _RegisterScreenState extends State<RegisterScreen> {
           },
         ),
       ),
-      body: Form(
-        key: formkey,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              buildappname(),
-              buildusername(size),
-              buildPassword(size),
-              buildfullname(size),
-              buildgender(size),
-              buildnationality(size),
-              buildIDcard(size),
-              buildmobile(size),
-              buildbirthday(size),
-              buildage(size),
-              buildemail(size),
-              buildaddress(size),
-              buildidline(size),
-              buildbuttom(size)
-            ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: formkey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Center(
+                  child: Text(
+                    "สร้างบัญชีผู้ใช้",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ),
+                SizedBox(height: 30),
+                buildInputField("ชื่อผู้ใช้", Icons.account_circle_outlined,
+                    userNameTextController,
+                    validator: validateUsername),
+                buildInputField(
+                    "รหัสผ่าน", Icons.lock_outline, passwordTextController,
+                    obscureText: true, validator: validatePassword),
+                buildInputField("ชื่อ - นามสกุล", Icons.account_circle_outlined,
+                    fullnameTextController,
+                    validator: validateFullname),
+                buildGenderField(),
+                buildInputField("สัญชาติ", Icons.account_circle_outlined,
+                    nationalityTextController,
+                    validator: validatenationality),
+                buildInputField("บัตรประชาชน 13 หลัก",
+                    Icons.credit_card_outlined, IdCardTextController,
+                    validator: validateIDcard),
+                buildInputField("หมายเลขโทรศัพท์", Icons.phone_outlined,
+                    MobilenumberTextController,
+                    validator: validatemobile),
+                buildDatePickerField("วัน/เดือน/ปีเกิด",
+                    Icons.calendar_today_outlined, birthdayTextController),
+                buildCheckage(),
+                buildInputField(
+                    "อีเมลล์", Icons.email_outlined, EmailTextController,
+                    validator: validateemail),
+                buildInputField("ที่อยู่", Icons.location_on_outlined,
+                    AdddressTextController,
+                    validator: validateaddress),
+                buildInputField("ไอดีไลน์", Icons.account_circle_outlined,
+                    IDlineTextController,
+                    validator: validateidline),
+                buildbuttom(size),
+              ],
+            ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget buildInputField(
+      String labelText, IconData icon, TextEditingController controller,
+      {bool obscureText = false, String? Function(String?)? validator}) {
+    return Container(
+      margin: EdgeInsets.only(top: 15),
+      child: TextFormField(
+        controller: controller,
+        obscureText: obscureText,
+        decoration: InputDecoration(
+          labelText: labelText,
+          prefixIcon: Icon(icon),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black),
+            borderRadius: BorderRadius.circular(30),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.cyan),
+            borderRadius: BorderRadius.circular(30),
+          ),
+        ),
+        validator: validator, // ใช้ validator ที่ถูกส่งเข้ามา
+      ),
+    );
+  }
+
+  Widget buildDatePickerField(
+      String labelText, IconData icon, TextEditingController controller) {
+    return Container(
+      margin: EdgeInsets.only(top: 15),
+      child: TextFormField(
+        onTap: () async {
+          DateTime? tempDate = await showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(1950),
+            lastDate: DateTime.now(),
+          );
+          if (tempDate != null) {
+            setState(() {
+              birthday = tempDate;
+              String formattedDate = DateFormat('dd-MM-yyyy').format(birthday!);
+              controller.text = formattedDate;
+              age = DateTime.now().year - birthday!.year;
+              AgeTextController.text = age.toString();
+              checkage = true;
+            });
+          }
+        },
+        readOnly: true,
+        controller: controller,
+        decoration: InputDecoration(
+          labelText: labelText,
+          prefixIcon: Icon(icon),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black),
+            borderRadius: BorderRadius.circular(30),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.cyan),
+            borderRadius: BorderRadius.circular(30),
+          ),
+        ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return "กรุณาเลือกวันที่";
+          }
+          return null;
+        },
       ),
     );
   }
@@ -89,103 +295,67 @@ class _RegisterScreenState extends State<RegisterScreen> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-            margin: EdgeInsets.symmetric(vertical: 16),
-            width: size * 0.6,
-            child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30))),
-                onPressed: () async {
-                  if (formkey.currentState!.validate()) {
-                    http.Response response = await memberController.addMember(
-                      birthdayTextController.text,
-                      AdddressTextController.text,
-                      AgeTextController.text,
-                      fullnameTextController.text,
-                      GenderTextController.text,
-                      IDlineTextController.text,
-                      IdCardTextController.text,
-                      EmailTextController.text,
-                      MobilenumberTextController.text,
-                      nationalityTextController.text,
-                      passwordTextController.text,
-                      userNameTextController.text,
-                    );
-                    if (response.statusCode == 500) {
-                      print("Error!");
-                    } else {
-                      print("Member was added successfully!");
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (BuildContext context) {
-                            return LoginScreen();
-                          },
-                        ),
+          margin: EdgeInsets.symmetric(vertical: 16),
+          width: size * 0.6,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
+            onPressed: () async {
+              if (formkey.currentState!.validate()) {
+                if (typegenders == null || typegenders!.isEmpty) {
+                  // แสดง showDialog เมื่อไม่ได้เลือกเพศ
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('แจ้งเตือน'),
+                        content: Text('กรุณาเลือกเพศของคุณ'),
+                        actions: <Widget>[
+                          TextButton(
+                            child: Text('ตกลง'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
                       );
-                    }
+                    },
+                  );
+                } else {
+                  // สร้างบัญชีผู้ใช้งานเมื่อเลือกเพศแล้ว
+                  http.Response response = await memberController.addMember(
+                    birthdayTextController.text,
+                    AdddressTextController.text,
+                    AgeTextController.text,
+                    fullnameTextController.text,
+                    typegenders.toString(),
+                    IDlineTextController.text,
+                    IdCardTextController.text,
+                    EmailTextController.text,
+                    MobilenumberTextController.text,
+                    nationalityTextController.text,
+                    passwordTextController.text,
+                    userNameTextController.text,
+                  );
+                  if (response.statusCode == 500) {
+                    print("Error!");
+                  } else {
+                    print("Member was added successfully!");
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) {
+                          return LoginScreen();
+                        },
+                      ),
+                    );
                   }
-                },
-                child: Text("สร้างบัญชี"))),
-      ],
-    );
-  }
-
-  Row buildidline(double size) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          margin: EdgeInsets.only(top: 15),
-          width: size * 0.6,
-          child: TextFormField(
-            controller: IDlineTextController,
-            decoration: InputDecoration(
-              labelText: "ไอดีไลน์",
-              prefixIcon: Icon(Icons.account_circle_outlined),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                  borderRadius: BorderRadius.circular(30)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.cyan),
-                  borderRadius: BorderRadius.circular(30)),
-            ),
-            validator: (value) {
-              // กรณีไม่กรอกไอดีไลน์
-              if (value!.isEmpty) {
-                return "กรุณากรอกไอดีไลน์ของคุณ";
+                }
               }
             },
-          ),
-        ),
-      ],
-    );
-  }
-
-  Row buildaddress(double size) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          margin: EdgeInsets.only(top: 15),
-          width: size * 0.6,
-          child: TextFormField(
-            controller: AdddressTextController,
-            decoration: InputDecoration(
-              labelText: "ที่อยู่",
-              prefixIcon: Icon(Icons.account_circle_outlined),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                  borderRadius: BorderRadius.circular(30)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.cyan),
-                  borderRadius: BorderRadius.circular(30)),
-            ),
-            validator: (value) {
-              // กรณีไม่กรอกที่อยู่
-              if (value!.isEmpty) {
-                return "กรุณากรอกที่อยู่ของคุณ";
-              }
-            },
+            child: Text("สร้างบัญชี"),
           ),
         ),
       ],
@@ -212,19 +382,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   borderRadius: BorderRadius.circular(30)),
             ),
             validator: (value) {
-              // ตรวจสอบความถูกต้องของหมายเลขโทรศัพท์
               bool isEmailValid =
                   RegExp(r"^(?=.*[A-Za-z0-9@._-])[A-Za-z0-9@._-]{5,60}$")
                       .hasMatch(value!);
 
-              // กรณีไม่กรอกหมายเลขโทรศัพท์
               if (value.isEmpty) {
                 return "กรุณากรอกอีเมลล์ของคุณ";
-              }
-              //กรณีหมายเลขโทรศัพท์ไม่ถูกต้อง
-              else if (!isEmailValid) {
+              } else if (!isEmailValid) {
                 return "กรุณากรอกอีเมลล์ของคุณให้ถูกต้อง";
               }
+              return null;
             },
           ),
         ),
@@ -243,27 +410,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
             onTap: () async {
               DateTime? tempDate = await showDatePicker(
                   context: context,
-                  initialDate: currentDate,
+                  initialDate: DateTime.now(),
                   firstDate: DateTime(1950),
                   lastDate: DateTime.now());
-              setState(() {
-                birthday = tempDate;
-                substring = birthday.toString().substring(0, 4);
-                age = int.parse(DateTime.now().year.toString()) -
-                    int.parse(substring.toString());
-                birthdayTextController.text = dateFormat.format(birthday!);
-                AgeTextController.text = age.toString();
-                checkage = true;
-              });
-              print(birthday);
-
-              print(age);
+              if (tempDate != null) {
+                setState(() {
+                  birthday = tempDate;
+                  String formattedDate =
+                      DateFormat('dd/MM/yyyy').format(birthday!);
+                  birthdayTextController.text = formattedDate;
+                  age = DateTime.now().year - birthday!.year;
+                  AgeTextController.text = age.toString();
+                  checkage = true;
+                });
+              }
             },
             readOnly: true,
             controller: birthdayTextController,
             decoration: InputDecoration(
               labelText: "วัน/เดือน/ปีเกิด",
-              prefixIcon: Icon(Icons.calendar_month),
+              prefixIcon: Icon(Icons.calendar_today_outlined),
               enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
                   borderRadius: BorderRadius.circular(30)),
@@ -275,6 +441,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               if (value!.isEmpty) {
                 return "กรุณาเลือกวันที่";
               }
+              return null;
             },
           ),
         ),
@@ -293,7 +460,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             controller: MobilenumberTextController,
             decoration: InputDecoration(
               labelText: "หมายเลขโทรศัพท์",
-              prefixIcon: Icon(Icons.account_circle_outlined),
+              prefixIcon: Icon(Icons.phone_outlined),
               enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
                   borderRadius: BorderRadius.circular(30)),
@@ -302,20 +469,46 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   borderRadius: BorderRadius.circular(30)),
             ),
             validator: (value) {
-              // ตรวจสอบความถูกต้องของหมายเลขโทรศัพท์
               bool isMobileValid =
                   RegExp(r'^(06|08|09)[0-9]{8}$').hasMatch(value!);
 
-              // กรณีไม่กรอกหมายเลขโทรศัพท์
               if (value.isEmpty) {
                 return "กรุณากรอกหมายเลขโทรศัพท์ของคุณ";
-              }
-              //กรณีหมายเลขโทรศัพท์ไม่ถูกต้อง
-              else if (!isMobileValid) {
+              } else if (!isMobileValid) {
                 return "กรุณากรอกหมายเลขโทรศัพท์ของคุณให้ถูกต้อง\n (06/08/09)";
               }
+              return null;
             },
           ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildGenderField() {
+    return Column(
+      children: <Widget>[
+        RadioListTile<TypeGender>(
+          title: Text('ชาย'),
+          value: TypeGender.male,
+          groupValue: typegender,
+          onChanged: (TypeGender? value) {
+            setState(() {
+              typegender = TypeGender.male;
+              typegenders = "ชาย";
+            });
+          },
+        ),
+        RadioListTile<TypeGender>(
+          title: Text('หญิง'),
+          value: TypeGender.female,
+          groupValue: typegender,
+          onChanged: (TypeGender? value) {
+            setState(() {
+              typegender = TypeGender.female;
+              typegenders = "หญิง";
+            });
+          },
         ),
       ],
     );
@@ -332,7 +525,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             controller: IdCardTextController,
             decoration: InputDecoration(
               labelText: "บัตรประชาชน 13 หลัก",
-              prefixIcon: Icon(Icons.account_circle_outlined),
+              prefixIcon: Icon(Icons.credit_card_outlined),
               enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
                   borderRadius: BorderRadius.circular(30)),
@@ -341,17 +534,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   borderRadius: BorderRadius.circular(30)),
             ),
             validator: (value) {
-              // ตรวจสอบความถูกต้องของบัตรประชาชน 13 หลัก
               bool isIdcardValid = RegExp(r'^[0-9]{13}$').hasMatch(value!);
 
-              // กรณีไม่กรอกบัตรประชาชน 13 หลัก
               if (value.isEmpty) {
                 return "กรุณากรอกเลขบัตรประชาชน 13 หลักของคุณ";
-              }
-              //กรณีบัตรประชาชน 13 หลักไม่ถูกต้อง
-              else if (!isIdcardValid) {
+              } else if (!isIdcardValid) {
                 return "กรุณากรอกเลขบัตรประชาชน 13 หลักของคุณเป็นตัวเลขเท่านั้น";
               }
+              return null;
             },
           ),
         ),
@@ -379,49 +569,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   borderRadius: BorderRadius.circular(30)),
             ),
             validator: (value) {
-              // กรณีไม่กรอกสัญชาติ
               if (value!.isEmpty) {
                 return "กรุณากรอกสัญชาติของคุณ";
               }
-              //กรณีเพศไม่ถูกต้อง
-            },
-          ),
-        ),
-      ],
-    );
-  }
-
-  Row buildgender(double size) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          margin: EdgeInsets.only(top: 15),
-          width: size * 0.6,
-          child: TextFormField(
-            controller: GenderTextController,
-            decoration: InputDecoration(
-              labelText: "เพศ",
-              prefixIcon: Icon(Icons.account_circle_outlined),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                  borderRadius: BorderRadius.circular(30)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.cyan),
-                  borderRadius: BorderRadius.circular(30)),
-            ),
-            validator: (value) {
-              // ตรวจสอบความถูกต้องของเพศ
-              bool isgenderValid = RegExp(r'^[ก-๙]{3,5}$').hasMatch(value!);
-
-              // กรณีไม่กรอกเพศ
-              if (value.isEmpty) {
-                return "กรุณากรอกเพศของคุณ";
-              }
-              //กรณีเพศไม่ถูกต้อง
-              else if (!isgenderValid) {
-                return "กรุณากรอกเพศของคุณเป็นภาษาไทยเท่านั้น";
-              }
+              return null;
             },
           ),
         ),
@@ -434,9 +585,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-            margin: EdgeInsets.only(top: 15),
-            width: size * 0.6,
-            child: buildCheckage()),
+          margin: EdgeInsets.only(top: 15),
+          width: size * 0.6,
+          child: buildCheckage(),
+        ),
       ],
     );
   }
@@ -461,18 +613,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   borderRadius: BorderRadius.circular(30)),
             ),
             validator: (value) {
-              // ตรวจสอบความถูกต้องของชื่อ-นามสกุล
               bool isfullnameValid =
                   RegExp(r'^[ก-์," "]{2,30}$').hasMatch(value!);
 
-              // กรณีไม่กรอกชื่อ-นามสกุล
               if (value.isEmpty) {
                 return "กรุณากรอกชื่อ-นามสกุล เป็นภาษาไทย";
-              }
-              // กรณีชื่อ-นามสกุลไม่ถูกต้อง
-              else if (!isfullnameValid) {
+              } else if (!isfullnameValid) {
                 return "ชื่อ-นามสกุลไม่ถูกต้อง";
               }
+              return null;
             },
           ),
         ),
@@ -489,6 +638,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           width: size * 0.6,
           child: TextFormField(
             controller: passwordTextController,
+            obscureText: true,
             decoration: InputDecoration(
               labelText: "รหัสผ่าน",
               prefixIcon: Icon(Icons.lock_outline),
@@ -500,20 +650,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   borderRadius: BorderRadius.circular(30)),
             ),
             validator: (value) {
-              // ตรวจสอบความถูกต้องของรหัสผ่าน
               bool isPasswordValid =
-                  RegExp(r'^[A-Za-z0-9]{1,8}$').hasMatch(value!);
-              // bool isPasswordValid = RegExp(r'^[0-9]{4}$').hasMatch(value!);
+                  RegExp(r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])[A-Za-z0-9]{8,}$')
+                      .hasMatch(value!);
 
-              // กรณีไม่กรอกรหัสผ่าน
               if (value.isEmpty) {
-                return "กรุณากรอกรหัสผ่าน มีอักษรภาษาอังกฤษและตัวเลข\nความยาวไม่เกิน 8 ตัวอักษร";
+                return "กรุณากรอกรหัสผ่าน";
+              } else if (!isPasswordValid) {
+                return "รหัสผ่านต้องประกอบด้วย\n ตัวอักษร A-Z, a-z, และตัวเลข 0-9";
               }
-              // กรณีรหัสผ่านไม่ถูกต้อง
-              else if (!isPasswordValid) {
-                return "รหัสผ่านไม่ถูกต้อง";
-              }
-              // กรณีรหัสผ่านถูกต้อง
               return null;
             },
           ),
@@ -542,19 +687,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   borderRadius: BorderRadius.circular(30)),
             ),
             validator: (value) {
-              //ถ้าใส่ email ถูก
               bool usernameValid = RegExp(
                       r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])[A-Za-z0-9]{4,16}$')
                   .hasMatch(value!);
 
-              //กรณีไม่ใส่ username
               if (value.isEmpty) {
-                return "กรุณากรอก ตัวอักษรภาษาอังกฤษ\n [A-Z,a-z,[0-9] 4-16 ตัวอักษร";
+                return "กรุณากรอกชื่อผู้ใช้";
+              } else if (!usernameValid) {
+                return "ชื่อผู้ใช้ต้องประกอบด้วย\n ตัวอักษร A-Z, a-z, และตัวเลข 0-9";
               }
-              //กรณีใส่ usename ผิด
-              else if (!usernameValid) {
-                return "ชื่อผู้ใช้ไม่ถูกต้อง";
-              }
+              return null;
             },
           ),
         ),
@@ -593,19 +735,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
               borderRadius: BorderRadius.circular(30)),
         ),
         validator: (value) {
-          // ตรวจสอบความถูกต้องของอายุ
           if (age! < 18) {
-            // ถ้าอายุน้อยกว่า 18 ปีให้แสดงข้อความผิดพลาด
-            // และล้างค่าวันเกิดและอายุ
             showDialog(
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  title: Text("ข้อผิดพลาด"),
-                  content: Text("คุณต้องมีอายุมากกว่า 18 ปี"),
+                  title: Text("Error"),
+                  content: Text("You must be 18 years or older."),
                   actions: <Widget>[
                     TextButton(
-                      child: Text("ตกลง"),
+                      child: Text("OK"),
                       onPressed: () {
                         setState(() {
                           birthday = null;
@@ -620,11 +759,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
               },
             );
           }
+          return null;
         },
       );
     } else {
-      return const SizedBox
-          .shrink(); // ถ้าไม่ควรแสดง QRCODE ให้ใช้ SizedBox.shrink() เพื่อซ่อน
+      return const SizedBox.shrink();
     }
   }
 }

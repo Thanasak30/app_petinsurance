@@ -109,8 +109,6 @@ Insurancedetail? insurancedetails;
               buildappname(),
               buildtitle(),
               buildtypepet(),
-              buildtitlespice(),
-              buildtypespice(),
               buildanimalspice(),
               buildnamepet(size),
               buildagepet(size),
@@ -168,9 +166,8 @@ Insurancedetail? insurancedetails;
 
                     listage.toString(),
                     typegenders.toString(),
-                    "-",
                     namePetTextController.text,
-                    typespices.toString(),
+                    // typespices.toString(),
                     types.toString(),
                     member!.memberId.toString(),
                     listanimal.toString(),
@@ -229,43 +226,9 @@ Insurancedetail? insurancedetails;
     );
   }
 
-  Container buildtitlespice() {
-    return Container(
-      margin: EdgeInsets.only(top: 30),
-      child: Text("พันธุ์สัตว์"),
-    );
-  }
 
-  Row buildtypespice() {
-    return Row(
-      children: [
-        Expanded(
-            child: RadioListTile<TypeSpice>(
-          value: TypeSpice.purebred,
-          groupValue: typeSpice,
-          title: Text("พันธุ์แท้"),
-          onChanged: (TypeSpice? val) {
-            setState(() {
-              typeSpice = TypeSpice.purebred;
-              typespices = "พันธุ์แท้";
-            });
-          },
-        )),
-        Expanded(
-            child: RadioListTile<TypeSpice>(
-          value: TypeSpice.mixedbreed,
-          groupValue: typeSpice,
-          title: Text("พันธุ์ผสม"),
-          onChanged: (TypeSpice? val) {
-            setState(() {
-              typeSpice = TypeSpice.mixedbreed;
-              typespices = "พันธุ์ผสม";
-            });
-          },
-        ))
-      ],
-    );
-  }
+
+  
 
   Container buildtitle() {
     return Container(

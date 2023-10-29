@@ -6,24 +6,22 @@ import '../model/Petdetail.dart';
 
 class PetdetailController {
   Future addPet(
+    String memberId,
     String agepet,
     String gender,
-    String listpicture,
     String namepet,
     String species,
     String type,
-    String memberId,
-    String animal_species,
+    
   ) async {
     Map data = {
+      'memberId': memberId,
       "namepet": namepet,
       "agepet": agepet,
       "type": type,
       "gender": gender,
-      "listpicture": listpicture,
       "species": species,
-      'animal_species': animal_species,
-      'memberId': memberId
+      
     };
 
     var jsonData = json.encode(data);

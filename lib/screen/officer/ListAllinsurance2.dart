@@ -8,7 +8,6 @@ import 'package:pet_insurance/model/Insurancedetail.dart';
 
 
 import '../../navbar/navbarofficer.dart';
-import '../insurance_reg2.dart';
 import 'EditInsurance.dart';
 import 'OfficerAddinsurance.dart';
 
@@ -66,7 +65,7 @@ class _ListAllinsurance2State extends State<ListAllinsurance2> {
                           builder: (_) => EditInsurance(
                               insurance_planId:
                                   (insurancedetail?[index].insurance_planId)
-                                      .toString())));
+                                       ?? 0)));
                     },
                   )),
             );

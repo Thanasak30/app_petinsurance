@@ -104,7 +104,6 @@ class _EditPetState extends State<EditPet> {
     genderpetTextController.text = petdetail?.gender ?? "";
     TypeTextController.text = petdetail?.type ?? "";
     speciesController.text = petdetail?.species ?? "";
-    animal_speciesController.text = petdetail?.animal_species ?? "";
   }
 
   void petdata(String petId, String member_Id) async {
@@ -124,7 +123,6 @@ class _EditPetState extends State<EditPet> {
     // member = Member.fromJsonToMember(members);
     print(member?.memberId);
 
-    dropdownanimal = petdetail?.animal_species;
     dropdownage = petdetail?.agepet;
     types = petdetail?.type;
     typegenders = petdetail?.gender;
@@ -320,8 +318,7 @@ class _EditPetState extends State<EditPet> {
                       species: typespices,
                       type: types,
                       member: member,
-                      animal_species: animal_speciesController.text =
-                          dropdownanimal);
+                     );
 
                   showSureToUpdateMemberAlert(updatePetdetail);
                 },

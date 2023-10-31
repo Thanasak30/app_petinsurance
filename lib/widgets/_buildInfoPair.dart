@@ -22,11 +22,11 @@ class buileinfo extends StatelessWidget {
           children: [
             Text(
               label,
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,fontFamily: "Itim"),
             ),
             Text(
               value,
-              style: TextStyle(fontSize: 16),
+              style: TextStyle(fontSize: 16,fontFamily: "Itim"),
             ),
           ],
         ),

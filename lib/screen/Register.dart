@@ -42,7 +42,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool checkage = false;
   bool checkgender = false;
 
-  var typegender;
+  var typegender  = TypeGender.male;
   String? typegenders;
 
   // String? validateGender(TypeGender? value) {
@@ -304,54 +304,62 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
             ),
             onPressed: () async {
-              if (formkey.currentState!.validate()) {
-                if (typegenders == null || typegenders!.isEmpty) {
-                  // แสดง showDialog เมื่อไม่ได้เลือกเพศ
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: Text('แจ้งเตือน'),
-                        content: Text('กรุณาเลือกเพศของคุณ'),
-                        actions: <Widget>[
-                          TextButton(
-                            child: Text('ตกลง'),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                } else {
-                  // สร้างบัญชีผู้ใช้งานเมื่อเลือกเพศแล้ว
-                  http.Response response = await memberController.addMember(
-                    birthdayTextController.text,
-                    AdddressTextController.text,
-                    AgeTextController.text,
-                    fullnameTextController.text,
-                    typegenders.toString(),
-                    IDlineTextController.text,
-                    IdCardTextController.text,
-                    EmailTextController.text,
-                    MobilenumberTextController.text,
-                    nationalityTextController.text,
-                    passwordTextController.text,
-                    userNameTextController.text,
-                  );
-                  if (response.statusCode == 500) {
-                    print("Error!");
-                  } else {
-                    print("Member was added successfully!");
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (BuildContext context) {
-                          return LoginScreen();
-                        },
-                      ),
+              String? validationMessage;
+
+              if (typegender == null) {
+                validationMessage = 'โปรดเลือกเพศก่อนที่จะดำเนินการต่อ';
+              } else if (!formkey.currentState!.validate()) {
+                validationMessage = 'โปรดกรอกข้อมูลให้ครบถ้วน';
+              }
+              if (validationMessage != null) {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text('แจ้งเตือน'),
+                      content: Text(validationMessage!),
+                      actions: <Widget>[
+                        TextButton(
+                          child: Text('ตกลง'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
                     );
-                  }
+                  },
+                );
+              } else {
+                http.Response response = await memberController.addMember(
+                  birthdayTextController.text,
+                  AdddressTextController.text,
+                  AgeTextController.text,
+                  fullnameTextController.text,
+                  typegenders.toString(),
+                  IDlineTextController.text,
+                  IdCardTextController.text,
+                  EmailTextController.text,
+                  MobilenumberTextController.text,
+                  nationalityTextController.text,
+                  passwordTextController.text,
+                  userNameTextController.text,
+                );
+                if (response.statusCode == 500) {
+                  print("Error!");
+                } else {
+                  print("Member was added successfully!");
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('สร้างบัญชีสำเร็จ!'),
+                    ),
+                  );
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) {
+                        return LoginScreen();
+                      },
+                    ),
+                  );
                 }
               }
             },

@@ -170,6 +170,14 @@ class _PaymentsState extends State<Payments> {
                           Policynumber(),
                           _images!,
                         );
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('ทำการชำระเงินเรียบร้อยแล้ว!'),
+                            duration: Duration(
+                                seconds:
+                                    3), // กำหนดเวลาที่ SnackBar จะแสดง (ในที่นี้คือ 3 วินาที)
+                          ),
+                        );
                         if (response.statusCode == 200) {
                           print("Error!");
                         } else {

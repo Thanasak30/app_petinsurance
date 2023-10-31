@@ -27,3 +27,10 @@ flutter:
   uses-material-design: true
   assets:
     - Image/
+  fonts:
+    - family: Itim
+      fonts:
+        - asset: font/Itim-Regular.ttf
+    - family: Kanit
+      fonts:
+        - asset: font/Kanit-ExtraLight.ttf

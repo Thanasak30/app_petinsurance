@@ -38,7 +38,7 @@ class _InsuranceREG5State extends State<InsuranceREG5> {
   String? user;
   Member? member;
   Petdetail? petdetail;
-  bool? isLoaded;
+  bool? isLoaded = false;
   Officer? officer;
   Payment? payment;
   Insurancedetail? insurancedetail;
@@ -65,9 +65,8 @@ class _InsuranceREG5State extends State<InsuranceREG5> {
     petdetail = Petdetail.fromJsonToPetdetail(response);
     print(response);
 
-  print("TEST IS ${insurance_planId}" );
-    var responses =
-        await officerController.getInsuranceById(insurance_planId);
+    print("TEST IS ${insurance_planId}");
+    var responses = await officerController.getInsuranceById(insurance_planId);
     insurancedetail = Insurancedetail.fromJsonToInsurancedetail(responses);
     print(" test ${insurancedetail?.insurance_planId}");
 
@@ -83,14 +82,18 @@ class _InsuranceREG5State extends State<InsuranceREG5> {
                 .toString()
                 .indexOf('.'));
 
-    if (petinsuranceregister?.status == "อนุมัติ") {
-      var payments =
-          await paymentController.getReferentById(insurance_regId.toString());
-      payment = Payment.fromJsonToPayment(payments);
-    }
+
+
     setState(() {
-      isLoaded = false;
+      isLoaded = true;
+      PaymentData(widget.insurance_regId);
     });
+  }
+
+  void PaymentData(int insurance_regId) async {
+        var payments =
+        await paymentController.getReferentById(insurance_regId.toString());
+    payment = Payment.fromJsonToPayment(payments);
   }
 
   @override
@@ -140,142 +143,145 @@ class _InsuranceREG5State extends State<InsuranceREG5> {
           },
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ListView(
-          children: [
-            // เริ่มต้นส่วนข้อมูลผู้เอาประกัน
-            Card(
-              child: Container(
-                padding: EdgeInsets.all(16),
-                color: Colors.grey[300],
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "ข้อมูลผู้เอาประกัน",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 10),
-                    Text("ชื่อผู้เอาประกันภัย: ${member?.fullname ?? ''}"),
-                    Text(
-                        "วัน/เดือน/ปีเกิด: ${dateFormat.format(member?.brithday ?? DateTime.now())}"),
-                    Text("เลขบัตรประชาชน: ${member?.idcard ?? ''}"),
-                    Text("ที่อยู่ผู้เอาประกัน: ${member?.address ?? ''}"),
-                    Text("เบอร์โทรศัพท์: ${member?.mobileno ?? ''}"),
-                  ],
-                ),
-              ),
-            ),
-            // ส่วนข้อมูลผู้เอาประกันจบที่นี่
-
-            // เริ่มต้นส่วนข้อมูลสัตว์เลี้ยง
-            Card(
-              child: Container(
-                padding: EdgeInsets.all(16),
-                color: Colors.grey[300],
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "รายละเอียดสัตว์เลี้ยง",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 10),
-                    Text("ชื่อสัตว์เลี้ยง: ${petdetail?.namepet ?? ''}"),
-                    Text("อายุ: ${petdetail?.agepet ?? ''}"),
-                    Text("เพศ: ${petdetail?.gender ?? ''}"),
-                  ],
-                ),
-              ),
-            ),
-            // ส่วนข้อมูลสัตว์เลี้ยงจบที่นี่
-
-            // เริ่มต้นส่วนข้อมูลกรมธรรม์
-            Card(
-                child: Container(
-                  padding: EdgeInsets.all(16),
-                  color: Colors.grey[300],
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "รายละเอียดกรมธรรม์",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
+      body: isLoaded == true ? Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListView(
+                children: [
+                  // เริ่มต้นส่วนข้อมูลผู้เอาประกัน
+                  Card(
+                    child: Container(
+                      padding: EdgeInsets.all(16),
+                      color: Colors.grey[300],
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "ข้อมูลผู้เอาประกัน",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                              "ชื่อผู้เอาประกันภัย: ${member?.fullname ?? ''}"),
+                          Text(
+                              "วัน/เดือน/ปีเกิด: ${dateFormat.format(member?.brithday ?? DateTime.now())}"),
+                          Text("เลขบัตรประชาชน: ${member?.idcard ?? ''}"),
+                          Text("ที่อยู่ผู้เอาประกัน: ${member?.address ?? ''}"),
+                          Text("เบอร์โทรศัพท์: ${member?.mobileno ?? ''}"),
+                        ],
                       ),
-                      SizedBox(height: 10),
-                      Text(
-                          "แผนประกันภัย: ${insurancedetail?.insurance_name ?? ''}"),
-                      Text("ทุนประกันภัย: ${Total()}"),
-                      Text(
-                          "วันเริ่มต้นคุ้มครอง: ${dateFormat.format(petinsuranceregister?.startdate ?? DateTime.now())}"),
-                      Text(
-                          "วันสิ้นสุดคุ้มครอง: ${dateFormat.format(petinsuranceregister?.enddate ?? DateTime.now())}"),
-                      Text("เลขกรรมธรรม์: ${payment?.reference_number}"),
-                    ],
-                  ),
-                ),
-              ),
-            // ส่วนข้อมูลกรมธรรม์จบที่นี่
-
-            // ราคาเบี้ยประกันรวม
-            Card(
-              child: Container(
-                padding: EdgeInsets.all(16),
-                color: Colors.blue,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "ราคาเบี้ยประกันรวม",
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      "${substring}",
-                      style: TextStyle(fontSize: 20, color: Colors.white),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            // ส่วนของราคาเบี้ยประกันรวมจบที่นี่
-
-            // ปุ่มไปหน้าชำระเงิน
-            Visibility(
-              visible: petinsuranceregister?.status == "รอการอนุมัติ",
-              child: Container(
-                margin: EdgeInsets.symmetric(vertical: 16),
-                width: size * 0.6,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  onPressed: () async {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (_) => Payments(
-                          insurance_regId: widget.insurance_regId,
-                          substring: '$substring',
+                  // ส่วนข้อมูลผู้เอาประกันจบที่นี่
+
+                  // เริ่มต้นส่วนข้อมูลสัตว์เลี้ยง
+                  Card(
+                    child: Container(
+                      padding: EdgeInsets.all(16),
+                      color: Colors.grey[300],
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "รายละเอียดสัตว์เลี้ยง",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 10),
+                          Text("ชื่อสัตว์เลี้ยง: ${petdetail?.namepet ?? ''}"),
+                          Text("อายุ: ${petdetail?.agepet ?? ''}"),
+                          Text("เพศ: ${petdetail?.gender ?? ''}"),
+                        ],
+                      ),
+                    ),
+                  ),
+                  // ส่วนข้อมูลสัตว์เลี้ยงจบที่นี่
+
+                  // เริ่มต้นส่วนข้อมูลกรมธรรม์
+                  Card(
+                    child: Container(
+                      padding: EdgeInsets.all(16),
+                      color: Colors.grey[300],
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "รายละเอียดกรมธรรม์",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                              "แผนประกันภัย: ${insurancedetail?.insurance_name ?? ''}"),
+                          Text("ทุนประกันภัย: ${Total()}"),
+                          Text(
+                              "วันเริ่มต้นคุ้มครอง: ${dateFormat.format(petinsuranceregister?.startdate ?? DateTime.now())}"),
+                          Text(
+                              "วันสิ้นสุดคุ้มครอง: ${dateFormat.format(petinsuranceregister?.enddate ?? DateTime.now())}"),
+                          Text(
+                              "เลขกรรมธรรม์: ${payment?.reference_number ?? 'N/A'}"),
+                        ],
+                      ),
+                    ),
+                  ),
+                  // ส่วนข้อมูลกรมธรรม์จบที่นี่
+
+                  // ราคาเบี้ยประกันรวม
+                  Card(
+                    child: Container(
+                      padding: EdgeInsets.all(16),
+                      color: Colors.blue,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "ราคาเบี้ยประกันรวม",
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            "${substring}",
+                            style: TextStyle(fontSize: 20, color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  // ส่วนของราคาเบี้ยประกันรวมจบที่นี่
+
+                  // ปุ่มไปหน้าชำระเงิน
+                  Visibility(
+                    visible: petinsuranceregister?.status == "อนุมัติ",
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 16),
+                      width: size * 0.6,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
                         ),
+                        onPressed: () async {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (_) => Payments(
+                                insurance_regId: widget.insurance_regId,
+                                substring: '$substring',
+                              ),
+                            ),
+                          );
+                        },
+                        child: Text("ไปหน้าชำระเงิน"),
                       ),
-                    );
-                  },
-                  child: Text("ไปหน้าชำระเงิน"),
-                ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
-      ),
+            )
+          : Container(),
     );
   }
 }

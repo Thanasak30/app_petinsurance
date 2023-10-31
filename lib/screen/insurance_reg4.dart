@@ -13,9 +13,12 @@ import 'package:pet_insurance/controller/Insuranceregister.dart';
 import 'package:pet_insurance/controller/PetdetailController.dart';
 import 'package:pet_insurance/model/Petdetail.dart';
 import 'package:pet_insurance/model/Petinsuranceregister.dart';
+import 'package:pet_insurance/screen/Listinsurance.dart';
 import 'package:pet_insurance/screen/View_insurance.dart';
 import 'package:http/http.dart' as http;
 import 'package:pet_insurance/screen/insurance_reg5.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import '../controller/MemberController.dart';
 import '../controller/OfficerController.dart';
 import '../model/Insurancedetail.dart';
@@ -68,6 +71,7 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
   bool? isLoaded;
 
   Petdetail? petdetail;
+  InsuranceREG? insurancereg;
   Petinsuranceregister? petinsuranceregister;
 
   FilePickerResult? filePickerResult;
@@ -84,7 +88,6 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
   final MemberController memberController = MemberController();
   final PetdetailController petdetailController = PetdetailController();
   final InsuranceREG insuranceREG = InsuranceREG();
-
 
   List<Insurancedetail>? insurancedetail;
   Insurancedetail? insurancedetails;
@@ -195,15 +198,15 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
           leading: BackButton(
             color: Colors.white,
             onPressed: () {
-               Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (BuildContext context) {
-              return Viewinsurance();
-            }));
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (BuildContext context) {
+                return Viewinsurance();
+              }));
             },
           ),
         ),
         body: Form(
-           key: formKey,
+          key: formKey,
           child: SingleChildScrollView(
             padding: EdgeInsets.all(16.0),
             child: Column(
@@ -241,7 +244,6 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
                 buildgenderpet(size),
                 buildtypepet(size),
                 buildtypespice(size),
-                buildanimalspice(size),
                 const Divider(),
                 buildimgpet(),
                 const Divider(),
@@ -402,30 +404,51 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
                   print(nextYearDate);
                   print(widget.pet_id);
                   if (formKey.currentState!.validate()) {
-                  http.Response response = await insuranceREG.addInsuranceReg(
-                    widget.insurance_planId.toString(),
-                    member!.memberId.toString(),
-                    typesreceived.toString(),
-                    dateFormat.format(currentDate),
-                    dateFormat.format(nextYearDate),
-                    "",
-                    _imagepet!,
-                    _image!,
-                    _images!,
-                    widget.pet_id,
-                  );
-                  Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (BuildContext context) {
-                    return Viewinsurance();
-                  }));
-                  if (response.statusCode == 500) {
-                    print("Error!");
-                  } else {
-                    print("Member was added successfully!");
+                    http.Response response = await insuranceREG.addInsuranceReg(
+                      widget.insurance_planId.toString(),
+                      member!.memberId.toString(),
+                      typesreceived.toString(),
+                      dateFormat.format(currentDate),
+                      dateFormat.format(nextYearDate),
+                      "",
+                      _imagepet!,
+                      _image!,
+                      _images!,
+                      widget.pet_id,
+                    );
+                    if (response.statusCode == 500) {
+                      print("Error!");
+                    } else {
+                      // แสดงการแจ้งเตือนเมื่อสมัครแผนเสร็จสมบูรณ์
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text("สมัครแผนเสร็จสมบูรณ์"),
+                            content:
+                                Text("คุณได้ทำการสมัครแผนเสร็จเรียนร้อยแล้ว"),
+                            actions: <Widget>[
+                              TextButton(
+                                child: Text("ตกลง"),
+                                onPressed: () {
+                                  Navigator.of(context)
+                                      .pop(); // ปิดกล่องข้อความ
+                                  Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) {
+                                      return ListInsurance();
+                                    }),
+                                  );
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }
                   }
-                }
                 },
-                child: Text("ต่อไป"))),
+                child: Text("สมัครแผนประกัน"))),
       ],
     );
   }
@@ -465,31 +488,6 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
             controller: genderpetTextController,
             decoration: InputDecoration(
               labelText: "เพศ",
-              prefixIcon: Icon(Icons.account_circle_outlined),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                  borderRadius: BorderRadius.circular(30)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.cyan),
-                  borderRadius: BorderRadius.circular(30)),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Row buildanimalspice(double size) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          margin: EdgeInsets.only(top: 30),
-          width: size * 0.6,
-          child: TextFormField(
-            controller: animal_speciesController,
-            decoration: InputDecoration(
-              labelText: "สายพันธุ์",
               prefixIcon: Icon(Icons.account_circle_outlined),
               enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),

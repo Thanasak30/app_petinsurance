@@ -79,7 +79,8 @@ class _InsuranceREGState extends State<InsuranceREG> {
               child: Card(
                   elevation: 10,
                   child: ListTile(
-                    leading: Text("${petdetail?[index].namepet}"),
+                    leading:  _buildPetImage(petdetail?[index].type),
+                     title: Text("${petdetail?[index].namepet}"),
                     onTap: () {
                       print("pet_id ${petdetail?[index].petId}");
                       print("Click at ${index}");
@@ -92,6 +93,21 @@ class _InsuranceREGState extends State<InsuranceREG> {
                   )),
             );
           }),
+    );
+  }
+    Widget _buildPetImage(String? petType) {
+    String imagePath =
+        'Image/pet.png'; // รูปภาพเริ่มต้นสำหรับสัตว์เลี้ยงประเภทอื่น ๆ
+
+    if (petType == 'สุนัข') {
+      imagePath = 'Image/dog.png'; // รูปภาพสำหรับสุนัข
+    }
+
+    return Image.asset(
+      imagePath,
+      width: 30, // กำหนดขนาดความกว้างของรูปภาพ
+      height: 50, // กำหนดขนาดความสูงของรูปภาพ
+      color: Colors.black, // ตั้งค่าสีพื้นหลัง
     );
   }
 }

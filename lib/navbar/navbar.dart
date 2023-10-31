@@ -61,9 +61,9 @@ class _NavbarState extends State<Navbar> {
       child: ListView(
         children: [
           UserAccountsDrawerHeader(
-            accountName: Text('${username}'),
+            accountName: Text('${username}', style: TextStyle(fontFamily: "Itim")),
             accountEmail:
-                Text('${isLoaded == true ? member?.member_email : null}'),
+                Text('${isLoaded == true ? member?.member_email : null}', style: TextStyle(fontFamily: "Itim")),
             currentAccountPicture: CircleAvatar(
               child: ClipOval(child: Image.asset('Image/pet-insurance (1).png')),
             ),
@@ -76,7 +76,7 @@ class _NavbarState extends State<Navbar> {
           // Text("${username}"),
           ListTile(
               leading: Icon(Icons.home_outlined,color: Colors.cyan),
-              title: Text("หน้าหลัก"),
+              title: Text("หน้าหลัก", style: TextStyle(fontFamily: "Itim")),
               onTap: () {
                 Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (BuildContext context) {
@@ -85,7 +85,7 @@ class _NavbarState extends State<Navbar> {
               }),
           ListTile(
             leading: Icon(Icons.account_circle,color: Colors.cyan),
-            title: Text("โปรไฟล์"),
+            title: Text("โปรไฟล์", style: TextStyle(fontFamily: "Itim")),
             onTap: () {
               Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (BuildContext context) {
@@ -95,7 +95,7 @@ class _NavbarState extends State<Navbar> {
           ),
           ListTile(
             leading: Icon(Icons.pets,color: Colors.cyan),
-            title: Text("เพิ่มสัตว์เลี้ยง"),
+            title: Text("เพิ่มสัตว์เลี้ยง", style: TextStyle(fontFamily: "Itim")),
             onTap: () {
               Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (BuildContext context) {
@@ -105,7 +105,7 @@ class _NavbarState extends State<Navbar> {
           ),
           ListTile(
             leading: Icon(Icons.view_timeline,color: Colors.cyan),
-            title: Text("รายการสัตว์เลี้ยง"),
+            title: Text("รายการสัตว์เลี้ยง", style: TextStyle(fontFamily: "Itim")),
             onTap: () {
               Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (BuildContext context) {
@@ -115,7 +115,7 @@ class _NavbarState extends State<Navbar> {
           ),
           ListTile(
             leading: Icon(Icons.receipt_long,color: Colors.cyan),
-            title: Text("รายการกรรมธรรม์"),
+            title: Text("รายการกรรมธรรม์", style: TextStyle(fontFamily: "Itim")),
             onTap: () {
               Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (BuildContext context) {
@@ -126,7 +126,7 @@ class _NavbarState extends State<Navbar> {
           const Divider(),
           ListTile(
               leading: Icon(Icons.logout,color: Colors.cyan),
-              title: Text("Sing out"),
+              title: Text("ออกจากระบบ", style: TextStyle(fontFamily: "Itim")),
               onTap: () {
                 SessionManager().remove("username");
                 Navigator.of(context).pushReplacement(

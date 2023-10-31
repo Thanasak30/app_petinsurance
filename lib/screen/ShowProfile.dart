@@ -46,7 +46,8 @@ class _ShowProfileState extends State<ShowProfile> {
     double size = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: Text("ข้อมูลส่วนตัว"),
+        title: Text("ข้อมูลส่วนตัว",
+                  style: TextStyle(fontFamily: "Itim")),
         leading: BackButton(
           color: Colors.white,
           onPressed: () {
@@ -92,7 +93,8 @@ class _ShowProfileState extends State<ShowProfile> {
                     return EditProfile();
                   }));
                 },
-                child: Text("แก้ไขโปรไฟล์"))),
+                child: Text("แก้ไขโปรไฟล์",
+                  style: TextStyle(fontFamily: "Itim")))),
       ],
     );
   }

@@ -118,7 +118,7 @@ class _UpdateStatusState extends State<UpdateStatus> {
         confirmBtnText: "อนุมัติ",
         onConfirmBtnTap: () async {
           http.Response response = await officerController
-              .updateFailInsurancereg(office_id, inusrance_regId);
+              .updateInsurancereg(office_id, inusrance_regId);
 
           if (response.statusCode == 200) {
             Navigator.pop(context);

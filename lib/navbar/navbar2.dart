@@ -54,8 +54,8 @@ class _NavbarsState extends State<Navbars> {
       child: ListView(
         children: [
           UserAccountsDrawerHeader(
-            accountName: Text("ผุ้ใช้ทั่วไป"),
-            accountEmail: Text("ผุ้ใช้ทั่วไป"),
+            accountName: Text("ผุ้ใช้ทั่วไป", style: TextStyle(fontFamily: "Itim")),
+            accountEmail: Text("ผุ้ใช้ทั่วไป", style: TextStyle(fontFamily: "Itim")),
             currentAccountPicture: CircleAvatar(
               child:
                   ClipOval(child: Image.asset('Image/pet-insurance (1).png')),
@@ -68,57 +68,57 @@ class _NavbarsState extends State<Navbars> {
           ),
           // Text("${username}"),
           ListTile(
-              leading: Icon(Icons.home_outlined),
-              title: Text("หน้าหลัก"),
+              leading: Icon(Icons.home_outlined,color: Colors.cyan),
+              title: Text("หน้าหลัก", style: TextStyle(fontFamily: "Itim")),
               onTap: () {
                 Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (BuildContext context) {
-                  return Viewinsurance();
+                  return LoginScreen();
                 }));
               }),
           ListTile(
-            leading: Icon(Icons.account_circle),
-            title: Text("โปรไฟล์"),
+            leading: Icon(Icons.account_circle,color: Colors.cyan),
+            title: Text("โปรไฟล์", style: TextStyle(fontFamily: "Itim")),
             onTap: () {
               Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (BuildContext context) {
-                return ShowProfile();
+                return LoginScreen();
               }));
             },
           ),
           ListTile(
-            leading: Icon(Icons.pets),
-            title: Text("เพิ่มสัตว์เลี้ยง"),
+            leading: Icon(Icons.pets,color: Colors.cyan),
+            title: Text("เพิ่มสัตว์เลี้ยง", style: TextStyle(fontFamily: "Itim")),
             onTap: () {
               Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (BuildContext context) {
-                return AddPet();
+                return LoginScreen();
               }));
             },
           ),
           ListTile(
-            leading: Icon(Icons.view_timeline),
-            title: Text("รายการสัตว์เลี้ยง"),
+            leading: Icon(Icons.view_timeline,color: Colors.cyan),
+            title: Text("รายการสัตว์เลี้ยง", style: TextStyle(fontFamily: "Itim")),
             onTap: () {
               Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (BuildContext context) {
-                return ListPet();
+                return LoginScreen();
               }));
             },
           ),
           ListTile(
-            leading: Icon(Icons.receipt_long),
-            title: Text("รายการกรรมธรรม์"),
+            leading: Icon(Icons.receipt_long,color: Colors.cyan),
+            title: Text("รายการกรรมธรรม์", style: TextStyle(fontFamily: "Itim")),
             onTap: () {
               Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (BuildContext context) {
-                return ListInsurance();
+                return LoginScreen();
               }));
             },
           ),
           ListTile(
-              leading: Icon(Icons.login),
-              title: Text("Login in"),
+              leading: Icon(Icons.login,color: Colors.cyan),
+              title: Text("เข้าสู่ระบบ", style: TextStyle(fontFamily: "Itim")),
               onTap: () {
                 SessionManager().remove("username");
                 Navigator.of(context).pushReplacement(
@@ -129,8 +129,8 @@ class _NavbarsState extends State<Navbars> {
 
           const Divider(),
           ListTile(
-              leading: Icon(Icons.logout),
-              title: Text("Sing out"),
+              leading: Icon(Icons.logout,color: Colors.cyan),
+              title: Text("ออกจากระบบ", style: TextStyle(fontFamily: "Itim")),
               onTap: () {
                 SessionManager().remove("username");
                 Navigator.of(context).pushReplacement(

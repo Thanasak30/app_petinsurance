@@ -34,7 +34,7 @@ class _ListInsuranceState extends State<ListInsurance> {
   Member? member;
   String? user;
 
-  bool? isLoade;
+  bool? isLoade = false;
   void fetcData() async {
     setState(() {
       isLoade = false;
@@ -73,53 +73,63 @@ class _ListInsuranceState extends State<ListInsurance> {
               },
             ),
           ),
-          body: ListView.builder(
-            itemCount: petdetail?.length ??
-                0, // กำหนดให้ itemCount เป็น 0 ถ้า petdetail เป็น null
-            itemBuilder: (context, index) {
-
-                return Padding(
-                  padding: const EdgeInsets.only(
-                      left: 10, right: 10, top: 5, bottom: 5),
-                  child: Card(
-                    elevation: 10,
-                    child: ListTile(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("${petdetail?[index].namepet}"),
-                          Text(
-                            "${petinsuranceregister?[index].status}",
-                            style: TextStyle(
-                              color: petinsuranceregister?[index].status !=
-                                      'อนุมัติ'
-                                  ? Colors.red
-                                  : Colors.green,
-                            ),
+          body: petdetail?.length != 0 ?ListView.builder(
+                  itemCount: petdetail?.length ??
+                      0, // กำหนดให้ itemCount เป็น 0 ถ้า petdetail เป็น null
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(
+                          left: 10, right: 10, top: 5, bottom: 5),
+                      child: Card(
+                        elevation: 10,
+                        child: ListTile(
+                          contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("${petdetail?[index].namepet}"),
+                              Text(
+                                "${petinsuranceregister?[index].status}",
+                                style: TextStyle(
+                                  color: petinsuranceregister?[index].status !=
+                                          'อนุมัติ'
+                                      ? Colors.red
+                                      : Colors.green,
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
+                          onTap: () {
+                            print("pet_id ${petdetail?[index].petId}");
+                            print("Click at ${index}");
+                            Navigator.of(context)
+                                .pushReplacement(MaterialPageRoute(
+                              builder: (_) => InsuranceREG5(
+                                pet_id: (petdetail?[index].petId).toString(),
+                                insurance_planId: (petinsuranceregister?[index]
+                                        .insurancedetail
+                                        ?.insurance_planId ??
+                                    0),
+                                insurance_regId: (petinsuranceregister?[index]
+                                        .insurance_regId ??
+                                    0),
+                              ),
+                            ));
+                          },
+                        ),
                       ),
-                      onTap: () {
-                        print("pet_id ${petdetail?[index].petId}");
-                        print("Click at ${index}");
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (_) => InsuranceREG5(
-                            pet_id: (petdetail?[index].petId).toString(),
-                            insurance_planId:
-                                (petinsuranceregister?[index].insurancedetail?.insurance_planId ??
-                                    0),
-                            insurance_regId:
-                                (petinsuranceregister?[index].insurance_regId ??
-                                    0),
-                          ),
-                        ));
-                      },
-                    ),
-                  ),
-                );
-            },
-          )),
+                    );
+                  },
+                )
+              : Center(
+                  child: Text(
+                  "ไม่มีข้อมูลการสมัคร",
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: "Itim"),
+                ))),
+      
     );
   }
 }

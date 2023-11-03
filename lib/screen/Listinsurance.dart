@@ -106,7 +106,8 @@ class _ListInsuranceState extends State<ListInsurance> {
                             ],
                           ),
                           onTap: () {
-                            print("pet_id ${petinsuranceregister?[index].petdetail?.petId??"N/A"}");
+                            print(
+                                "pet_id ${petinsuranceregister?[index].petdetail?.petId ?? "N/A"}");
                             print("Click at ${index}");
                             print(
                                 "insurance_planId ${petinsuranceregister?[index].insurancedetail?.insurance_planId ?? 0}");
@@ -115,7 +116,10 @@ class _ListInsuranceState extends State<ListInsurance> {
                             Navigator.of(context)
                                 .pushReplacement(MaterialPageRoute(
                               builder: (_) => InsuranceREG5(
-                                pet_id: (petinsuranceregister?[index].petdetail?.petId).toString(),
+                                pet_id: (petinsuranceregister?[index]
+                                        .petdetail
+                                        ?.petId)
+                                    .toString(),
                                 insurance_planId: (petinsuranceregister?[index]
                                         .insurancedetail
                                         ?.insurance_planId ??
@@ -139,6 +143,22 @@ class _ListInsuranceState extends State<ListInsurance> {
                       fontWeight: FontWeight.bold,
                       fontFamily: "Itim"),
                 ))),
+    );
+  }
+
+  Widget _buildPetImage(String? petType) {
+    String imagePath =
+        'Image/pet.png'; // รูปภาพเริ่มต้นสำหรับสัตว์เลี้ยงประเภทอื่น ๆ
+
+    if (petType == 'สุนัข') {
+      imagePath = 'Image/dog.png'; // รูปภาพสำหรับสุนัข
+    }
+
+    return Image.asset(
+      imagePath,
+      width: 30, // กำหนดขนาดความกว้างของรูปภาพ
+      height: 50, // กำหนดขนาดความสูงของรูปภาพ
+      color: Colors.black, // ตั้งค่าสีพื้นหลัง
     );
   }
 }

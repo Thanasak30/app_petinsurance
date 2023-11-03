@@ -44,7 +44,7 @@ class _AddinsuranceState extends State<Addinsurance> {
     return Scaffold(
       drawer: NavbarOficer(),
       appBar: AppBar(
-        title: const Text("เลือกสัตว์เลี้ยงที่ต้องการทำประกัน",style: TextStyle(fontFamily: "Itim"),),
+        title: const Text("เพิ่มแผนประกัน",style: TextStyle(fontFamily: "Itim"),),
         leading: BackButton(
           color: Colors.white,
           onPressed: () {

@@ -54,8 +54,7 @@ class _ListAllinsurance2State extends State<ListAllinsurance2> {
           itemBuilder: (context, index) {
             var insurancename = insurancedetail?[index].insurance_name ?? "";
             var price = insurancedetail?[index].price ?? "";
-            var medical =
-                insurancedetail?[index].medical_expenses;
+            var medical = insurancedetail?[index].medical_expenses;
             var pets_attack = insurancedetail?[index].pets_attack_outsiders;
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 5),
@@ -79,7 +78,7 @@ class _ListAllinsurance2State extends State<ListAllinsurance2> {
                           style: TextStyle(fontFamily: "Itim"),
                         ),
                         Text(
-                          "ค่าคุมครองสัตว์เลี้ยงทำร้ายบุคคลภายนอก: $pets_attack",
+                          "ค่าคุมครองสัตว์เลี้ยงทำร้ายบุคคลภายนอก: ${pets_attack != null && pets_attack != "ไม่คุ้มครอง" ? pets_attack.toString() : "ไม่คุ้มครอง"}",
                           style: TextStyle(fontFamily: "Itim"),
                         ),
                       ],

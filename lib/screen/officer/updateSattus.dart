@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:pet_insurance/model/Insurancedetail.dart';
 import 'package:pet_insurance/model/Officer.dart';
 import 'package:pet_insurance/screen/Listinsurance.dart';
+import 'package:pet_insurance/screen/Payments.dart';
 import 'package:pet_insurance/screen/officer/Listinsuranceofficer.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
@@ -221,7 +222,7 @@ class _UpdateStatusState extends State<UpdateStatus> {
             },
           ),
         ),
-        body: Padding(
+        body: isLoade == true ? Padding(
           padding: const EdgeInsets.all(8.0),
           child: ListView(children: [
             // เริ่มต้นส่วนข้อมูลผู้เอาประกัน
@@ -426,7 +427,7 @@ class _UpdateStatusState extends State<UpdateStatus> {
               ],
             )
           ]),
-        ));
+        ):Container());
   }
 
   Widget _buildPetImage(String imageUrl, BoxFit fit) {

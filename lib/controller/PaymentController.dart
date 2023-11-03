@@ -63,14 +63,13 @@ class PaymentController {
     }
   }
 
-  Future getReferentById(String? insurance_regId) async {
-    var url = Uri.parse(baseURL + '/payment/getbyinsid/' + insurance_regId.toString());
+  Future getReferentById(String insurance_regId) async {
+    var url = Uri.parse(baseURL + '/payment/getbyinsid/' + insurance_regId);
 
     http.Response response = await http.get(url);
 
     final utf8Body = utf8.decode(response.bodyBytes);
     var jsonResponse = json.decode(utf8Body);
-
     return jsonResponse;
   }
 }

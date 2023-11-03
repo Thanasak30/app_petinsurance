@@ -424,12 +424,12 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: Text("สมัครแผนเสร็จสมบูรณ์"),
+                            title: Text("สมัครแผนเสร็จสมบูรณ์" ,style: TextStyle(fontFamily: "Itim"),),
                             content:
-                                Text("คุณได้ทำการสมัครแผนเสร็จเรียนร้อยแล้ว"),
+                                Text("คุณได้ทำการสมัครแผนเสร็จเรียนร้อยแล้ว",style: TextStyle(fontFamily: "Itim")),
                             actions: <Widget>[
                               TextButton(
-                                child: Text("ตกลง"),
+                                child: Text("ตกลง",style: TextStyle(fontFamily: "Itim")),
                                 onPressed: () {
                                   Navigator.of(context)
                                       .pop(); // ปิดกล่องข้อความ

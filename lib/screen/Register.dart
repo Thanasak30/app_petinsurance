@@ -41,8 +41,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   int? age;
   bool checkage = false;
   bool checkgender = false;
+  bool isLode = false;
 
-  var typegender  = TypeGender.male;
+  var typegender = TypeGender.male;
   String? typegenders;
 
   // String? validateGender(TypeGender? value) {
@@ -54,11 +55,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   String? validateUsername(String? value) {
     bool usernameValid =
-        RegExp(r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])[A-Za-z0-9]{4,16}$')
-            .hasMatch(value!);
+        RegExp(r'^(?=.*[A-Z])(?=.*[a-z])[A-Za-z]{4,16}$').hasMatch(value!);
 
     if (value.isEmpty) {
       return "กรุณากรอกชื่อผู้ใช้";
+    } else if (value.length < 4) {
+      return "กรุณากรอกข้อมูลให้มีอย่างน้อย 4 ตัวอักษร";
     } else if (!usernameValid) {
       return "ชื่อผู้ใช้ต้องประกอบด้วยตัวอักษร A-Z, a-z, และตัวเลข 0-9";
     }
@@ -163,7 +165,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           },
         ),
       ),
-      body: SingleChildScrollView(
+      body: isLode == true ? SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Form(
@@ -214,7 +216,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
           ),
         ),
-      ),
+      ):Container(),
     );
   }
 

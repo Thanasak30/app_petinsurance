@@ -82,23 +82,24 @@ class _InsuranceREG5State extends State<InsuranceREG5> {
                 .toString()
                 .indexOf('.'));
 
-
-
     setState(() {
       isLoaded = true;
-      PaymentData(widget.insurance_regId);
     });
   }
 
-  void PaymentData(int insurance_regId) async {
-        var payments =
-        await paymentController.getReferentById(insurance_regId.toString());
+  void PaymentData() async {
+    var payments = await paymentController
+        .getReferentById(widget.insurance_regId.toString());
+    print("payments  :  ${payments}");
+
     payment = Payment.fromJsonToPayment(payments);
+    print("payment  :  ${payment?.status}");
   }
 
   @override
   void initState() {
     super.initState();
+    PaymentData();
     fetcData(widget.pet_id, widget.insurance_planId, widget.insurance_regId);
   }
 
@@ -132,7 +133,8 @@ class _InsuranceREG5State extends State<InsuranceREG5> {
     double size = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: Text("สรุปความคุ้มครองและชำระเงิน"),
+        title: Text("สรุปความคุ้มครองและชำระเงิน",
+            style: TextStyle(fontSize: 16, fontFamily: "Itim")),
         leading: BackButton(
           color: Colors.white,
           onPressed: () {
@@ -143,7 +145,8 @@ class _InsuranceREG5State extends State<InsuranceREG5> {
           },
         ),
       ),
-      body: isLoaded == true ? Padding(
+      body: isLoaded == true
+          ? Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListView(
                 children: [
@@ -158,16 +161,25 @@ class _InsuranceREG5State extends State<InsuranceREG5> {
                           Text(
                             "ข้อมูลผู้เอาประกัน",
                             style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: "Itim"),
                           ),
                           SizedBox(height: 10),
-                          Text(
-                              "ชื่อผู้เอาประกันภัย: ${member?.fullname ?? ''}"),
+                          Text("ชื่อผู้เอาประกันภัย: ${member?.fullname ?? ''}",
+                              style:
+                                  TextStyle(fontSize: 16, fontFamily: "Itim")),
                           Text(
                               "วัน/เดือน/ปีเกิด: ${dateFormat.format(member?.brithday ?? DateTime.now())}"),
-                          Text("เลขบัตรประชาชน: ${member?.idcard ?? ''}"),
-                          Text("ที่อยู่ผู้เอาประกัน: ${member?.address ?? ''}"),
-                          Text("เบอร์โทรศัพท์: ${member?.mobileno ?? ''}"),
+                          Text("เลขบัตรประชาชน: ${member?.idcard ?? ''}",
+                              style:
+                                  TextStyle(fontSize: 16, fontFamily: "Itim")),
+                          Text("ที่อยู่ผู้เอาประกัน: ${member?.address ?? ''}",
+                              style:
+                                  TextStyle(fontSize: 16, fontFamily: "Itim")),
+                          Text("เบอร์โทรศัพท์: ${member?.mobileno ?? ''}",
+                              style:
+                                  TextStyle(fontSize: 16, fontFamily: "Itim")),
                         ],
                       ),
                     ),
@@ -185,12 +197,20 @@ class _InsuranceREG5State extends State<InsuranceREG5> {
                           Text(
                             "รายละเอียดสัตว์เลี้ยง",
                             style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: "Itim"),
                           ),
                           SizedBox(height: 10),
-                          Text("ชื่อสัตว์เลี้ยง: ${petdetail?.namepet ?? ''}"),
-                          Text("อายุ: ${petdetail?.agepet ?? ''}"),
-                          Text("เพศ: ${petdetail?.gender ?? ''}"),
+                          Text("ชื่อสัตว์เลี้ยง: ${petdetail?.namepet ?? ''}",
+                              style:
+                                  TextStyle(fontSize: 16, fontFamily: "Itim")),
+                          Text("อายุ: ${petdetail?.agepet ?? ''}",
+                              style:
+                                  TextStyle(fontSize: 16, fontFamily: "Itim")),
+                          Text("เพศ: ${petdetail?.gender ?? ''}",
+                              style:
+                                  TextStyle(fontSize: 16, fontFamily: "Itim")),
                         ],
                       ),
                     ),
@@ -208,18 +228,38 @@ class _InsuranceREG5State extends State<InsuranceREG5> {
                           Text(
                             "รายละเอียดกรมธรรม์",
                             style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: "Itim"),
                           ),
                           SizedBox(height: 10),
                           Text(
-                              "แผนประกันภัย: ${insurancedetail?.insurance_name ?? ''}"),
-                          Text("ทุนประกันภัย: ${Total()}"),
+                              "แผนประกันภัย: ${insurancedetail?.insurance_name ?? ''}",
+                              style:
+                                  TextStyle(fontSize: 16, fontFamily: "Itim")),
+                          Text("ทุนประกันภัย: ${Total()}",
+                              style:
+                                  TextStyle(fontSize: 16, fontFamily: "Itim")),
                           Text(
-                              "วันเริ่มต้นคุ้มครอง: ${dateFormat.format(petinsuranceregister?.startdate ?? DateTime.now())}"),
+                              "วันเริ่มต้นคุ้มครอง: ${dateFormat.format(petinsuranceregister?.startdate ?? DateTime.now())}",
+                              style:
+                                  TextStyle(fontSize: 16, fontFamily: "Itim")),
                           Text(
-                              "วันสิ้นสุดคุ้มครอง: ${dateFormat.format(petinsuranceregister?.enddate ?? DateTime.now())}"),
-                          Text(
-                              "เลขกรรมธรรม์: ${payment?.reference_number ?? 'N/A'}"),
+                              "วันสิ้นสุดคุ้มครอง: ${dateFormat.format(petinsuranceregister?.enddate ?? DateTime.now())}",
+                              style:
+                                  TextStyle(fontSize: 16, fontFamily: "Itim")),
+                          // Text(
+                          //   "เลขกรรมธรรม์: ${payment?.reference_number}",
+                          //   style: TextStyle(fontSize: 16),
+                          // ),
+                          payment?.status == "ชำระเงินแล้ว"
+                              ? Text(
+                                  "เลขกรรมธรรม์: ${payment?.reference_number}",
+                                  style: TextStyle(
+                                      fontSize: 16, fontFamily: "Itim"))
+                              : Text("เลขกรรมธรรม์: N/A",
+                                  style: TextStyle(
+                                      fontSize: 16, fontFamily: "Itim")),
                         ],
                       ),
                     ),
@@ -239,12 +279,16 @@ class _InsuranceREG5State extends State<InsuranceREG5> {
                             style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.white),
+                                color: Colors.white,
+                                fontFamily: "Itim"),
                           ),
                           SizedBox(height: 10),
                           Text(
                             "${substring}",
-                            style: TextStyle(fontSize: 20, color: Colors.white),
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                                fontFamily: "Itim"),
                           ),
                         ],
                       ),
@@ -254,7 +298,8 @@ class _InsuranceREG5State extends State<InsuranceREG5> {
 
                   // ปุ่มไปหน้าชำระเงิน
                   Visibility(
-                    visible: petinsuranceregister?.status == "อนุมัติ",
+                    visible: petinsuranceregister?.status == "อนุมัติ" &&
+                        payment?.status != "ชำระเงินแล้ว",
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: 16),
                       width: size * 0.6,
@@ -274,7 +319,8 @@ class _InsuranceREG5State extends State<InsuranceREG5> {
                             ),
                           );
                         },
-                        child: Text("ไปหน้าชำระเงิน"),
+                        child: Text("ไปหน้าชำระเงิน",
+                            style: TextStyle(fontSize: 16, fontFamily: "Itim")),
                       ),
                     ),
                   ),

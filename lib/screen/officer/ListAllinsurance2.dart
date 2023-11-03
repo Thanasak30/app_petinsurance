@@ -6,7 +6,6 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:pet_insurance/controller/OfficerController.dart';
 import 'package:pet_insurance/model/Insurancedetail.dart';
 
-
 import '../../navbar/navbarofficer.dart';
 import 'EditInsurance.dart';
 import 'OfficerAddinsurance.dart';
@@ -45,18 +44,46 @@ class _ListAllinsurance2State extends State<ListAllinsurance2> {
     return Scaffold(
       drawer: NavbarOficer(),
       appBar: AppBar(
-        title: Text("รายการแผนประกัน"),
+        title: Text(
+          "รายการแผนประกัน",
+          style: TextStyle(fontFamily: "Itim"),
+        ),
       ),
       body: ListView.builder(
           itemCount: insurancedetail?.length,
           itemBuilder: (context, index) {
+            var insurancename = insurancedetail?[index].insurance_name ?? "";
+            var price = insurancedetail?[index].price ?? "";
+            var medical =
+                insurancedetail?[index].medical_expenses;
+            var pets_attack = insurancedetail?[index].pets_attack_outsiders;
             return Padding(
-              padding:
-                  const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
+              padding: const EdgeInsets.symmetric(vertical: 5),
               child: Card(
                   elevation: 10,
                   child: ListTile(
-                    leading: Text("${insurancedetail?[index].insurance_name}"),
+                    contentPadding: EdgeInsets.all(10),
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "ชื่อแผนประกัน: $insurancename",
+                          style: TextStyle(fontFamily: "Itim"),
+                        ),
+                        Text(
+                          "ราคา: $price",
+                          style: TextStyle(fontFamily: "Itim"),
+                        ),
+                        Text(
+                          "ค่ารักษาพยาบาล: $medical",
+                          style: TextStyle(fontFamily: "Itim"),
+                        ),
+                        Text(
+                          "ค่าคุมครองสัตว์เลี้ยงทำร้ายบุคคลภายนอก: $pets_attack",
+                          style: TextStyle(fontFamily: "Itim"),
+                        ),
+                      ],
+                    ),
                     onTap: () {
                       print(
                           "insurance_planId ${insurancedetail?[index].insurance_planId}");
@@ -64,8 +91,8 @@ class _ListAllinsurance2State extends State<ListAllinsurance2> {
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
                           builder: (_) => EditInsurance(
                               insurance_planId:
-                                  (insurancedetail?[index].insurance_planId)
-                                       ?? 0)));
+                                  (insurancedetail?[index].insurance_planId) ??
+                                      0)));
                     },
                   )),
             );

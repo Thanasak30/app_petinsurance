@@ -44,7 +44,7 @@ class _AddinsuranceState extends State<Addinsurance> {
     return Scaffold(
       drawer: NavbarOficer(),
       appBar: AppBar(
-        title: const Text("เลือกสัตว์เลี้ยงที่ต้องการทำประกัน"),
+        title: const Text("เลือกสัตว์เลี้ยงที่ต้องการทำประกัน",style: TextStyle(fontFamily: "Itim"),),
         leading: BackButton(
           color: Colors.white,
           onPressed: () {
@@ -95,7 +95,7 @@ class _AddinsuranceState extends State<Addinsurance> {
                   borderSide: BorderSide(color: Colors.cyan),
                   borderRadius: BorderRadius.circular(30)),
             ),
-          ),
+          style: TextStyle(fontFamily: "Itim"),),
         ),
       ],
     );
@@ -119,7 +119,7 @@ class _AddinsuranceState extends State<Addinsurance> {
                   borderSide: BorderSide(color: Colors.cyan),
                   borderRadius: BorderRadius.circular(30)),
             ),
-          ),
+          style: TextStyle(fontFamily: "Itim"),),
         ),
       ],
     );
@@ -167,7 +167,7 @@ class _AddinsuranceState extends State<Addinsurance> {
                   borderSide: BorderSide(color: Colors.cyan),
                   borderRadius: BorderRadius.circular(30)),
             ),
-          ),
+          style: TextStyle(fontFamily: "Itim"),),
         ),
       ],
     );
@@ -191,7 +191,7 @@ class _AddinsuranceState extends State<Addinsurance> {
                   borderSide: BorderSide(color: Colors.cyan),
                   borderRadius: BorderRadius.circular(30)),
             ),
-          ),
+          style: TextStyle(fontFamily: "Itim"),),
         ),
       ],
     );
@@ -209,6 +209,24 @@ class _AddinsuranceState extends State<Addinsurance> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30))),
                 onPressed: () async {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('แจ้งเตือน',style: TextStyle(fontFamily: "Itim"),),
+                        content: Text('เพิ่มแผนประกันภัยสำเร็จ!',style: TextStyle(fontFamily: "Itim"),),
+                        actions: <Widget>[
+                          TextButton(
+                            child: Text('OK',style: TextStyle(fontFamily: "Itim"),),
+                            onPressed: () {
+                              Navigator.of(context)
+                                  .pop(); // ปิดกล่องข้อความแจ้งเตือน
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
                   http.Response response = await officerController.addPlant(
                     PriceController.text,
                     accident_or_illness.text,
@@ -228,10 +246,10 @@ class _AddinsuranceState extends State<Addinsurance> {
                   }
                   Navigator.of(context).pushReplacement(
                       MaterialPageRoute(builder: (BuildContext context) {
-                    return Addinsurance();
+                    return ListAllinsurance2();
                   }));
                 },
-                child: Text("เพิ่มแผนประกันภัย"))),
+                child: Text("เพิ่มแผนประกันภัย",style: TextStyle(fontFamily: "Itim"),))),
       ],
     );
   }
@@ -254,7 +272,7 @@ class _AddinsuranceState extends State<Addinsurance> {
                   borderSide: BorderSide(color: Colors.cyan),
                   borderRadius: BorderRadius.circular(30)),
             ),
-          ),
+          style: TextStyle(fontFamily: "Itim"),),
         ),
       ],
     );
@@ -278,7 +296,7 @@ class _AddinsuranceState extends State<Addinsurance> {
                   borderSide: BorderSide(color: Colors.cyan),
                   borderRadius: BorderRadius.circular(30)),
             ),
-          ),
+          style: TextStyle(fontFamily: "Itim"),),
         ),
       ],
     );
@@ -302,7 +320,7 @@ class _AddinsuranceState extends State<Addinsurance> {
                   borderSide: BorderSide(color: Colors.cyan),
                   borderRadius: BorderRadius.circular(30)),
             ),
-          ),
+         style: TextStyle(fontFamily: "Itim"), ),
         ),
       ],
     );
@@ -326,7 +344,7 @@ class _AddinsuranceState extends State<Addinsurance> {
                   borderSide: BorderSide(color: Colors.cyan),
                   borderRadius: BorderRadius.circular(30)),
             ),
-          ),
+          style: TextStyle(fontFamily: "Itim"),),
         ),
       ],
     );
@@ -350,7 +368,7 @@ class _AddinsuranceState extends State<Addinsurance> {
                   borderSide: BorderSide(color: Colors.cyan),
                   borderRadius: BorderRadius.circular(30)),
             ),
-          ),
+          style: TextStyle(fontFamily: "Itim"),),
         ),
       ],
     );

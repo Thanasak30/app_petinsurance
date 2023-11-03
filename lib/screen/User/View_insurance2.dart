@@ -250,7 +250,7 @@ class _Viewinsurance2State extends State<Viewinsurance2> {
             ),
           )),
         ),
-        body: Column(
+        body: isLoaded == true ? Column(
           children: [
             Expanded(
               child: ListView(
@@ -265,7 +265,7 @@ class _Viewinsurance2State extends State<Viewinsurance2> {
               ),
             ),
           ],
-        ),
+        ): Container(),
       ),
     );
   }

@@ -46,6 +46,7 @@ class _ListInsuranceState extends State<ListInsurance> {
         .listAllPetdetailByMember(member!.memberId.toString());
     petinsuranceregister =
         await officerController.listInsurance(member!.memberId.toString());
+
     setState(() {
       isLoade = true;
     });
@@ -73,8 +74,9 @@ class _ListInsuranceState extends State<ListInsurance> {
               },
             ),
           ),
-          body: petdetail?.length != 0 ?ListView.builder(
-                  itemCount: petdetail?.length ??
+          body: isLoade == true
+              ? ListView.builder(
+                  itemCount: petinsuranceregister?.length ??
                       0, // กำหนดให้ itemCount เป็น 0 ถ้า petdetail เป็น null
                   itemBuilder: (context, index) {
                     return Padding(
@@ -87,25 +89,33 @@ class _ListInsuranceState extends State<ListInsurance> {
                           title: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("${petdetail?[index].namepet}"),
+                              Text(
+                                "${petinsuranceregister?[index].petdetail?.namepet}",
+                                style: TextStyle(fontFamily: "Itim"),
+                              ),
                               Text(
                                 "${petinsuranceregister?[index].status}",
                                 style: TextStyle(
-                                  color: petinsuranceregister?[index].status !=
-                                          'อนุมัติ'
-                                      ? Colors.red
-                                      : Colors.green,
-                                ),
+                                    color:
+                                        petinsuranceregister?[index].status !=
+                                                'อนุมัติ'
+                                            ? Colors.red
+                                            : Colors.green,
+                                    fontFamily: "Itim"),
                               ),
                             ],
                           ),
                           onTap: () {
-                            print("pet_id ${petdetail?[index].petId}");
+                            print("pet_id ${petinsuranceregister?[index].petdetail?.petId??"N/A"}");
                             print("Click at ${index}");
+                            print(
+                                "insurance_planId ${petinsuranceregister?[index].insurancedetail?.insurance_planId ?? 0}");
+                            print(
+                                "insurance_regId ${petinsuranceregister?[index].insurance_regId ?? 0}");
                             Navigator.of(context)
                                 .pushReplacement(MaterialPageRoute(
                               builder: (_) => InsuranceREG5(
-                                pet_id: (petdetail?[index].petId).toString(),
+                                pet_id: (petinsuranceregister?[index].petdetail?.petId).toString(),
                                 insurance_planId: (petinsuranceregister?[index]
                                         .insurancedetail
                                         ?.insurance_planId ??
@@ -129,7 +139,6 @@ class _ListInsuranceState extends State<ListInsurance> {
                       fontWeight: FontWeight.bold,
                       fontFamily: "Itim"),
                 ))),
-      
     );
   }
 }

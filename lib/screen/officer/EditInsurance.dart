@@ -9,6 +9,7 @@ import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:http/http.dart' as http;
 
+import 'ListAllinsurance2.dart';
 import 'OfficerAddinsurance.dart';
 
 class EditInsurance extends StatefulWidget {
@@ -117,7 +118,7 @@ class _EditInsuranceState extends State<EditInsurance> {
           onPressed: () {
             Navigator.of(context).pushReplacement(
                 MaterialPageRoute(builder: (BuildContext context) {
-              return Addinsurance();
+              return ListAllinsurance2();
             }));
           },
         ),

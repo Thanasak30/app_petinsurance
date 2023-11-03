@@ -43,7 +43,7 @@ class _ListAllinsuranceState extends State<ListAllinsurance> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("รายการแผนประกัน"),
+        title: Text("รายการแผนประกัน",style: TextStyle(fontFamily: "Itim"),),
         leading: BackButton(
           color: Colors.white,
           onPressed: () {
@@ -63,7 +63,7 @@ class _ListAllinsuranceState extends State<ListAllinsurance> {
               child: Card(
                   elevation: 10,
                   child: ListTile(
-                    leading: Text("${insurancedetail?[index].insurance_name}"),
+                    leading: Text("${insurancedetail?[index].insurance_name}",style: TextStyle(fontFamily: "Itim"),),
                     onTap: () {
                       print("insurance_planId ${insurancedetail?[index].insurance_planId}");
                       print("Click at ${index}");

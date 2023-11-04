@@ -15,7 +15,6 @@ import 'Register.dart';
 // import 'Veiw_insurance.dart';
 import 'package:http/http.dart' as http;
 
-import 'officer/ListAllinsurance.dart';
 import 'officer/ListAllinsurance2.dart';
 import 'officer/OfficerAddinsurance.dart';
 
@@ -58,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text("ยังไม่มีบัญชี ?"),
+        Text("ยังไม่มีบัญชี ?",style: TextStyle(fontFamily: "Itim"),),
         TextButton(
             onPressed: () {
               Navigator.of(context).pushReplacement(
@@ -66,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 return RegisterScreen();
               }));
             },
-            child: Text("สมัครเข้าใช้งาน"))
+            child: Text("สมัครเข้าใช้งาน",style: TextStyle(fontFamily: "Itim")))
       ],
     );
   }
@@ -114,7 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     }
                   }
                 },
-                child: Text("เข้าสู่ระบบ"))),
+                child: Text("เข้าสู่ระบบ",style: TextStyle(fontFamily: "Itim")))),
       ],
     );
   }
@@ -124,8 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
       padding: EdgeInsets.all(8.0),
       child: Center(
           child: Text(
-        "Petinsurance",
-        style: TextStyle(fontSize: 20),
+        "Petinsurance",style: TextStyle(fontFamily: "Itim",fontSize: 20),
       )),
     );
   }
@@ -152,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
           child: TextFormField(
             controller: userNameTextController,
             decoration: InputDecoration(
-              labelText: "Username",
+              labelText: "ชื่อผู้ใช้",
               prefixIcon: Icon(Icons.account_circle_outlined),
               enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
@@ -176,7 +174,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 return "ชื่อผู้ใช้ไม่ถูกต้อง";
               }
             },
-          ),
+          style: TextStyle(fontFamily: "Itim")),
         ),
       ],
     );
@@ -208,7 +206,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Icons.remove_red_eye_outlined,
                           color: Colors.black,
                         )),
-              labelText: "Password",
+              labelText: "รหัสผ่าน",
               prefixIcon: Icon(Icons.lock_outline),
               enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
@@ -233,7 +231,7 @@ class _LoginScreenState extends State<LoginScreen> {
               // กรณีรหัสผ่านถูกต้อง
               return null;
             },
-          ),
+          style: TextStyle(fontFamily: "Itim")),
         ),
       ],
     );

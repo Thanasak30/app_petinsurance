@@ -23,6 +23,7 @@ class _ListAllinsurance2State extends State<ListAllinsurance2> {
   List<Insurancedetail>? insurancedetail;
 
   bool? isLoade;
+
   void fetcData() async {
     setState(() {
       isLoade = false;
@@ -53,9 +54,24 @@ class _ListAllinsurance2State extends State<ListAllinsurance2> {
           itemCount: insurancedetail?.length,
           itemBuilder: (context, index) {
             var insurancename = insurancedetail?[index].insurance_name ?? "";
-            var price = insurancedetail?[index].price ?? "";
+            var price = insurancedetail?[index].price.toString();
             var medical = insurancedetail?[index].medical_expenses;
             var pets_attack = insurancedetail?[index].pets_attack_outsiders;
+            var priceString;
+            if (price != null) {
+              priceString = price.toString(); // แปลง price เป็น String
+            } else {
+              priceString =
+                  "N/A"; // หรือค่าอื่น ๆ ที่คุณต้องการให้แสดงเมื่อ price เป็น null
+            }
+
+            var indexOfDot = priceString.indexOf('.');
+            var formattedPrice = '';
+            if (indexOfDot != -1) {
+              formattedPrice = priceString.substring(0, indexOfDot);
+            } else {
+              formattedPrice = priceString;
+            }
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 5),
               child: Card(
@@ -70,7 +86,7 @@ class _ListAllinsurance2State extends State<ListAllinsurance2> {
                           style: TextStyle(fontFamily: "Itim"),
                         ),
                         Text(
-                          "ราคา: $price",
+                          "ราคา: $formattedPrice",
                           style: TextStyle(fontFamily: "Itim"),
                         ),
                         Text(

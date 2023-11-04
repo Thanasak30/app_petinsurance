@@ -20,6 +20,8 @@ class EditProfile extends StatefulWidget {
   State<EditProfile> createState() => _EditProfileState();
 }
 
+enum TypeGender { male, female }
+
 class _EditProfileState extends State<EditProfile> {
   String? user;
   Member? member;
@@ -27,12 +29,17 @@ class _EditProfileState extends State<EditProfile> {
 
   String? substring;
   int? age;
+  bool checkage = false;
 
   var dateFormat = DateFormat('dd-MM-yyyy');
   DateTime currentDate = DateTime.now();
   DateTime? birthday;
 
+  var typegender = TypeGender.male;
+  String? typegenders = "ชาย";
+
   final MemberController memberController = MemberController();
+  final GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
   TextEditingController fullnameTextController = TextEditingController();
   TextEditingController AgeTextController = TextEditingController();
@@ -115,12 +122,105 @@ class _EditProfileState extends State<EditProfile> {
         });
   }
 
+  String? validateUsername(String? value) {
+    bool usernameValid =
+        RegExp(r'^(?=.*[A-Z])(?=.*[a-z])[A-Za-z]{4,16}$').hasMatch(value!);
+
+    if (value.isEmpty) {
+      return "กรุณากรอกชื่อผู้ใช้";
+    } else if (value.length < 4) {
+      return "กรุณากรอกข้อมูลให้มีอย่างน้อย 4 ตัวอักษร";
+    } else if (!usernameValid) {
+      return "ชื่อผู้ใช้ต้องประกอบด้วยตัวอักษร A-Z, a-z, และตัวเลข 0-9";
+    }
+    return null;
+  }
+
+  String? validatePassword(String? value) {
+    bool isPasswordValid =
+        RegExp(r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])[A-Za-z0-9]{8,}$')
+            .hasMatch(value!);
+
+    if (value.isEmpty) {
+      return "กรุณากรอกรหัสผ่าน";
+    } else if (!isPasswordValid) {
+      return "รหัสผ่านต้องประกอบด้วย\n ตัวอักษร A-Z, a-z, และตัวเลข 0-9";
+    }
+    return null;
+  }
+
+  String? validateFullname(String? value) {
+    bool isfullnameValid = RegExp(r'^[ก-์," "]{2,30}$').hasMatch(value!);
+
+    if (value.isEmpty) {
+      return "กรุณากรอกชื่อ-นามสกุล เป็นภาษาไทย";
+    } else if (!isfullnameValid) {
+      return "ชื่อ-นามสกุลไม่ถูกต้อง";
+    }
+    return null;
+  }
+
+  String? validatenationality(String? value) {
+    if (value!.isEmpty) {
+      return "กรุณากรอกสัญชาติของคุณ";
+    }
+    return null;
+  }
+
+  String? validateIDcard(String? value) {
+    bool isIdcardValid = RegExp(r'^[0-9]{13}$').hasMatch(value!);
+
+    if (value.isEmpty) {
+      return "กรุณากรอกเลขบัตรประชาชน 13 หลักของคุณ";
+    } else if (!isIdcardValid) {
+      return "กรุณากรอกเลขบัตรประชาชน 13 หลักของคุณเป็นตัวเลขเท่านั้น";
+    }
+    return null;
+  }
+
+  String? validatemobile(String? value) {
+    bool isMobileValid = RegExp(r'^(06|08|09)[0-9]{8}$').hasMatch(value!);
+
+    if (value.isEmpty) {
+      return "กรุณากรอกหมายเลขโทรศัพท์ของคุณ";
+    } else if (!isMobileValid) {
+      return "กรุณากรอกหมายเลขโทรศัพท์ของคุณให้ถูกต้อง\n (06/08/09)";
+    }
+    return null;
+  }
+
+  String? validateemail(String? value) {
+    bool isEmailValid = RegExp(r"^(?=.*[A-Za-z0-9@._-])[A-Za-z0-9@._-]{5,60}$")
+        .hasMatch(value!);
+
+    if (value.isEmpty) {
+      return "กรุณากรอกอีเมลล์ของคุณ";
+    } else if (!isEmailValid) {
+      return "กรุณากรอกอีเมลล์ของคุณให้ถูกต้อง";
+    }
+    return null;
+  }
+
+  String? validateidline(String? value) {
+    if (value!.isEmpty) {
+      return "กรุณากรอกไอดีไลน์ของคุณ";
+    }
+    return null;
+  }
+
+  String? validateaddress(String? value) {
+    if (value!.isEmpty) {
+      return "กรุณากรอกที่อยู่ของคุณ";
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     double size = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("ข้อมูลส่วนตัว"),
+        title: const Text("ข้อมูลส่วนตัว",style: TextStyle(fontFamily: "Itim"),),
         leading: BackButton(
           color: Colors.white,
           onPressed: () {
@@ -132,22 +232,123 @@ class _EditProfileState extends State<EditProfile> {
         ),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            buildfullname(size),
-            buildgender(size),
-            buildnationality(size),
-            buildIDcard(size),
-            buildmobile(size),
-            buildbirthday(size),
-            buildage(size),
-            buildemail(size),
-            buildaddress(size),
-            buildidline(size),
-            buildbuttom(size),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: formkey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Center(
+                  child: Text(
+                    "แก้ไขข้อมูลส่วนตัว",
+                    style: TextStyle(fontSize: 20,fontFamily: "Itim"),
+                  ),
+                ),
+                SizedBox(height: 30),
+                buildInputField("ชื่อ - นามสกุล", Icons.account_circle_outlined,
+                    fullnameTextController,
+                    validator: validateFullname),
+                buildGenderField(),
+                buildInputField("สัญชาติ", Icons.account_circle_outlined,
+                    nationalityTextController,
+                    validator: validatenationality),
+                buildInputField("บัตรประชาชน 13 หลัก",
+                    Icons.credit_card_outlined, IdCardTextController,
+                    validator: validateIDcard),
+                buildInputField("หมายเลขโทรศัพท์", Icons.phone_outlined,
+                    MobilenumberTextController,
+                    validator: validatemobile),
+                buildDatePickerField("วัน/เดือน/ปีเกิด",
+                    Icons.calendar_today_outlined, birthdayTextController),
+                buildCheckage(),
+                buildInputField(
+                    "อีเมลล์", Icons.email_outlined, EmailTextController,
+                    validator: validateemail),
+                buildInputField("ที่อยู่", Icons.location_on_outlined,
+                    AdddressTextController,
+                    validator: validateaddress),
+                buildInputField("ไอดีไลน์", Icons.account_circle_outlined,
+                    IDlineTextController,
+                    validator: validateidline),
+                buildbuttom(size),
+              ],
+            ),
+          ),
         ),
       ),
+    );
+  }
+
+  Widget buildInputField(
+      String labelText, IconData icon, TextEditingController controller,
+      {bool obscureText = false, String? Function(String?)? validator}) {
+    return Container(
+      margin: EdgeInsets.only(top: 15),
+      child: TextFormField(
+        controller: controller,
+        obscureText: obscureText,
+        decoration: InputDecoration(
+          labelText: labelText,
+          prefixIcon: Icon(icon),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black),
+            borderRadius: BorderRadius.circular(30),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.cyan),
+            borderRadius: BorderRadius.circular(30),
+          ),
+        ),
+        validator: validator, // ใช้ validator ที่ถูกส่งเข้ามา
+      style: TextStyle(fontFamily: "Itim"),),
+    );
+  }
+
+  Widget buildDatePickerField(
+      String labelText, IconData icon, TextEditingController controller) {
+    return Container(
+      margin: EdgeInsets.only(top: 15),
+      child: TextFormField(
+        onTap: () async {
+          DateTime? tempDate = await showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(1950),
+            lastDate: DateTime.now(),
+          );
+          if (tempDate != null) {
+            setState(() {
+              birthday = tempDate;
+              String formattedDate = DateFormat('dd-MM-yyyy').format(birthday!);
+              controller.text = formattedDate;
+              age = DateTime.now().year - birthday!.year;
+              AgeTextController.text = age.toString();
+              checkage = true;
+            });
+          }
+        },
+        readOnly: true,
+        controller: controller,
+        decoration: InputDecoration(
+          labelText: labelText,
+          prefixIcon: Icon(icon),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black),
+            borderRadius: BorderRadius.circular(30),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.cyan),
+            borderRadius: BorderRadius.circular(30),
+          ),
+        ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return "กรุณาเลือกวันที่";
+          }
+          return null;
+        },
+      style: TextStyle(fontFamily: "Itim"),),
     );
   }
 
@@ -179,275 +380,83 @@ class _EditProfileState extends State<EditProfile> {
                   // print(updateMember?.username?.username);
                   showSureToUpdateMemberAlert(updateMember);
                 },
-                child: Text("แก้ไขข้อมูล"))),
+                child: Text("แก้ไขข้อมูล",style: TextStyle(fontFamily: "Itim"),))),
       ],
     );
   }
 
-  Row buildidline(double size) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          margin: EdgeInsets.only(top: 15),
-          width: size * 0.6,
-          child: TextFormField(
-            controller: IDlineTextController,
-            decoration: InputDecoration(
-              labelText: "ไอดีไลน์",
-              prefixIcon: Icon(Icons.account_circle_outlined),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                  borderRadius: BorderRadius.circular(30)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.cyan),
-                  borderRadius: BorderRadius.circular(30)),
-            ),
-          ),
+  Widget buildCheckage() {
+    if (checkage) {
+      return TextFormField(
+        controller: AgeTextController,
+        enabled: false,
+        decoration: InputDecoration(
+          labelText: "อายุ",
+          prefixIcon: Icon(Icons.account_circle_outlined),
+          enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.black),
+              borderRadius: BorderRadius.circular(30)),
+          focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.cyan),
+              borderRadius: BorderRadius.circular(30)),
         ),
-      ],
-    );
+        validator: (value) {
+          if (age! < 18) {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text("แจ้งเตือน",style: TextStyle(fontFamily: "Itim"),),
+                  content: Text("ต้องมีอายุมากกว่า 18 ปี",style: TextStyle(fontFamily: "Itim"),),
+                  actions: <Widget>[
+                    TextButton(
+                      child: Text("ตกลง",style: TextStyle(fontFamily: "Itim"),),
+                      onPressed: () {
+                        setState(() {
+                          birthday = null;
+                          birthdayTextController.clear();
+                          age = 0;
+                        });
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          }
+          return null;
+        },
+      style: TextStyle(fontFamily: "Itim"),);
+    } else {
+      return const SizedBox.shrink();
+    }
   }
 
-  Row buildaddress(double size) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          margin: EdgeInsets.only(top: 15),
-          width: size * 0.6,
-          child: TextFormField(
-            controller: AdddressTextController,
-            decoration: InputDecoration(
-              labelText: "ที่อยู่",
-              prefixIcon: Icon(Icons.account_circle_outlined),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                  borderRadius: BorderRadius.circular(30)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.cyan),
-                  borderRadius: BorderRadius.circular(30)),
-            ),
-          ),
+  buildGenderField() {
+    return Column(
+      children: <Widget>[
+        RadioListTile<TypeGender>(
+          title: Text('ชาย',style: TextStyle(fontFamily: "Itim"),),
+          value: TypeGender.male,
+          groupValue: typegender,
+          onChanged: (TypeGender? value) {
+            setState(() {
+              typegender = TypeGender.male;
+              typegenders = "ชาย";
+            });
+          },
         ),
-      ],
-    );
-  }
-
-  Row buildemail(double size) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          margin: EdgeInsets.only(top: 15),
-          width: size * 0.6,
-          child: TextFormField(
-            controller: EmailTextController,
-            decoration: InputDecoration(
-              labelText: "อีเมลล์",
-              prefixIcon: Icon(Icons.account_circle_outlined),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                  borderRadius: BorderRadius.circular(30)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.cyan),
-                  borderRadius: BorderRadius.circular(30)),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Row buildbirthday(double size) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          margin: EdgeInsets.only(top: 15),
-          width: size * 0.6,
-          child: TextFormField(
-            onTap: () async {
-              DateTime? tempDate = await showDatePicker(
-                  context: context,
-                  initialDate: currentDate,
-                  firstDate: DateTime(1950),
-                  lastDate: DateTime.now());
-              setState(() {
-                birthday = tempDate;
-                birthdayTextController.text = dateFormat.format(birthday!);
-                AgeTextController.text = age.toString();
-              });
-              print(birthday);
-              substring = birthday.toString().substring(0,4);
-              age =    int.parse( DateTime.now().year.toString())- int.parse(substring.toString());
-              print(age);
-              
-            },
-            readOnly: true,
-            controller: birthdayTextController,
-            decoration: InputDecoration(
-              labelText: "วัน/เดือน/ปีเกิด",
-              prefixIcon: Icon(Icons.account_circle_outlined),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                  borderRadius: BorderRadius.circular(30)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.cyan),
-                  borderRadius: BorderRadius.circular(30)),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Row buildmobile(double size) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          margin: EdgeInsets.only(top: 15),
-          width: size * 0.6,
-          child: TextFormField(
-            controller: MobilenumberTextController,
-            decoration: InputDecoration(
-              labelText: "หมายเลขโทรศัพท์",
-              prefixIcon: Icon(Icons.account_circle_outlined),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                  borderRadius: BorderRadius.circular(30)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.cyan),
-                  borderRadius: BorderRadius.circular(30)),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Row buildIDcard(double size) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          margin: EdgeInsets.only(top: 15),
-          width: size * 0.6,
-          child: TextFormField(
-            controller: IdCardTextController,
-            decoration: InputDecoration(
-              labelText: "บัตรประชาชน 13 หลัก",
-              prefixIcon: Icon(Icons.account_circle_outlined),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                  borderRadius: BorderRadius.circular(30)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.cyan),
-                  borderRadius: BorderRadius.circular(30)),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Row buildnationality(double size) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          margin: EdgeInsets.only(top: 15),
-          width: size * 0.6,
-          child: TextFormField(
-            controller: nationalityTextController,
-            decoration: InputDecoration(
-              labelText: "สัญชาติ",
-              prefixIcon: Icon(Icons.account_circle_outlined),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                  borderRadius: BorderRadius.circular(30)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.cyan),
-                  borderRadius: BorderRadius.circular(30)),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Row buildgender(double size) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          margin: EdgeInsets.only(top: 15),
-          width: size * 0.6,
-          child: TextFormField(
-            controller: GenderTextController,
-            decoration: InputDecoration(
-              labelText: "เพศ",
-              prefixIcon: Icon(Icons.account_circle_outlined),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                  borderRadius: BorderRadius.circular(30)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.cyan),
-                  borderRadius: BorderRadius.circular(30)),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Row buildage(double size) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          margin: EdgeInsets.only(top: 15),
-          width: size * 0.6,
-          child: TextFormField(
-            controller: AgeTextController,
-            enabled: false,
-            decoration: InputDecoration(
-              labelText: "อายุ",
-              prefixIcon: Icon(Icons.account_circle_outlined),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                  borderRadius: BorderRadius.circular(30)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.cyan),
-                  borderRadius: BorderRadius.circular(30)),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Row buildfullname(double size) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          margin: EdgeInsets.only(top: 15),
-          width: size * 0.6,
-          child: TextFormField(
-            controller: fullnameTextController,
-            decoration: InputDecoration(
-              labelText: "fullname",
-              prefixIcon: Icon(Icons.account_circle_outlined),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                  borderRadius: BorderRadius.circular(30)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.cyan),
-                  borderRadius: BorderRadius.circular(30)),
-            ),
-          ),
+        RadioListTile<TypeGender>(
+          title: Text('หญิง',style: TextStyle(fontFamily: "Itim"),),
+          value: TypeGender.female,
+          groupValue: typegender,
+          onChanged: (TypeGender? value) {
+            setState(() {
+              typegender = TypeGender.female;
+              typegenders = "หญิง";
+            });
+          },
         ),
       ],
     );

@@ -25,7 +25,8 @@ class _ListInsuranceScreenState extends State<ListInsuranceScreen> {
     setState(() {
       isLoade = false;
     });
-    petinsuranceregister = await officerController.listInsurancereg();
+    petinsuranceregister = await officerController.getlistInsurancereg();
+    // petinsuranceregister = await officerController.listInsuranceapprove();
     setState(() {
       isLoade = true;
     });
@@ -42,7 +43,7 @@ class _ListInsuranceScreenState extends State<ListInsuranceScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("รายการที่ทำประกัน"),
+          title: Text("รายการที่ทำประกัน",style: TextStyle(fontFamily: "Itim"),),
           leading: BackButton(
             color: Colors.white,
             onPressed: () {
@@ -56,13 +57,14 @@ class _ListInsuranceScreenState extends State<ListInsuranceScreen> {
         ),
         body: isLoade == true
             ? ListView.builder(
-                itemCount: petinsuranceregister?.length,
+                itemCount: petinsuranceregister?.length ?? 0,
                 itemBuilder: (context, index) {
                   var petName =
                       petinsuranceregister?[index].petdetail?.namepet ?? "";
                   var memberName =
                       petinsuranceregister?[index].member?.fullname ?? "";
                   var status = petinsuranceregister?[index].status ?? "";
+                  
 
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 5),
@@ -73,9 +75,18 @@ class _ListInsuranceScreenState extends State<ListInsuranceScreen> {
                         title: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("ชื่อสัตว์เลี้ยง: $petName",style: TextStyle(fontFamily: "Itim"),),
-                            Text("ชื่อเจ้าของ: $memberName",style: TextStyle(fontFamily: "Itim"),),
-                            Text("สถานะ: $status",style: TextStyle(fontFamily: "Itim"),),
+                            Text(
+                              "ชื่อสัตว์เลี้ยง: $petName",
+                              style: TextStyle(fontFamily: "Itim"),
+                            ),
+                            Text(
+                              "ชื่อเจ้าของ: $memberName",
+                              style: TextStyle(fontFamily: "Itim"),
+                            ),
+                            Text(
+                              "สถานะ: $status",
+                              style: TextStyle(fontFamily: "Itim"),
+                            ),
                           ],
                         ),
                         onTap: () {
@@ -104,7 +115,49 @@ class _ListInsuranceScreenState extends State<ListInsuranceScreen> {
                   );
                 },
               )
-            : Container(),
+            : Center(
+                child:
+                    CircularProgressIndicator(), // แสดง Indicator ในกรณีที่กำลังโหลดข้อมูล
+              ),
+      ),
+    );
+  }
+
+  Widget buildCard(String petName, String memberName, String status, int index,
+      BuildContext context) {
+    return Card(
+      elevation: 10,
+      child: ListTile(
+        contentPadding: EdgeInsets.all(10),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("ชื่อสัตว์เลี้ยง: $petName",
+                style: TextStyle(fontFamily: "Itim")),
+            Text("ชื่อเจ้าของ: $memberName",
+                style: TextStyle(fontFamily: "Itim")),
+            Text("สถานะ: $status", style: TextStyle(fontFamily: "Itim")),
+          ],
+        ),
+        onTap: () {
+          print("Click at $index");
+          if (petinsuranceregister != null &&
+              petinsuranceregister?[index] != null &&
+              petinsuranceregister?[index].insurancedetail != null) {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (_) => UpdateStatus(
+                  insurance_regId:
+                      petinsuranceregister?[index].insurance_regId ?? 0,
+                  insurance_planId: petinsuranceregister?[index]
+                          .insurancedetail
+                          ?.insurance_planId ??
+                      0,
+                ),
+              ),
+            );
+          }
+        },
       ),
     );
   }

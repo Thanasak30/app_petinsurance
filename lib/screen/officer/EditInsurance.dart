@@ -4,7 +4,6 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:pet_insurance/controller/OfficerController.dart';
 import 'package:pet_insurance/model/Insurancedetail.dart';
 import 'package:pet_insurance/model/Officer.dart';
-import 'package:pet_insurance/screen/officer/ListAllinsurance.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:http/http.dart' as http;
@@ -307,6 +306,7 @@ class _EditInsuranceState extends State<EditInsurance> {
                       treatment: TreatmentController.text,
                       duration: insurancedetail?.duration,
                       pet_funeral_costs: pet_funeral_costs.text,
+                      accident_or_illness_compensation: accident_or_illness.text,
                       pets_attack_outsiders: pets_attack_outsiders.text,
                       third_party_property_values_due_to_pets:
                           third_party_property.text);

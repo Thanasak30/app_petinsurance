@@ -139,6 +139,22 @@ class OfficerController {
     return list;
   }
 
+  Future listInsuranceapprove() async {
+    Map data = {};
+
+    var body = json.encode(data);
+    var url = Uri.parse(baseURL + '/insuranceregister/listapprove');
+
+    http.Response response = await http.post(url, headers: headers, body: body);
+
+    final utf8Body = utf8.decode(response.bodyBytes);
+    List<dynamic> jsonResponse = json.decode(utf8Body);
+    List<Petinsuranceregister> list = jsonResponse
+        .map((e) => Petinsuranceregister.fromJsonToPetregister(e))
+        .toList();
+    return list;
+  }
+
    Future getlistInsurancereg() async {
     Map data = {};
 

@@ -34,6 +34,9 @@ class _ListInsuranceState extends State<ListInsurance> {
   Member? member;
   String? user;
 
+  Duration? checkdate;
+  int? differancedate;
+
   bool? isLoade = false;
   void fetcData() async {
     setState(() {
@@ -48,6 +51,7 @@ class _ListInsuranceState extends State<ListInsurance> {
         await officerController.listInsurance(member!.memberId.toString());
 
     setState(() {
+
       isLoade = true;
     });
   }

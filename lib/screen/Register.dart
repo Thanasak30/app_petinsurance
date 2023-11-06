@@ -50,27 +50,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   String? validateUsername(String? value) {
     bool usernameValid =
-        RegExp(r'^(?=.*[A-Z])(?=.*[a-z])[A-Za-z]{4,16}$').hasMatch(value!);
+        RegExp(r'^(?=.*[A-Z])(?=.*[a-z])[a-zA-Z0-9]{4,16}$').hasMatch(value!);
 
     if (value.isEmpty) {
       return "กรุณากรอกชื่อผู้ใช้";
     } else if (value.length < 4) {
       return "กรุณากรอกข้อมูลให้มีอย่างน้อย 4 ตัวอักษร";
     } else if (!usernameValid) {
-      return "ชื่อผู้ใช้ต้องประกอบด้วยตัวอักษร A-Z, a-z, และตัวเลข 0-9";
+      return "ชื่อผู้ใช้ต้องประกอบด้วยตัวอักษร A-Z, a-z";
     }
     return null;
   }
 
   String? validatePassword(String? value) {
-    bool isPasswordValid =
-        RegExp(r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])[A-Za-z0-9]{8,}$')
-            .hasMatch(value!);
+    bool isPasswordValid = RegExp(r'^[a-zA-Z0-9]{8,}$').hasMatch(value!);
 
     if (value.isEmpty) {
       return "กรุณากรอกรหัสผ่าน";
     } else if (!isPasswordValid) {
-      return "รหัสผ่านต้องประกอบด้วย\n ตัวอักษร A-Z, a-z, และตัวเลข 0-9";
+      return "รหัสผ่านต้องประกอบด้วย\n ตัวอักษรภาษาอังกฤษ และตัวเลข 0-9";
+    } else if (!isPasswordValid == "") {
+      return "ห้ามมีค่าว่าง";
     }
     return null;
   }
@@ -325,7 +325,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 print("Member was added successfully!");
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('สร้างบัญชีสำเร็จ!'),
+                    backgroundColor: Colors.green,
+                    content: Text(
+                      'สร้างบัญชีสำเร็จ!',
+                      style: TextStyle(fontFamily: "Itim", color: Colors.white),
+                    ),
                   ),
                 );
                 Navigator.of(context).pushReplacement(

@@ -97,7 +97,8 @@ class _PaymentsState extends State<Payments> {
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
-        title: Text("สรุปความคุ้มครองและชำระเงิน"),
+        title: Text("สรุปความคุ้มครองและชำระเงิน",
+            style: TextStyle(fontFamily: "Itim")),
         leading: BackButton(
           color: Colors.white,
           onPressed: () {
@@ -121,15 +122,17 @@ class _PaymentsState extends State<Payments> {
                       Text(
                         "เพิ่มรูปภาพสลิป",
                         style: TextStyle(
-                          fontWeight: FontWeight.bold, // ตั้งค่าให้ตัวหนา
-                          fontSize: 20, // ตั้งค่าขนาดฟอนต์เป็น 24
-                        ),
+                            fontWeight: FontWeight.bold, // ตั้งค่าให้ตัวหนา
+                            fontSize: 20,
+                            fontFamily: "Itim" // ตั้งค่าขนาดฟอนต์เป็น 24
+                            ),
                       ),
                       SizedBox(
                         height: 20,
                       ),
                       _images == null
-                          ? Text('No image selected.')
+                          ? Text('No image selected.',
+                              style: TextStyle(fontFamily: "Itim"))
                           : Image.file(
                               _images!,
                               height: 100,
@@ -140,16 +143,18 @@ class _PaymentsState extends State<Payments> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30))),
                         onPressed: getImage,
-                        child: Text('Select Image'),
+                        child: Text('เลือกรูปภาพ',
+                            style: TextStyle(fontFamily: "Itim")),
                       ),
                       SizedBox(
                         height: 40,
                       ),
                       Text(
                         "ราคาทั้งหมด",
-                        style: TextStyle(fontSize: 18),
+                        style: TextStyle(fontSize: 18, fontFamily: "Itim"),
                       ),
-                      Text("${widget.substring}")
+                      Text("${widget.substring}",
+                          style: TextStyle(fontFamily: "Itim"))
                     ],
                   ),
                 ),
@@ -172,7 +177,9 @@ class _PaymentsState extends State<Payments> {
                         );
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('ทำการชำระเงินเรียบร้อยแล้ว!'),
+                            backgroundColor: Colors.green,
+                            content: Text('ทำการชำระเงินเรียบร้อยแล้ว!',
+                                style: TextStyle(fontFamily: "Itim",color: Colors.white)),
                             duration: Duration(
                                 seconds:
                                     3), // กำหนดเวลาที่ SnackBar จะแสดง (ในที่นี้คือ 3 วินาที)
@@ -188,7 +195,8 @@ class _PaymentsState extends State<Payments> {
                           return Viewinsurance();
                         }));
                       },
-                      child: Text("ชำระเงิน"))),
+                      child: Text("ชำระเงิน",
+                          style: TextStyle(fontFamily: "Itim")))),
             ],
           )),
     ));

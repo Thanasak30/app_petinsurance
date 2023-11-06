@@ -95,7 +95,7 @@ class _ListPetState extends State<ListPet> {
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
-        title: const Text("รายการสัตว์เลี้ยง"),
+        title: const Text("รายการสัตว์เลี้ยง",style: TextStyle(fontFamily: "Itim"),),
         leading: BackButton(
           color: Colors.white,
           onPressed: () {
@@ -116,7 +116,7 @@ class _ListPetState extends State<ListPet> {
                   elevation: 10,
                   child: ListTile(
                     leading: _buildPetImage(petdetail?[index].type),
-                    title: Text("${petdetail?[index].namepet}"),
+                    title: Text("${petdetail?[index].namepet}",style: TextStyle(fontFamily: "Itim"),),
                     onTap: () {
                       print("pet_id ${petdetail?[index].petId}");
                       print("member_Id ${member?.memberId.toString()}");

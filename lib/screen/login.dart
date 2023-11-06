@@ -221,8 +221,8 @@ class _LoginScreenState extends State<LoginScreen> {
               // bool isPasswordValid = RegExp(r'^[0-9]{4}$').hasMatch(value!);
 
               // กรณีไม่กรอกรหัสผ่าน
-              if (value == null || value.isEmpty) {
-                return "กรุณากรอกรหัสผ่าน มีอักษรภาษาอังกฤษและตัวเลข\nความยาวไม่เกิน 8 ตัวอักษร";
+              if (value == null ) {
+                return "กรุณากรอกรหัสผ่าน";
               }
               // กรณีรหัสผ่านไม่ถูกต้อง
               else if (!isPasswordValid) {

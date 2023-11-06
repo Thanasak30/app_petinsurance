@@ -101,7 +101,7 @@ class _UpdateStatusState extends State<UpdateStatus> {
     QuickAlert.show(
         context: context,
         title: "สำเร็จ",
-        text: "อัพเดทข้อมูลสำเร็จ",
+        text: "อนุมัติสำเร็จ",
         type: QuickAlertType.success,
         confirmBtnText: "ตกลง",
         onConfirmBtnTap: () {
@@ -116,10 +116,10 @@ class _UpdateStatusState extends State<UpdateStatus> {
         title: "คุณแน่ใจหรือไม่ ? ",
         text: "คุณต้องการอนุมัติแผนประกันภัย ? ",
         type: QuickAlertType.warning,
-        confirmBtnText: "อนุมัติ",
+        confirmBtnText: "ใช่",
         onConfirmBtnTap: () async {
-          http.Response response = await officerController
-              .updateInsurancereg(office_id, inusrance_regId);
+          http.Response response = await officerController.updateInsurancereg(
+              office_id, inusrance_regId);
 
           if (response.statusCode == 200) {
             Navigator.pop(context);
@@ -128,7 +128,7 @@ class _UpdateStatusState extends State<UpdateStatus> {
             showFailToUpdateStatsuAlert();
           }
         },
-        cancelBtnText: "ยกเลิก",
+        cancelBtnText: "ไม่",
         showCancelBtn: true);
   }
 
@@ -159,10 +159,10 @@ class _UpdateStatusState extends State<UpdateStatus> {
         title: "คุณแน่ใจหรือไม่ ? ",
         text: "คุณไม่ต้องการอนุมัติแผนประกันภัย ? ",
         type: QuickAlertType.warning,
-        confirmBtnText: "ไม่อนุมัติ",
+        confirmBtnText: "ใช่",
         onConfirmBtnTap: () async {
-          http.Response response = await officerController.updateFailInsurancereg(
-              office_id, inusrance_regId);
+          http.Response response = await officerController
+              .updateFailInsurancereg(office_id, inusrance_regId);
 
           if (response.statusCode == 200) {
             Navigator.pop(context);
@@ -171,7 +171,7 @@ class _UpdateStatusState extends State<UpdateStatus> {
             showfailToUpdateStatsuAlert();
           }
         },
-        cancelBtnText: "ยกเลิก",
+        cancelBtnText: "ไม่",
         showCancelBtn: true);
   }
 
@@ -211,7 +211,10 @@ class _UpdateStatusState extends State<UpdateStatus> {
     double size = MediaQuery.of(context).size.width;
     return Scaffold(
         appBar: AppBar(
-          title: Text("สรุปความคุ้มครองและชำระเงิน"),
+          title: Text(
+            "สรุปความคุ้มครองและชำระเงิน",
+            style: TextStyle(fontFamily: "Itim"),
+          ),
           leading: BackButton(
             color: Colors.white,
             onPressed: () {
@@ -222,212 +225,249 @@ class _UpdateStatusState extends State<UpdateStatus> {
             },
           ),
         ),
-        body: isLoade == true ? Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ListView(children: [
-            // เริ่มต้นส่วนข้อมูลผู้เอาประกัน
-            Card(
-              child: Container(
-                padding: EdgeInsets.all(16),
-                color: Colors.grey[300],
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "ข้อมูลผู้เอาประกัน",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                        "ชื่อผู้เอาประกันภัย: ${petinsuranceregister?.member?.fullname ?? ''}"),
-                    Text(
-                        "วัน/เดือน/ปีเกิด: ${dateFormat.format(petinsuranceregister?.member?.brithday ?? DateTime.now())}"),
-                    Text(
-                        "เลขบัตรประชาชน: ${petinsuranceregister?.member?.idcard ?? ''}"),
-                    Text(
-                        "ที่อยู่ผู้เอาประกัน: ${petinsuranceregister?.member?.address ?? ''}"),
-                    Text(
-                        "เบอร์โทรศัพท์: ${petinsuranceregister?.member?.mobileno ?? ''}"),
-                  ],
-                ),
-              ),
-            ),
-            // ส่วนข้อมูลผู้เอาประกันจบที่นี่
-
-            // เริ่มต้นส่วนข้อมูลสัตว์เลี้ยง
-            Card(
-              child: Container(
-                padding: EdgeInsets.all(16),
-                color: Colors.grey[300],
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "รายละเอียดสัตว์เลี้ยง",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                        "ชื่อสัตว์เลี้ยง: ${petinsuranceregister?.petdetail?.namepet ?? ''}"),
-                    Text(
-                        "อายุ: ${petinsuranceregister?.petdetail?.agepet ?? ''}"),
-                    Text(
-                        "เพศ: ${petinsuranceregister?.petdetail?.gender ?? ''}"),
-                  ],
-                ),
-              ),
-            ),
-            // ส่วนข้อมูลสัตว์เลี้ยงจบที่นี่
-
-            // เริ่มต้นส่วนข้อมูลกรมธรรม์
-            Card(
-              child: Container(
-                padding: EdgeInsets.all(16),
-                color: Colors.grey[300],
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "รายละเอียดกรมธรรม์",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                        "แผนประกันภัย: ${insurancedetail?.insurance_name ?? ''}"),
-                    Text("ทุนประกันภัย: ${Total()}"),
-                    Text(
-                        "วันเริ่มต้นคุ้มครอง: ${dateFormat.format(petinsuranceregister?.startdate ?? DateTime.now())}"),
-                    Text(
-                        "วันสิ้นสุดคุ้มครอง: ${dateFormat.format(petinsuranceregister?.enddate ?? DateTime.now())}"),
-                    // Text("เลขกรรมธรรม์: ${payment?.reference_number}"),
-                  ],
-                ),
-              ),
-            ),
-            // ส่วนข้อมูลกรมธรรม์จบที่นี่
-            SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.all(16),
-                child: Card(
-                  color: Colors.grey[300],
-                  child: Padding(
-                    padding: EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "รูปภาพ",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(height: 10),
-                        Text("รูปภาพสัตว์เลี้ยง"),
-                        SizedBox(height: 10),
-                        _buildPetImage(
-                          baseURL + '/insuranceregister/' + imgCertFileName!,
-                          BoxFit
-                              .contain, // หรือตำแหน่งการ fit อื่น ๆ ตามที่คุณต้องการ
-                        ),
-                        SizedBox(height: 10),
-                        Text("รุปภาพใบวัคซีน"),
-                        SizedBox(height: 10),
-                        _buildPetImage(
-                          baseURL + '/insuranceregister/' + imgCertFileName1!,
-                          BoxFit
-                              .contain, // หรือตำแหน่งการ fit อื่น ๆ ตามที่คุณต้องการ
-                        ),
-                        SizedBox(height: 10),
-                        Text("รุปภาพใบตรวจสุขภาพ"),
-                        SizedBox(height: 10),
-                        _buildPetImage(
-                          baseURL + '/insuranceregister/' + imgCertFileName2!,
-                          BoxFit
-                              .contain, // หรือตำแหน่งการ fit อื่น ๆ ตามที่คุณต้องการ
-                        ),
-                      ],
+        body: isLoade == true
+            ? Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListView(children: [
+                  // เริ่มต้นส่วนข้อมูลผู้เอาประกัน
+                  Card(
+                    child: Container(
+                      padding: EdgeInsets.all(16),
+                      color: Colors.grey[300],
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "ข้อมูลผู้เอาประกัน",
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: "Itim"),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                              "ชื่อผู้เอาประกันภัย: ${petinsuranceregister?.member?.fullname ?? ''}",
+                              style: TextStyle(fontFamily: "Itim")),
+                          Text(
+                              "วัน/เดือน/ปีเกิด: ${dateFormat.format(petinsuranceregister?.member?.brithday ?? DateTime.now())}",
+                              style: TextStyle(fontFamily: "Itim")),
+                          Text(
+                              "เลขบัตรประชาชน: ${petinsuranceregister?.member?.idcard ?? ''}",
+                              style: TextStyle(fontFamily: "Itim")),
+                          Text(
+                              "ที่อยู่ผู้เอาประกัน: ${petinsuranceregister?.member?.address ?? ''}",
+                              style: TextStyle(fontFamily: "Itim")),
+                          Text(
+                              "เบอร์โทรศัพท์: ${petinsuranceregister?.member?.mobileno ?? ''}",
+                              style: TextStyle(fontFamily: "Itim")),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ),
-            ),
-            // ส่วนรูปภาพจบที่นี่
+                  // ส่วนข้อมูลผู้เอาประกันจบที่นี่
 
-            // ราคาเบี้ยประกันรวม
-            Card(
-              child: Container(
-                padding: EdgeInsets.all(16),
-                color: Colors.blue,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "ราคาเบี้ยประกันรวม",
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
+                  // เริ่มต้นส่วนข้อมูลสัตว์เลี้ยง
+                  Card(
+                    child: Container(
+                      padding: EdgeInsets.all(16),
+                      color: Colors.grey[300],
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "รายละเอียดสัตว์เลี้ยง",
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: "Itim"),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                              "ชื่อสัตว์เลี้ยง: ${petinsuranceregister?.petdetail?.namepet ?? ''}",
+                              style: TextStyle(fontFamily: "Itim")),
+                          Text(
+                              "อายุ: ${petinsuranceregister?.petdetail?.agepet ?? ''}",
+                              style: TextStyle(fontFamily: "Itim")),
+                          Text(
+                              "เพศ: ${petinsuranceregister?.petdetail?.gender ?? ''}",
+                              style: TextStyle(fontFamily: "Itim")),
+                        ],
+                      ),
                     ),
-                    SizedBox(height: 10),
-                    Text(
-                      "$substring",
-                      style: TextStyle(fontSize: 20, color: Colors.white),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            // ส่วนของราคาเบี้ยประกันรวมจบที่นี่
+                  ),
+                  // ส่วนข้อมูลสัตว์เลี้ยงจบที่นี่
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                    margin: EdgeInsets.symmetric(vertical: 16),
-                    width: size * 0.4,
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30))),
-                        onPressed: () async {
-                          Petinsuranceregister updatePetdetails =
-                              Petinsuranceregister(
-                            insurance_regId: widget.insurance_regId,
-                            officer: officer,
-                          );
-                          showsureToUpdateStatusAlert(
-                              officer?.OfficerId ?? "",
-                              petinsuranceregister?.insurance_regId
-                                      .toString() ??
-                                  "");
-                        },
-                        child: Text("ไม่อนุมัติการสมัคร"))),
-                Container(
-                    margin: EdgeInsets.symmetric(vertical: 16),
-                    width: size * 0.4,
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30))),
-                        onPressed: () async {
-                          Petinsuranceregister updatePetdetail =
-                              Petinsuranceregister(
-                            insurance_regId: widget.insurance_regId,
-                            officer: officer,
-                          );
-                          showSureToUpdateStatusAlert(
-                              officer?.OfficerId ?? "",
-                              petinsuranceregister?.insurance_regId
-                                      .toString() ??
-                                  "");
-                        },
-                        child: Text("อนุมัติการสมัคร"))),
-              ],
-            )
-          ]),
-        ):Container());
+                  // เริ่มต้นส่วนข้อมูลกรมธรรม์
+                  Card(
+                    child: Container(
+                      padding: EdgeInsets.all(16),
+                      color: Colors.grey[300],
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "รายละเอียดกรมธรรม์",
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: "Itim"),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                              "แผนประกันภัย: ${insurancedetail?.insurance_name ?? ''}",
+                              style: TextStyle(fontFamily: "Itim")),
+                          Text("ทุนประกันภัย: ${Total()}",
+                              style: TextStyle(fontFamily: "Itim")),
+                          Text(
+                              "วันเริ่มต้นคุ้มครอง: ${dateFormat.format(petinsuranceregister?.startdate ?? DateTime.now())}",
+                              style: TextStyle(fontFamily: "Itim")),
+                          Text(
+                              "วันสิ้นสุดคุ้มครอง: ${dateFormat.format(petinsuranceregister?.enddate ?? DateTime.now())}",
+                              style: TextStyle(fontFamily: "Itim")),
+                          // Text("เลขกรรมธรรม์: ${payment?.reference_number}"),
+                        ],
+                      ),
+                    ),
+                  ),
+                  // ส่วนข้อมูลกรมธรรม์จบที่นี่
+                  SingleChildScrollView(
+                    child: Padding(
+                      padding: EdgeInsets.all(16),
+                      child: Card(
+                        color: Colors.grey[300],
+                        child: Padding(
+                          padding: EdgeInsets.all(16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "รูปภาพ",
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: "Itim"),
+                              ),
+                              SizedBox(height: 10),
+                              Text("รูปภาพสัตว์เลี้ยง",
+                                  style: TextStyle(fontFamily: "Itim")),
+                              SizedBox(height: 10),
+                              _buildPetImage(
+                                baseURL +
+                                    '/insuranceregister/' +
+                                    imgCertFileName!,
+                                BoxFit
+                                    .contain, // หรือตำแหน่งการ fit อื่น ๆ ตามที่คุณต้องการ
+                              ),
+                              SizedBox(height: 10),
+                              Text("รุปภาพใบวัคซีน",
+                                  style: TextStyle(fontFamily: "Itim")),
+                              SizedBox(height: 10),
+                              _buildPetImage(
+                                baseURL +
+                                    '/insuranceregister/' +
+                                    imgCertFileName1!,
+                                BoxFit
+                                    .contain, // หรือตำแหน่งการ fit อื่น ๆ ตามที่คุณต้องการ
+                              ),
+                              SizedBox(height: 10),
+                              Text("รุปภาพใบตรวจสุขภาพ",
+                                  style: TextStyle(fontFamily: "Itim")),
+                              SizedBox(height: 10),
+                              _buildPetImage(
+                                baseURL +
+                                    '/insuranceregister/' +
+                                    imgCertFileName2!,
+                                BoxFit
+                                    .contain, // หรือตำแหน่งการ fit อื่น ๆ ตามที่คุณต้องการ
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  // ส่วนรูปภาพจบที่นี่
+
+                  // ราคาเบี้ยประกันรวม
+                  Card(
+                    child: Container(
+                      padding: EdgeInsets.all(16),
+                      color: Colors.blue,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "ราคาเบี้ยประกันรวม",
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontFamily: "Itim"),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            "$substring",
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                                fontFamily: "Itim"),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  // ส่วนของราคาเบี้ยประกันรวมจบที่นี่
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                          margin: EdgeInsets.symmetric(vertical: 16),
+                          width: size * 0.4,
+                          child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30))),
+                              onPressed: () async {
+                                Petinsuranceregister updatePetdetails =
+                                    Petinsuranceregister(
+                                  insurance_regId: widget.insurance_regId,
+                                  officer: officer,
+                                );
+                                showsureToUpdateStatusAlert(
+                                    officer?.OfficerId ?? "",
+                                    petinsuranceregister?.insurance_regId
+                                            .toString() ??
+                                        "");
+                              },
+                              child: Text("ไม่อนุมัติการสมัคร",
+                                  style: TextStyle(fontFamily: "Itim")))),
+                      Container(
+                          margin: EdgeInsets.symmetric(vertical: 16),
+                          width: size * 0.4,
+                          child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30))),
+                              onPressed: () async {
+                                Petinsuranceregister updatePetdetail =
+                                    Petinsuranceregister(
+                                  insurance_regId: widget.insurance_regId,
+                                  officer: officer,
+                                );
+                                showSureToUpdateStatusAlert(
+                                    officer?.OfficerId ?? "",
+                                    petinsuranceregister?.insurance_regId
+                                            .toString() ??
+                                        "");
+                              },
+                              child: Text("อนุมัติการสมัคร",
+                                  style: TextStyle(fontFamily: "Itim")))),
+                    ],
+                  )
+                ]),
+              )
+            : Container());
   }
 
   Widget _buildPetImage(String imageUrl, BoxFit fit) {

@@ -17,8 +17,8 @@ class Insurancedetail {
   String? third_party_property_values_due_to_pets;
   String? accident_or_illness_compensation;
   double? price;
-  Member? member;
-  Officer? officer;
+  // Member? member;
+  // Officer? officer;
   // Petdetail? petdetail;
   Petinsuranceregister? petinsuranceregister;
 

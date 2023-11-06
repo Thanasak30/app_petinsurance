@@ -86,7 +86,7 @@ class _EditProfileState extends State<EditProfile> {
         title: "คุณแน่ใจหรือไม่ ? ",
         text: "คุณต้องการอัพเดทข้อมูลสมาชิกหรือไม่ ? ",
         type: QuickAlertType.warning,
-        confirmBtnText: "แก้ไข",
+        confirmBtnText: "ใช่",
         onConfirmBtnTap: () async {
           http.Response response = await memberController.updateMember(uMember);
 
@@ -97,7 +97,7 @@ class _EditProfileState extends State<EditProfile> {
             showFailToUpdateMemberAlert();
           }
         },
-        cancelBtnText: "ยกเลิก",
+        cancelBtnText: "ไม่",
         showCancelBtn: true);
   }
 
@@ -124,7 +124,7 @@ class _EditProfileState extends State<EditProfile> {
 
   String? validateUsername(String? value) {
     bool usernameValid =
-        RegExp(r'^(?=.*[A-Z])(?=.*[a-z])[A-Za-z]{4,16}$').hasMatch(value!);
+        RegExp(r'^(?=.*[A-Z])(?=.*[a-z])[a-zA-Z0-9]{4,16}$').hasMatch(value!);
 
     if (value.isEmpty) {
       return "กรุณากรอกชื่อผู้ใช้";
@@ -138,7 +138,7 @@ class _EditProfileState extends State<EditProfile> {
 
   String? validatePassword(String? value) {
     bool isPasswordValid =
-        RegExp(r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])[A-Za-z0-9]{8,}$')
+        RegExp(r'^[a-zA-Z0-9]{8,}$')
             .hasMatch(value!);
 
     if (value.isEmpty) {

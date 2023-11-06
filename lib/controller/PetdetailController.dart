@@ -49,6 +49,21 @@ class PetdetailController {
     return response;
   }
 
+  Future updatePetdetailstatus(Petdetail petdetail) async {
+
+    Map<String, dynamic> data = petdetail.fromPetdetailToJson();
+    print("DATA FROM CONTROLLER ${data}");
+    var body = json.encode(data);
+    print(body);
+
+    var url = Uri.parse(baseURL + '/petdetail/updatestatus');
+
+    http.Response response = await http.put(url, headers: headers, body: body);
+
+
+    return response;
+  }
+
   Future deletePetdetail(String petId) async {
     var url = Uri.parse(baseURL + "/petdetail/delete/" + petId);
 

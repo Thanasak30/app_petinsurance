@@ -81,9 +81,9 @@ class _EditInsuranceState extends State<EditInsurance> {
     QuickAlert.show(
         context: context,
         title: "คุณแน่ใจหรือไม่ ? ",
-        text: "คุณต้องการอัพเดทข้อมูลสมาชิกหรือไม่ ? ",
+        text: "คุณต้องการอัพเดทแผนประกันภัย ? ",
         type: QuickAlertType.warning,
-        confirmBtnText: "แก้ไข",
+        confirmBtnText: "ใช่",
         onConfirmBtnTap: () async {
           http.Response response =
               await officerController.updateInsurancedetail(uMember);
@@ -95,7 +95,7 @@ class _EditInsuranceState extends State<EditInsurance> {
             showFailToUpdateInsuranctdetailAlert();
           }
         },
-        cancelBtnText: "ยกเลิก",
+        cancelBtnText: "ไม่",
         showCancelBtn: true);
   }
 
@@ -103,7 +103,7 @@ class _EditInsuranceState extends State<EditInsurance> {
     QuickAlert.show(
         context: context,
         title: "เกิดข้อผิดพลาด",
-        text: "ไม่สามารถอัพเดทข้อมูลสมาชิกได้",
+        text: "ไม่สามารถอัพเดทแผนประกันภัยได้",
         type: QuickAlertType.error);
   }
 
@@ -127,7 +127,7 @@ class _EditInsuranceState extends State<EditInsurance> {
     double size = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: Text("แก้ไขแผนประกันภัย"),
+        title: Text("แก้ไขแผนประกันภัย",style: TextStyle(fontFamily: "Itim"),),
         leading: BackButton(
           color: Colors.white,
           onPressed: () {
@@ -228,7 +228,7 @@ class _EditInsuranceState extends State<EditInsurance> {
                   borderSide: BorderSide(color: Colors.cyan),
                   borderRadius: BorderRadius.circular(30)),
             ),
-          ),
+          style: TextStyle(fontFamily: "Itim"),),
         ),
       ],
     );
@@ -313,7 +313,7 @@ class _EditInsuranceState extends State<EditInsurance> {
                   // print(updateMember?.username?.username);
                   showSureToUpdateInsuranceeAlert(updateInsurancedetail);
                 },
-                child: Text("แก้ไขแผนประกันภัย"))),
+                child: Text("แก้ไขแผนประกันภัย",style: TextStyle(fontFamily:"Itim"),))),
       ],
     );
   }

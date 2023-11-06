@@ -167,7 +167,7 @@ class _EditPetState extends State<EditPet> {
         title: "คุณแน่ใจหรือไม่ ? ",
         text: "คุณต้องการอัพเดทข้อมูลสมาชิกหรือไม่ ? ",
         type: QuickAlertType.warning,
-        confirmBtnText: "แก้ไข",
+        confirmBtnText: "ใช่",
         onConfirmBtnTap: () async {
           http.Response response =
               await petdetailController.updatePetdetail(uPetdetail);
@@ -179,7 +179,7 @@ class _EditPetState extends State<EditPet> {
             showFailToUpdateMemberAlert();
           }
         },
-        cancelBtnText: "ยกเลิก",
+        cancelBtnText: "ไม่",
         showCancelBtn: true);
   }
 
@@ -223,7 +223,7 @@ class _EditPetState extends State<EditPet> {
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
-        title: const Text("แก้ไขข้อมูลสัตว์เลี้ยง"),
+        title: const Text("แก้ไขข้อมูลสัตว์เลี้ยง",style: TextStyle(fontFamily: "Itim")),
         leading: BackButton(
           color: Colors.white,
           onPressed: () {
@@ -269,7 +269,7 @@ class _EditPetState extends State<EditPet> {
             });
           },
         ),
-        Text('ชาย'),
+        Text('ชาย',style: TextStyle(fontFamily: "Itim")),
         SizedBox(width: 20),
         Radio<TypeGender>(
           value: TypeGender.female,
@@ -281,7 +281,7 @@ class _EditPetState extends State<EditPet> {
             });
           },
         ),
-        Text('หญิง'),
+        Text('หญิง',style: TextStyle(fontFamily: "Itim")),
       ],
     );
   }
@@ -311,7 +311,7 @@ class _EditPetState extends State<EditPet> {
 
                   showSureToUpdateMemberAlert(updatePetdetail);
                 },
-                child: Text("แก้ไขข้อมูลสัตว์เลี้ยง"))),
+                child: Text("แก้ไขข้อมูลสัตว์เลี้ยง",style: TextStyle(fontFamily: "Itim")))),
       ],
     );
   }
@@ -319,14 +319,14 @@ class _EditPetState extends State<EditPet> {
   Container buildtitlespice() {
     return Container(
       margin: EdgeInsets.only(top: 30),
-      child: Text("พันธุ์สัตว์"),
+      child: Text("พันธุ์สัตว์",style: TextStyle(fontFamily: "Itim")),
     );
   }
 
   Container buildtitle() {
     return Container(
       margin: EdgeInsets.only(top: 30),
-      child: Text("สัตว์เลี้ยงของท่าน"),
+      child: Text("สัตว์เลี้ยงของท่าน",style: TextStyle(fontFamily: "Itim")),
     );
   }
 
@@ -358,11 +358,11 @@ class _EditPetState extends State<EditPet> {
             });
           },
         ),
-        Text('แมว'),
+        Text('แมว',style: TextStyle(fontFamily: "Itim")),
         SizedBox(width: 20),
         // if (Types != "แมว")
         DropdownButton<String>(
-          hint: Text('เลือกสายพันธุ์'),
+          hint: Text('เลือกสายพันธุ์',style: TextStyle(fontFamily: "Itim"),),
           value: selectedPet,
           onChanged: (String? newValue) {
             setState(() {
@@ -394,7 +394,7 @@ class _EditPetState extends State<EditPet> {
           child: Center(
             child: Text(
               "อายุ",
-              style: TextStyle(fontSize: 15),
+              style: TextStyle(fontSize: 15,fontFamily: "Itim"),
             ),
           ),
         ),
@@ -403,8 +403,6 @@ class _EditPetState extends State<EditPet> {
             child: Container(
               width: 150,
               child: DropdownButton<String>(
-                iconEnabledColor: Colors.cyan,
-                dropdownColor: Color.fromARGB(255, 106, 236, 253),
                 alignment: Alignment.centerLeft,
                 borderRadius: BorderRadius.circular(30),
                 value: dropdownage,
@@ -422,7 +420,7 @@ class _EditPetState extends State<EditPet> {
                       style: TextStyle(fontSize: 15),
                     ),
                   );
-                }).toList(),
+                }).toList(),style: TextStyle(fontFamily: "Itim",color: Colors.black),
               ),
             ),
           ),
@@ -439,7 +437,7 @@ class _EditPetState extends State<EditPet> {
           margin: EdgeInsets.only(top: 30),
           child: Text(
             "แก้ไขข้อมูลสัตว์เลี้ยงของท่าน",
-            style: TextStyle(fontSize: 20),
+            style: TextStyle(fontSize: 20,fontFamily: "Itim"),
           ),
         ),
       ],
@@ -464,7 +462,7 @@ class _EditPetState extends State<EditPet> {
               focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.cyan),
                   borderRadius: BorderRadius.circular(30)),
-            ),
+            ),style: TextStyle(fontFamily: "Itim"),
           ),
         ),
       ],

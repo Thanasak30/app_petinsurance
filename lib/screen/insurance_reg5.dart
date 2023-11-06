@@ -10,6 +10,7 @@ import 'package:pet_insurance/model/Officer.dart';
 import 'package:pet_insurance/screen/Listinsurance.dart';
 import 'package:pet_insurance/screen/View_insurance.dart';
 import 'package:pet_insurance/screen/insurance_reg4.dart';
+import 'package:http/http.dart' as http;
 
 import '../controller/MemberController.dart';
 import '../controller/PetdetailController.dart';
@@ -18,6 +19,7 @@ import '../model/Payment.dart';
 import '../model/Petdetail.dart';
 import '../model/Petinsuranceregister.dart';
 import 'Payments.dart';
+import 'insurancereg.dart';
 
 class InsuranceREG5 extends StatefulWidget {
   final String pet_id;
@@ -45,6 +47,9 @@ class _InsuranceREG5State extends State<InsuranceREG5> {
   Petinsuranceregister? petinsuranceregister;
 
   String? substring;
+
+  Duration? checkdate;
+  int? differancedate;
 
   var dateFormat = DateFormat('dd-MM-yyyy');
   DateTime currentDate = DateTime.now();
@@ -83,6 +88,10 @@ class _InsuranceREG5State extends State<InsuranceREG5> {
                 .indexOf('.'));
 
     setState(() {
+      checkdate = petinsuranceregister?.enddate?.difference(DateTime.now());
+      differancedate = checkdate?.inDays;
+      differancedate = differancedate! + 1;
+
       isLoaded = true;
     });
   }
@@ -170,7 +179,9 @@ class _InsuranceREG5State extends State<InsuranceREG5> {
                               style:
                                   TextStyle(fontSize: 16, fontFamily: "Itim")),
                           Text(
-                              "วัน/เดือน/ปีเกิด: ${dateFormat.format(member?.brithday ?? DateTime.now())}"),
+                              "วัน/เดือน/ปีเกิด: ${dateFormat.format(member?.brithday ?? DateTime.now())}",
+                              style:
+                                  TextStyle(fontSize: 16, fontFamily: "Itim")),
                           Text("เลขบัตรประชาชน: ${member?.idcard ?? ''}",
                               style:
                                   TextStyle(fontSize: 16, fontFamily: "Itim")),
@@ -324,6 +335,39 @@ class _InsuranceREG5State extends State<InsuranceREG5> {
                       ),
                     ),
                   ),
+                  (differancedate ?? 0) <= 0
+                      ? Container(
+                          margin: EdgeInsets.symmetric(vertical: 16),
+                          width: size * 0.6,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                            ),
+                            onPressed: () async {
+                              Petinsuranceregister petinsuranceregister =
+                                  Petinsuranceregister(
+                                      petdetail: petdetail,
+                                      insurance_regId: widget.insurance_regId);
+                              http.Response response =
+                                  await officerController.updateStatuspet(
+                                      petdetail!.petId.toString(),
+                                      petinsuranceregister?.insurance_regId
+                                              .toString() ??
+                                          "");
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (_) => insurancereg(),
+                                ),
+                              );
+                            },
+                            child: Text("สมัครแผนประกัน",
+                                style: TextStyle(
+                                    fontSize: 16, fontFamily: "Itim")),
+                          ),
+                        )
+                      : Container(),
                 ],
               ),
             )

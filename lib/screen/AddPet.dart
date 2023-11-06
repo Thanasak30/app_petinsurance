@@ -123,7 +123,7 @@ class _AddPetState extends State<AddPet> {
             showUpAddPetSuccessAlert();
           }
         },
-        cancelBtnText: "ยกเลิก",
+        cancelBtnText: "ไม่",
         showCancelBtn: true);
   }
 
@@ -153,7 +153,7 @@ class _AddPetState extends State<AddPet> {
     double size = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("เพิ่มสัตว์เลี้ยง"),
+        title: const Text("เพิ่มสัตว์เลี้ยง",style: TextStyle(fontFamily: "Itim"),),
         leading: BackButton(
           color: Colors.white,
           onPressed: () {
@@ -171,7 +171,6 @@ class _AddPetState extends State<AddPet> {
               buildappname(),
               buildtitle(),
               buildtypepet(),
-              // buildanimalspice(),
               buildnamepet(size),
               buildagepet(size),
               buildgenderpet(size),
@@ -197,7 +196,7 @@ class _AddPetState extends State<AddPet> {
             });
           },
         ),
-        Text('ชาย'),
+        Text('ชาย',style: TextStyle(fontFamily: "Itim"),),
         SizedBox(width: 20),
         Radio<TypeGender>(
           value: TypeGender.female,
@@ -209,7 +208,7 @@ class _AddPetState extends State<AddPet> {
             });
           },
         ),
-        Text('หญิง'),
+        Text('หญิง',style: TextStyle(fontFamily: "Itim"),),
       ],
     );
   }
@@ -242,58 +241,10 @@ class _AddPetState extends State<AddPet> {
                       addPets.species.toString(),
                       addPets.type.toString());
                 },
-                child: Text("เพิ่มสัตว์เลี้ยง"))),
+                child: Text("เพิ่มสัตว์เลี้ยง",style: TextStyle(fontFamily: "Itim"),))),
       ],
     );
   }
-
-  // Row buildanimalspice() {
-  //   // List<String> selectedAnimalList =
-  //   //     type == Type.Dog ? animalSpice['Dog']! : animalSpice['Cat']!;
-  //   // int selectedIndex = selectedAnimalList.indexOf(listanimal!);
-
-  //   return Row(
-  //     children: [
-  //       Expanded(
-  //         child: Center(
-  //           child: Text("สายพันธุ์", style: TextStyle(fontSize: 15)),
-  //         ),
-  //       ),
-  //       Expanded(
-  //         child: Center(
-  //           child: Container(
-  //             height: 200, // ปรับความสูงตามที่ต้องการ
-  //             child: selectedAnimalList.isNotEmpty
-  //                 ? CupertinoPicker(
-  //                     itemExtent: 40,
-  //                     onSelectedItemChanged: (int index) {
-  //                       setState(() {
-  //                         listanimal = selectedAnimalList[index];
-  //                       });
-  //                     },
-  //                     children: selectedAnimalList
-  //                         .map((String value) => Center(
-  //                               child: Text(
-  //                                 value,
-  //                                 style: TextStyle(fontSize: 15),
-  //                               ),
-  //                             ))
-  //                         .toList(),
-  //                     scrollController: FixedExtentScrollController(
-  //                         initialItem: selectedIndex),
-  //                   )
-  //                 : Center(
-  //                     child: Text(
-  //                       'ไม่มีสายพันธุ์ที่เลือก',
-  //                       style: TextStyle(fontSize: 15),
-  //                     ),
-  //                   ),
-  //           ),
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
 
   Row buildtypepet() {
     return Row(
@@ -310,7 +261,7 @@ class _AddPetState extends State<AddPet> {
             });
           },
         ),
-        Text('สุนัข'),
+        Text('สุนัข',style: TextStyle(fontFamily: "Itim"),),
         SizedBox(width: 20),
         Radio<Type>(
           value: Type.Cat,
@@ -323,11 +274,11 @@ class _AddPetState extends State<AddPet> {
             });
           },
         ),
-        Text('แมว'),
+        Text('แมว',style: TextStyle(fontFamily: "Itim"),),
         SizedBox(width: 20),
         if (type != null)
           DropdownButton<String>(
-            hint: Text('เลือกสัตว์เลี้ยง'),
+            hint: Text('เลือกสายพันธุ์',style: TextStyle(fontFamily: "Itim"),),
             value: selectedPet,
             onChanged: (String? newValue) {
               setState(() {
@@ -338,13 +289,13 @@ class _AddPetState extends State<AddPet> {
                 ? dogData.map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
-                      child: Text(value),
+                      child: Text(value,style: TextStyle(fontFamily: "Itim"),),
                     );
                   }).toList()
                 : catData.map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
-                      child: Text(value),
+                      child: Text(value,style: TextStyle(fontFamily: "Itim"),),
                     );
                   }).toList(),
           ),
@@ -366,7 +317,7 @@ class _AddPetState extends State<AddPet> {
           child: Center(
             child: Text(
               "อายุ",
-              style: TextStyle(fontSize: 15),
+              style: TextStyle(fontSize: 15,fontFamily: "Itim"),
             ),
           ),
         ),
@@ -394,7 +345,7 @@ class _AddPetState extends State<AddPet> {
                       style: TextStyle(fontSize: 15),
                     ),
                   );
-                }).toList(),
+                }).toList(),style: TextStyle(fontFamily: "Itim",color: Colors.black),
               ),
             ),
           ),
@@ -411,7 +362,7 @@ class _AddPetState extends State<AddPet> {
           margin: EdgeInsets.only(top: 30),
           child: Text(
             "เพิ่มสัตว์เลี้ยงของท่าน",
-            style: TextStyle(fontSize: 20),
+            style: TextStyle(fontSize: 20,fontFamily: "Itim"),
           ),
         ),
       ],
@@ -437,7 +388,7 @@ class _AddPetState extends State<AddPet> {
                   borderSide: BorderSide(color: Colors.cyan),
                   borderRadius: BorderRadius.circular(30)),
             ),
-          ),
+          style: TextStyle(fontFamily: "Itim"),),
         ),
       ],
     );

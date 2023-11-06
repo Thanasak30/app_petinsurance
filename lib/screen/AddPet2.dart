@@ -282,8 +282,6 @@ Insurancedetail? insurancedetails;
             child: Container(
               width: 150,
               child: DropdownButton<String>(
-                iconEnabledColor: Colors.cyan,
-                dropdownColor: Color.fromARGB(255, 106, 236, 253),
                 alignment: Alignment.centerLeft,
                 borderRadius: BorderRadius.circular(30),
                 value: listage,

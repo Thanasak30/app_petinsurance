@@ -55,7 +55,7 @@ class _InsuranceREGState extends State<InsuranceREG> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("เลือกสัตว์เลี้ยงที่ต้องการทำประกัน"),
+        title: const Text("เลือกสัตว์เลี้ยงที่ต้องการทำประกัน",style: TextStyle(fontFamily: "Itim")),
         leading: BackButton(
           color: Colors.white,
           onPressed: () {
@@ -69,10 +69,6 @@ class _InsuranceREGState extends State<InsuranceREG> {
       body: ListView.builder(
           itemCount: petdetail?.length,
           itemBuilder: (context, index) {
-            // if(petdetail?[index].status == "รอการอนุมัติ"){
-            //   checkpet = petdetail?[index].namepet;
-            // }
-            // print(checkpet);
             return Padding(
               padding:
                   const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
@@ -80,7 +76,7 @@ class _InsuranceREGState extends State<InsuranceREG> {
                   elevation: 10,
                   child: ListTile(
                     leading:  _buildPetImage(petdetail?[index].type),
-                     title: Text("${petdetail?[index].namepet}"),
+                     title: Text("${petdetail?[index].namepet}",style: TextStyle(fontFamily: "Itim")),
                     onTap: () {
                       print("pet_id ${petdetail?[index].petId}");
                       print("Click at ${index}");

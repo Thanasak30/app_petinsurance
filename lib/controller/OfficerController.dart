@@ -205,6 +205,17 @@ class OfficerController {
     return response;
   }
 
+  Future updateStatuspet(String pet_id,String inusrance_regId) async {
+
+    var url = Uri.parse(baseURL + '/insuranceregister/updatestatuspet/'+ pet_id + '/' + inusrance_regId);
+    print("URL IS ${url}");
+    http.Response response = await http.put(url, headers: headers);
+
+    print("RES CODE IS : ${response.statusCode}");
+
+    return response;
+  }
+
 
   Future getOfficerByUsername(String username) async {
     var url = Uri.parse(baseURL + '/officer/getbyusername/' + username);

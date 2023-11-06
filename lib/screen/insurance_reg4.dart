@@ -194,7 +194,7 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("แผนประกัน"),
+          title: Text("แผนประกัน",style: TextStyle(fontFamily: "Itim")),
           leading: BackButton(
             color: Colors.white,
             onPressed: () {
@@ -218,6 +218,7 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
+                    fontFamily: "Itim"
                   ),
                 ),
                 buildfullname(size),
@@ -237,6 +238,7 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
+                    fontFamily: "Itim"
                   ),
                 ),
                 buildnamepet(size),
@@ -254,6 +256,7 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
+                    fontFamily: "Itim"
                   ),
                 ),
                 buildraio(),
@@ -271,7 +274,7 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
     return RadioListTile<Type>(
       value: Type.receivedByEmail,
       groupValue: typereceived,
-      title: Text("รับกรมธรรม์ทางอีเมล"),
+      title: Text("รับกรมธรรม์ทางอีเมล",style: TextStyle(fontFamily: "Itim")),
       onChanged: (Type? val) {
         setState(() {
           typereceived = Type.receivedByEmail;
@@ -298,11 +301,12 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
             "เพิ่มรูปภาพสัตว์เลี้ยง",
             style: TextStyle(
               fontWeight: FontWeight.bold, // ตั้งค่าให้ตัวหนา
-              fontSize: 20, // ตั้งค่าขนาดฟอนต์เป็น 24
+              fontSize: 20,
+              fontFamily: "Itim" // ตั้งค่าขนาดฟอนต์เป็น 24
             ),
           ),
           _image == null
-              ? Text('No image selected.')
+              ? Text('No image selected.',style: TextStyle(fontFamily: "Itim"))
               : Image.file(
                   _image!,
                   height: 100,
@@ -313,7 +317,7 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30))),
             onPressed: getImage,
-            child: Text('Select Image'),
+            child: Text('เลือกรูปภาพ',style: TextStyle(fontFamily: "Itim")),
           ),
         ],
       ),
@@ -329,12 +333,14 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
           Text("เอกสารประกอบการยื่นประกันภัย",
               style: TextStyle(
                 fontWeight: FontWeight.bold, // ตั้งค่าให้ตัวหนา
-                fontSize: 20, // ตั้งค่าขนาดฟอนต์เป็น 24
+                fontSize: 20,
+                fontFamily: "Itim" // ตั้งค่าขนาดฟอนต์เป็น 24
               )),
           Text("ใบรับรองการทำวัคซีนและใบตรวจสุขภาพ",
               style: TextStyle(
                 fontWeight: FontWeight.bold, // ตั้งค่าให้ตัวหนา
-                fontSize: 15, // ตั้งค่าขนาดฟอนต์เป็น 24
+                fontSize: 15,
+                fontFamily: "Itim" // ตั้งค่าขนาดฟอนต์เป็น 24
               )),
           SizedBox(height: 20),
           Row(
@@ -343,7 +349,7 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
               Column(
                 children: <Widget>[
                   _images == null
-                      ? Text('No image selected.')
+                      ? Text('No image selected.',style: TextStyle(fontFamily: "Itim"))
                       : Image.file(
                           _images!,
                           height: 100,
@@ -356,7 +362,7 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
                       ),
                     ),
                     onPressed: getImagehealth,
-                    child: Text('Select Image'),
+                    child: Text('เลือกรูปภาพ',style: TextStyle(fontFamily: "Itim")),
                   ),
                 ],
               ),
@@ -364,7 +370,7 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
               Column(
                 children: <Widget>[
                   _imagepet == null
-                      ? Text('No image selected.')
+                      ? Text('No image selected.',style: TextStyle(fontFamily: "Itim"))
                       : Image.file(
                           _imagepet!,
                           height: 100,
@@ -377,7 +383,7 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
                       ),
                     ),
                     onPressed: getImagepet,
-                    child: Text('Select Image'),
+                    child: Text('เลือกรูปภาพ',style: TextStyle(fontFamily: "Itim")),
                   ),
                 ],
               ),
@@ -462,15 +468,17 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
             Text("ระยะเวลาคุ้มครอง",
                 style: TextStyle(
                   fontWeight: FontWeight.bold, // ตั้งค่าให้ตัวหนา
-                  fontSize: 20, // ตั้งค่าขนาดฟอนต์เป็น 24
+                  fontSize: 20,
+                  fontFamily: "Itim" // ตั้งค่าขนาดฟอนต์เป็น 24
                 )),
             Text("วันที่คุ้มครอง",
                 style: TextStyle(
                   fontWeight: FontWeight.bold, // ตั้งค่าให้ตัวหนา
-                  fontSize: 15, // ตั้งค่าขนาดฟอนต์เป็น 24
+                  fontSize: 15,
+                  fontFamily: "Itim" // ตั้งค่าขนาดฟอนต์เป็น 24
                 )),
             Text(
-                '${dateFormat.format(currentDate)} ถึง ${dateFormat.format(nextYearDate)}'),
+                '${dateFormat.format(currentDate)} ถึง ${dateFormat.format(nextYearDate)}',style: TextStyle(fontFamily: "Itim")),
           ],
         ),
       ],
@@ -496,7 +504,7 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
                   borderSide: BorderSide(color: Colors.cyan),
                   borderRadius: BorderRadius.circular(30)),
             ),
-          ),
+          style: TextStyle(fontFamily: "Itim")),
         ),
       ],
     );
@@ -521,7 +529,7 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
                   borderSide: BorderSide(color: Colors.cyan),
                   borderRadius: BorderRadius.circular(30)),
             ),
-          ),
+          style: TextStyle(fontFamily: "Itim")),
         ),
       ],
     );
@@ -546,7 +554,7 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
                   borderSide: BorderSide(color: Colors.cyan),
                   borderRadius: BorderRadius.circular(30)),
             ),
-          ),
+          style: TextStyle(fontFamily: "Itim")),
         ),
       ],
     );
@@ -571,7 +579,7 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
                   borderSide: BorderSide(color: Colors.cyan),
                   borderRadius: BorderRadius.circular(30)),
             ),
-          ),
+          style: TextStyle(fontFamily: "Itim")),
         ),
       ],
     );
@@ -596,7 +604,7 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
                   borderSide: BorderSide(color: Colors.cyan),
                   borderRadius: BorderRadius.circular(30)),
             ),
-          ),
+          style: TextStyle(fontFamily: "Itim")),
         ),
       ],
     );
@@ -621,7 +629,7 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
                   borderSide: BorderSide(color: Colors.cyan),
                   borderRadius: BorderRadius.circular(30)),
             ),
-          ),
+          style: TextStyle(fontFamily: "Itim")),
         ),
       ],
     );
@@ -646,7 +654,7 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
                   borderSide: BorderSide(color: Colors.cyan),
                   borderRadius: BorderRadius.circular(30)),
             ),
-          ),
+          style: TextStyle(fontFamily: "Itim")),
         ),
       ],
     );
@@ -671,7 +679,7 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
                   borderSide: BorderSide(color: Colors.cyan),
                   borderRadius: BorderRadius.circular(30)),
             ),
-          ),
+          style: TextStyle(fontFamily: "Itim")),
         ),
       ],
     );
@@ -709,7 +717,7 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
                   borderSide: BorderSide(color: Colors.cyan),
                   borderRadius: BorderRadius.circular(30)),
             ),
-          ),
+          style: TextStyle(fontFamily: "Itim")),
         ),
       ],
     );
@@ -734,7 +742,7 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
                   borderSide: BorderSide(color: Colors.cyan),
                   borderRadius: BorderRadius.circular(30)),
             ),
-          ),
+          style: TextStyle(fontFamily: "Itim")),
         ),
       ],
     );
@@ -759,7 +767,7 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
                   borderSide: BorderSide(color: Colors.cyan),
                   borderRadius: BorderRadius.circular(30)),
             ),
-          ),
+          style: TextStyle(fontFamily: "Itim")),
         ),
       ],
     );
@@ -784,7 +792,7 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
                   borderSide: BorderSide(color: Colors.cyan),
                   borderRadius: BorderRadius.circular(30)),
             ),
-          ),
+          style: TextStyle(fontFamily: "Itim")),
         ),
       ],
     );
@@ -809,7 +817,7 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
                   borderSide: BorderSide(color: Colors.cyan),
                   borderRadius: BorderRadius.circular(30)),
             ),
-          ),
+          style: TextStyle(fontFamily: "Itim")),
         ),
         Container(
           margin: EdgeInsets.only(top: 15),
@@ -826,7 +834,7 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
                   borderSide: BorderSide(color: Colors.cyan),
                   borderRadius: BorderRadius.circular(30)),
             ),
-          ),
+          style: TextStyle(fontFamily: "Itim")),
         ),
       ],
     );
@@ -851,7 +859,7 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
                   borderSide: BorderSide(color: Colors.cyan),
                   borderRadius: BorderRadius.circular(30)),
             ),
-          ),
+          style: TextStyle(fontFamily: "Itim")),
         ),
       ],
     );

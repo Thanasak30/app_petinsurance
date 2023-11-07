@@ -51,7 +51,6 @@ class _ListInsuranceState extends State<ListInsurance> {
         await officerController.listInsurance(member!.memberId.toString());
 
     setState(() {
-
       isLoade = true;
     });
   }
@@ -83,6 +82,10 @@ class _ListInsuranceState extends State<ListInsurance> {
                   itemCount: petinsuranceregister?.length ??
                       0, // กำหนดให้ itemCount เป็น 0 ถ้า petdetail เป็น null
                   itemBuilder: (context, index) {
+                    checkdate = petinsuranceregister?[index].enddate
+                        ?.difference(DateTime.now());
+                    differancedate = checkdate?.inDays;
+                    differancedate = differancedate! + 1;
                     return Padding(
                       padding: const EdgeInsets.only(
                           left: 10, right: 10, top: 5, bottom: 5),
@@ -97,7 +100,13 @@ class _ListInsuranceState extends State<ListInsurance> {
                                 "${petinsuranceregister?[index].petdetail?.namepet}",
                                 style: TextStyle(fontFamily: "Itim"),
                               ),
+                              (differancedate ?? 0) <= 0 ?
                               Text(
+                                "หมดอายุ",
+                                style: TextStyle(
+                                    color:Colors.red,
+                                    fontFamily: "Itim"),
+                              ): Text(
                                 "${petinsuranceregister?[index].status}",
                                 style: TextStyle(
                                     color:
@@ -106,7 +115,7 @@ class _ListInsuranceState extends State<ListInsurance> {
                                             ? Colors.red
                                             : Colors.green,
                                     fontFamily: "Itim"),
-                              ),
+                              ) ,
                             ],
                           ),
                           onTap: () {

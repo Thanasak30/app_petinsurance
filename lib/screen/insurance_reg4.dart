@@ -194,7 +194,7 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("แผนประกัน",style: TextStyle(fontFamily: "Itim")),
+          title: Text("แผนประกัน", style: TextStyle(fontFamily: "Itim")),
           leading: BackButton(
             color: Colors.white,
             onPressed: () {
@@ -216,10 +216,9 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
                 Text(
                   "ข้อมูลส่วนตัว",
                   style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    fontFamily: "Itim"
-                  ),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      fontFamily: "Itim"),
                 ),
                 buildfullname(size),
                 buildAge(size),
@@ -236,10 +235,9 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
                 Text(
                   "ข้อมูลสัตว์เลี้ยง",
                   style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    fontFamily: "Itim"
-                  ),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      fontFamily: "Itim"),
                 ),
                 buildnamepet(size),
                 buildagepet(size),
@@ -254,14 +252,13 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
                 Text(
                   "วิธีรับกรรมธรรม์",
                   style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    fontFamily: "Itim"
-                  ),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      fontFamily: "Itim"),
                 ),
-                buildraio(),
+                buildRadio(),
                 SizedBox(height: 20),
-                Center(child: buildbuttom(size)),
+                Center(child: buildbutton(size)),
               ],
             ),
           ),
@@ -270,24 +267,21 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
     );
   }
 
-  RadioListTile<Type> buildraio() {
+  RadioListTile<Type> buildRadio() {
     return RadioListTile<Type>(
       value: Type.receivedByEmail,
       groupValue: typereceived,
-      title: Text("รับกรมธรรม์ทางอีเมล",style: TextStyle(fontFamily: "Itim")),
+      title: Text(
+        "รับกรมธรรม์ทางอีเมล",
+        style: TextStyle(fontFamily: "Itim"),
+      ),
       onChanged: (Type? val) {
         setState(() {
           typereceived = Type.receivedByEmail;
           typesreceived = "รับกรมธรรม์ทางอีเมล";
         });
-        validator:
-        (value) {
-          // กรณีไม่กรอกไอดีไลน์
-          if (value!.isEmpty) {
-            return "กรุณาเลือกวิธีรับกรรมธรรม์";
-          }
-        };
       },
+      selected: typereceived == Type.receivedByEmail,
     );
   }
 
@@ -300,13 +294,13 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
           Text(
             "เพิ่มรูปภาพสัตว์เลี้ยง",
             style: TextStyle(
-              fontWeight: FontWeight.bold, // ตั้งค่าให้ตัวหนา
-              fontSize: 20,
-              fontFamily: "Itim" // ตั้งค่าขนาดฟอนต์เป็น 24
-            ),
+                fontWeight: FontWeight.bold, // ตั้งค่าให้ตัวหนา
+                fontSize: 20,
+                fontFamily: "Itim" // ตั้งค่าขนาดฟอนต์เป็น 24
+                ),
           ),
           _image == null
-              ? Text('No image selected.',style: TextStyle(fontFamily: "Itim"))
+              ? Text('No image selected.', style: TextStyle(fontFamily: "Itim"))
               : Image.file(
                   _image!,
                   height: 100,
@@ -317,7 +311,7 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30))),
             onPressed: getImage,
-            child: Text('เลือกรูปภาพ',style: TextStyle(fontFamily: "Itim")),
+            child: Text('เลือกรูปภาพ', style: TextStyle(fontFamily: "Itim")),
           ),
         ],
       ),
@@ -332,16 +326,16 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
         children: <Widget>[
           Text("เอกสารประกอบการยื่นประกันภัย",
               style: TextStyle(
-                fontWeight: FontWeight.bold, // ตั้งค่าให้ตัวหนา
-                fontSize: 20,
-                fontFamily: "Itim" // ตั้งค่าขนาดฟอนต์เป็น 24
-              )),
+                  fontWeight: FontWeight.bold, // ตั้งค่าให้ตัวหนา
+                  fontSize: 20,
+                  fontFamily: "Itim" // ตั้งค่าขนาดฟอนต์เป็น 24
+                  )),
           Text("ใบรับรองการทำวัคซีนและใบตรวจสุขภาพ",
               style: TextStyle(
-                fontWeight: FontWeight.bold, // ตั้งค่าให้ตัวหนา
-                fontSize: 15,
-                fontFamily: "Itim" // ตั้งค่าขนาดฟอนต์เป็น 24
-              )),
+                  fontWeight: FontWeight.bold, // ตั้งค่าให้ตัวหนา
+                  fontSize: 15,
+                  fontFamily: "Itim" // ตั้งค่าขนาดฟอนต์เป็น 24
+                  )),
           SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -349,7 +343,8 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
               Column(
                 children: <Widget>[
                   _images == null
-                      ? Text('No image selected.',style: TextStyle(fontFamily: "Itim"))
+                      ? Text('เพิ่มรูปภาพ.',
+                          style: TextStyle(fontFamily: "Itim"))
                       : Image.file(
                           _images!,
                           height: 100,
@@ -362,7 +357,8 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
                       ),
                     ),
                     onPressed: getImagehealth,
-                    child: Text('เลือกรูปภาพ',style: TextStyle(fontFamily: "Itim")),
+                    child: Text('เลือกรูปภาพ',
+                        style: TextStyle(fontFamily: "Itim")),
                   ),
                 ],
               ),
@@ -370,7 +366,8 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
               Column(
                 children: <Widget>[
                   _imagepet == null
-                      ? Text('No image selected.',style: TextStyle(fontFamily: "Itim"))
+                      ? Text('เพิ่มรูปภาพ.',
+                          style: TextStyle(fontFamily: "Itim"))
                       : Image.file(
                           _imagepet!,
                           height: 100,
@@ -383,7 +380,8 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
                       ),
                     ),
                     onPressed: getImagepet,
-                    child: Text('เลือกรูปภาพ',style: TextStyle(fontFamily: "Itim")),
+                    child: Text('เลือกรูปภาพ',
+                        style: TextStyle(fontFamily: "Itim")),
                   ),
                 ],
               ),
@@ -394,67 +392,104 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
     );
   }
 
-  Row buildbuttom(double size) {
+  Row buildbutton(double size) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-            margin: EdgeInsets.symmetric(vertical: 16),
-            width: size * 0.6,
-            child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30))),
-                onPressed: () async {
-                  print(widget.insurance_planId);
-                  print(nextYearDate);
-                  print(widget.pet_id);
-                  if (formKey.currentState!.validate()) {
-                    http.Response response = await insuranceREG.addInsuranceReg(
-                      widget.insurance_planId.toString(),
-                      member!.memberId.toString(),
-                      typesreceived.toString(),
-                      dateFormat.format(currentDate),
-                      dateFormat.format(nextYearDate),
-                      "",
-                      _imagepet!,
-                      _image!,
-                      _images!,
-                      widget.pet_id,
-                    );
-                    if (response.statusCode == 500) {
-                      print("Error!");
-                    } else {
-                      // แสดงการแจ้งเตือนเมื่อสมัครแผนเสร็จสมบูรณ์
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text("สมัครแผนเสร็จสมบูรณ์" ,style: TextStyle(fontFamily: "Itim"),),
-                            content:
-                                Text("คุณได้ทำการสมัครแผนเสร็จเรียนร้อยแล้ว",style: TextStyle(fontFamily: "Itim")),
-                            actions: <Widget>[
-                              TextButton(
-                                child: Text("ตกลง",style: TextStyle(fontFamily: "Itim")),
-                                onPressed: () {
-                                  Navigator.of(context)
-                                      .pop(); // ปิดกล่องข้อความ
-                                  Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) {
+          margin: EdgeInsets.symmetric(vertical: 16),
+          width: size * 0.6,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30)),
+            ),
+            onPressed: () async {
+              if (_imagepet == null || _image == null || _images == null) {
+                // Check if any of the images is null
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    backgroundColor: Colors.red,
+                    content: Text(
+                      'กรุณาเพิ่มรูปภาพทั้งหมด',
+                      style: TextStyle(fontFamily: "Itim", color: Colors.white),
+                    ),
+                    duration: Duration(seconds: 3),
+                  ),
+                );
+              } else if (typesreceived == null) {
+                // Check if the insurance type is not selected
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    backgroundColor: Colors.red,
+                    content: Text(
+                      'กรุณาเลือกวิธีรับกรรมธรรม์',
+                      style: TextStyle(fontFamily: "Itim", color: Colors.white),
+                    ),
+                    duration: Duration(seconds: 3),
+                  ),
+                );
+              } else {
+                // All images and insurance type are selected
+                print(widget.insurance_planId);
+                print(nextYearDate);
+                print(widget.pet_id);
+                if (formKey.currentState!.validate()) {
+                  http.Response response = await insuranceREG.addInsuranceReg(
+                    widget.insurance_planId.toString(),
+                    member!.memberId.toString(),
+                    typesreceived.toString(),
+                    dateFormat.format(currentDate),
+                    dateFormat.format(nextYearDate),
+                    "",
+                    _imagepet!,
+                    _image!,
+                    _images!,
+                    widget.pet_id,
+                  );
+                  if (response.statusCode == 500) {
+                    print("Error!");
+                  } else {
+                    // Registration successful
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text(
+                            "สมัครแผนเสร็จสมบูรณ์",
+                            style: TextStyle(fontFamily: "Itim"),
+                          ),
+                          content: Text("คุณได้ทำการสมัครแผนเสร็จเรียบร้อยแล้ว",
+                              style: TextStyle(fontFamily: "Itim")),
+                          actions: <Widget>[
+                            TextButton(
+                              child: Text("ตกลง",
+                                  style: TextStyle(fontFamily: "Itim")),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) {
                                       return ListInsurance();
-                                    }),
-                                  );
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    }
+                                    },
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
                   }
-                },
-                child: Text("สมัครแผนประกัน"))),
+                }
+              }
+            },
+            child: Text(
+              "สมัครแผนประกัน",
+              style: TextStyle(fontFamily: "Itim"),
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -467,18 +502,19 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
           children: [
             Text("ระยะเวลาคุ้มครอง",
                 style: TextStyle(
-                  fontWeight: FontWeight.bold, // ตั้งค่าให้ตัวหนา
-                  fontSize: 20,
-                  fontFamily: "Itim" // ตั้งค่าขนาดฟอนต์เป็น 24
-                )),
+                    fontWeight: FontWeight.bold, // ตั้งค่าให้ตัวหนา
+                    fontSize: 20,
+                    fontFamily: "Itim" // ตั้งค่าขนาดฟอนต์เป็น 24
+                    )),
             Text("วันที่คุ้มครอง",
                 style: TextStyle(
-                  fontWeight: FontWeight.bold, // ตั้งค่าให้ตัวหนา
-                  fontSize: 15,
-                  fontFamily: "Itim" // ตั้งค่าขนาดฟอนต์เป็น 24
-                )),
+                    fontWeight: FontWeight.bold, // ตั้งค่าให้ตัวหนา
+                    fontSize: 15,
+                    fontFamily: "Itim" // ตั้งค่าขนาดฟอนต์เป็น 24
+                    )),
             Text(
-                '${dateFormat.format(currentDate)} ถึง ${dateFormat.format(nextYearDate)}',style: TextStyle(fontFamily: "Itim")),
+                '${dateFormat.format(currentDate)} ถึง ${dateFormat.format(nextYearDate)}',
+                style: TextStyle(fontFamily: "Itim")),
           ],
         ),
       ],
@@ -493,18 +529,19 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
           margin: EdgeInsets.only(top: 30),
           width: size * 0.6,
           child: TextFormField(
-            controller: genderpetTextController,
-            decoration: InputDecoration(
-              labelText: "เพศ",
-              prefixIcon: Icon(Icons.account_circle_outlined),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                  borderRadius: BorderRadius.circular(30)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.cyan),
-                  borderRadius: BorderRadius.circular(30)),
-            ),
-          style: TextStyle(fontFamily: "Itim")),
+              controller: genderpetTextController,
+              decoration: InputDecoration(
+                enabled: false,
+                labelText: "เพศ",
+                prefixIcon: Icon(Icons.pets),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                    borderRadius: BorderRadius.circular(30)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.cyan),
+                    borderRadius: BorderRadius.circular(30)),
+              ),
+              style: TextStyle(fontFamily: "Itim")),
         ),
       ],
     );
@@ -518,18 +555,19 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
           margin: EdgeInsets.only(top: 30),
           width: size * 0.6,
           child: TextFormField(
-            controller: speciesController,
-            decoration: InputDecoration(
-              labelText: "พันธุ์สัตว์",
-              prefixIcon: Icon(Icons.account_circle_outlined),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                  borderRadius: BorderRadius.circular(30)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.cyan),
-                  borderRadius: BorderRadius.circular(30)),
-            ),
-          style: TextStyle(fontFamily: "Itim")),
+              enabled: false,
+              controller: speciesController,
+              decoration: InputDecoration(
+                labelText: "พันธุ์สัตว์",
+                prefixIcon: Icon(Icons.pets),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                    borderRadius: BorderRadius.circular(30)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.cyan),
+                    borderRadius: BorderRadius.circular(30)),
+              ),
+              style: TextStyle(fontFamily: "Itim")),
         ),
       ],
     );
@@ -543,18 +581,19 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
           margin: EdgeInsets.only(top: 30),
           width: size * 0.6,
           child: TextFormField(
-            controller: TypeTextController,
-            decoration: InputDecoration(
-              labelText: "สัตว์เลี้ยงของท่าน",
-              prefixIcon: Icon(Icons.account_circle_outlined),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                  borderRadius: BorderRadius.circular(30)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.cyan),
-                  borderRadius: BorderRadius.circular(30)),
-            ),
-          style: TextStyle(fontFamily: "Itim")),
+              enabled: false,
+              controller: TypeTextController,
+              decoration: InputDecoration(
+                labelText: "สัตว์เลี้ยงของท่าน",
+                prefixIcon: Icon(Icons.pets),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                    borderRadius: BorderRadius.circular(30)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.cyan),
+                    borderRadius: BorderRadius.circular(30)),
+              ),
+              style: TextStyle(fontFamily: "Itim")),
         ),
       ],
     );
@@ -568,18 +607,19 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
           margin: EdgeInsets.only(top: 30),
           width: size * 0.6,
           child: TextFormField(
-            controller: agePetTextController,
-            decoration: InputDecoration(
-              labelText: "อายุของสัตว์เลี้ยง",
-              prefixIcon: Icon(Icons.account_circle_outlined),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                  borderRadius: BorderRadius.circular(30)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.cyan),
-                  borderRadius: BorderRadius.circular(30)),
-            ),
-          style: TextStyle(fontFamily: "Itim")),
+              enabled: false,
+              controller: agePetTextController,
+              decoration: InputDecoration(
+                labelText: "อายุของสัตว์เลี้ยง",
+                prefixIcon: Icon(Icons.pets),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                    borderRadius: BorderRadius.circular(30)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.cyan),
+                    borderRadius: BorderRadius.circular(30)),
+              ),
+              style: TextStyle(fontFamily: "Itim")),
         ),
       ],
     );
@@ -593,18 +633,19 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
           margin: EdgeInsets.only(top: 30),
           width: size * 0.6,
           child: TextFormField(
-            controller: namePetTextController,
-            decoration: InputDecoration(
-              labelText: "ชื่อสัตว์เลี้ยง",
-              prefixIcon: Icon(Icons.account_circle_outlined),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                  borderRadius: BorderRadius.circular(30)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.cyan),
-                  borderRadius: BorderRadius.circular(30)),
-            ),
-          style: TextStyle(fontFamily: "Itim")),
+              controller: namePetTextController,
+              decoration: InputDecoration(
+                enabled: false,
+                labelText: "ชื่อสัตว์เลี้ยง",
+                prefixIcon: Icon(Icons.pets),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                    borderRadius: BorderRadius.circular(30)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.cyan),
+                    borderRadius: BorderRadius.circular(30)),
+              ),
+              style: TextStyle(fontFamily: "Itim")),
         ),
       ],
     );
@@ -618,18 +659,19 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
           margin: EdgeInsets.only(top: 15),
           width: size * 0.6,
           child: TextFormField(
-            controller: AdddressTextController,
-            decoration: InputDecoration(
-              labelText: "ที่อยู่",
-              prefixIcon: Icon(Icons.account_circle_outlined),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                  borderRadius: BorderRadius.circular(30)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.cyan),
-                  borderRadius: BorderRadius.circular(30)),
-            ),
-          style: TextStyle(fontFamily: "Itim")),
+              enabled: false,
+              controller: AdddressTextController,
+              decoration: InputDecoration(
+                labelText: "ที่อยู่",
+                prefixIcon: Icon(Icons.account_circle_outlined),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                    borderRadius: BorderRadius.circular(30)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.cyan),
+                    borderRadius: BorderRadius.circular(30)),
+              ),
+              style: TextStyle(fontFamily: "Itim")),
         ),
       ],
     );
@@ -643,18 +685,19 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
           margin: EdgeInsets.only(top: 15),
           width: size * 0.6,
           child: TextFormField(
-            controller: EmailTextController,
-            decoration: InputDecoration(
-              labelText: "อีเมลล์",
-              prefixIcon: Icon(Icons.account_circle_outlined),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                  borderRadius: BorderRadius.circular(30)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.cyan),
-                  borderRadius: BorderRadius.circular(30)),
-            ),
-          style: TextStyle(fontFamily: "Itim")),
+              controller: EmailTextController,
+              decoration: InputDecoration(
+                enabled: false,
+                labelText: "อีเมลล์",
+                prefixIcon: Icon(Icons.email_outlined),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                    borderRadius: BorderRadius.circular(30)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.cyan),
+                    borderRadius: BorderRadius.circular(30)),
+              ),
+              style: TextStyle(fontFamily: "Itim")),
         ),
       ],
     );
@@ -668,18 +711,19 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
           margin: EdgeInsets.only(top: 15),
           width: size * 0.6,
           child: TextFormField(
-            controller: IDlineTextController,
-            decoration: InputDecoration(
-              labelText: "ไอดีไลน์",
-              prefixIcon: Icon(Icons.account_circle_outlined),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                  borderRadius: BorderRadius.circular(30)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.cyan),
-                  borderRadius: BorderRadius.circular(30)),
-            ),
-          style: TextStyle(fontFamily: "Itim")),
+              enabled: false,
+              controller: IDlineTextController,
+              decoration: InputDecoration(
+                labelText: "ไอดีไลน์",
+                prefixIcon: Icon(Icons.account_circle_outlined),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                    borderRadius: BorderRadius.circular(30)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.cyan),
+                    borderRadius: BorderRadius.circular(30)),
+              ),
+              style: TextStyle(fontFamily: "Itim")),
         ),
       ],
     );
@@ -693,31 +737,32 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
           margin: EdgeInsets.only(top: 15),
           width: size * 0.6,
           child: TextFormField(
-            onTap: () async {
-              DateTime? tempDate = await showDatePicker(
-                  context: context,
-                  initialDate: currentDate,
-                  firstDate: DateTime(1950),
-                  lastDate: DateTime(2100));
-              setState(() {
-                birthday = tempDate;
-                birthdayTextController.text = dateFormat.format(birthday!);
-              });
-              print(birthday);
-            },
-            readOnly: true,
-            controller: birthdayTextController,
-            decoration: InputDecoration(
-              labelText: "วัน/เดือน/ปีเกิด",
-              prefixIcon: Icon(Icons.account_circle_outlined),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                  borderRadius: BorderRadius.circular(30)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.cyan),
-                  borderRadius: BorderRadius.circular(30)),
-            ),
-          style: TextStyle(fontFamily: "Itim")),
+              enabled: false,
+              onTap: () async {
+                DateTime? tempDate = await showDatePicker(
+                    context: context,
+                    initialDate: currentDate,
+                    firstDate: DateTime(1950),
+                    lastDate: DateTime(2100));
+                setState(() {
+                  birthday = tempDate;
+                  birthdayTextController.text = dateFormat.format(birthday!);
+                });
+                print(birthday);
+              },
+              readOnly: true,
+              controller: birthdayTextController,
+              decoration: InputDecoration(
+                labelText: "วัน/เดือน/ปีเกิด",
+                prefixIcon: Icon(Icons.calendar_today_outlined),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                    borderRadius: BorderRadius.circular(30)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.cyan),
+                    borderRadius: BorderRadius.circular(30)),
+              ),
+              style: TextStyle(fontFamily: "Itim")),
         ),
       ],
     );
@@ -731,18 +776,19 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
           margin: EdgeInsets.only(top: 15),
           width: size * 0.6,
           child: TextFormField(
-            controller: MobilenumberTextController,
-            decoration: InputDecoration(
-              labelText: "หมายเลขโทรศัพท์",
-              prefixIcon: Icon(Icons.account_circle_outlined),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                  borderRadius: BorderRadius.circular(30)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.cyan),
-                  borderRadius: BorderRadius.circular(30)),
-            ),
-          style: TextStyle(fontFamily: "Itim")),
+              controller: MobilenumberTextController,
+              decoration: InputDecoration(
+                enabled: false,
+                labelText: "หมายเลขโทรศัพท์",
+                prefixIcon: Icon(Icons.phone_outlined),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                    borderRadius: BorderRadius.circular(30)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.cyan),
+                    borderRadius: BorderRadius.circular(30)),
+              ),
+              style: TextStyle(fontFamily: "Itim")),
         ),
       ],
     );
@@ -756,18 +802,19 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
           margin: EdgeInsets.only(top: 15),
           width: size * 0.6,
           child: TextFormField(
-            controller: IdCardTextController,
-            decoration: InputDecoration(
-              labelText: "บัตรประชาชน 13 หลัก",
-              prefixIcon: Icon(Icons.account_circle_outlined),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                  borderRadius: BorderRadius.circular(30)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.cyan),
-                  borderRadius: BorderRadius.circular(30)),
-            ),
-          style: TextStyle(fontFamily: "Itim")),
+              controller: IdCardTextController,
+              decoration: InputDecoration(
+                enabled: false,
+                labelText: "บัตรประชาชน 13 หลัก",
+                prefixIcon: Icon(Icons.credit_card_outlined),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                    borderRadius: BorderRadius.circular(30)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.cyan),
+                    borderRadius: BorderRadius.circular(30)),
+              ),
+              style: TextStyle(fontFamily: "Itim")),
         ),
       ],
     );
@@ -781,18 +828,19 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
           margin: EdgeInsets.only(top: 15),
           width: size * 0.6,
           child: TextFormField(
-            controller: nationalityTextController,
-            decoration: InputDecoration(
-              labelText: "สัญชาติ",
-              prefixIcon: Icon(Icons.account_circle_outlined),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                  borderRadius: BorderRadius.circular(30)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.cyan),
-                  borderRadius: BorderRadius.circular(30)),
-            ),
-          style: TextStyle(fontFamily: "Itim")),
+              controller: nationalityTextController,
+              decoration: InputDecoration(
+                enabled: false,
+                labelText: "สัญชาติ",
+                prefixIcon: Icon(Icons.account_circle_outlined),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                    borderRadius: BorderRadius.circular(30)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.cyan),
+                    borderRadius: BorderRadius.circular(30)),
+              ),
+              style: TextStyle(fontFamily: "Itim")),
         ),
       ],
     );
@@ -806,35 +854,37 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
           margin: EdgeInsets.only(top: 15),
           width: size * 0.2,
           child: TextFormField(
-            controller: AgeTextController,
-            decoration: InputDecoration(
-              labelText: "อายุ",
-              prefixIcon: Icon(Icons.account_circle_outlined),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                  borderRadius: BorderRadius.circular(30)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.cyan),
-                  borderRadius: BorderRadius.circular(30)),
-            ),
-          style: TextStyle(fontFamily: "Itim")),
+              controller: AgeTextController,
+              decoration: InputDecoration(
+                enabled: false,
+                labelText: "อายุ",
+                prefixIcon: Icon(Icons.calendar_today_outlined),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                    borderRadius: BorderRadius.circular(30)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.cyan),
+                    borderRadius: BorderRadius.circular(30)),
+              ),
+              style: TextStyle(fontFamily: "Itim")),
         ),
         Container(
           margin: EdgeInsets.only(top: 15),
           width: size * 0.3,
           child: TextFormField(
-            controller: GenderTextController,
-            decoration: InputDecoration(
-              labelText: "เพศ",
-              prefixIcon: Icon(Icons.account_circle_outlined),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                  borderRadius: BorderRadius.circular(30)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.cyan),
-                  borderRadius: BorderRadius.circular(30)),
-            ),
-          style: TextStyle(fontFamily: "Itim")),
+              controller: GenderTextController,
+              decoration: InputDecoration(
+                enabled: false,
+                labelText: "เพศ",
+                prefixIcon: Icon(Icons.account_circle_outlined),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                    borderRadius: BorderRadius.circular(30)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.cyan),
+                    borderRadius: BorderRadius.circular(30)),
+              ),
+              style: TextStyle(fontFamily: "Itim")),
         ),
       ],
     );
@@ -848,18 +898,19 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
           margin: EdgeInsets.only(top: 15),
           width: size * 0.5,
           child: TextFormField(
-            controller: fullnameTextController,
-            decoration: InputDecoration(
-              labelText: "ชื่อ - นามสกุล",
-              prefixIcon: Icon(Icons.account_circle_outlined),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                  borderRadius: BorderRadius.circular(30)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.cyan),
-                  borderRadius: BorderRadius.circular(30)),
-            ),
-          style: TextStyle(fontFamily: "Itim")),
+              controller: fullnameTextController,
+              decoration: InputDecoration(
+                enabled: false,
+                labelText: "ชื่อ - นามสกุล",
+                prefixIcon: Icon(Icons.account_circle_outlined),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                    borderRadius: BorderRadius.circular(30)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.cyan),
+                    borderRadius: BorderRadius.circular(30)),
+              ),
+              style: TextStyle(fontFamily: "Itim")),
         ),
       ],
     );

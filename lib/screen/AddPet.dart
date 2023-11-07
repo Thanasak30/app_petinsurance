@@ -214,37 +214,73 @@ class _AddPetState extends State<AddPet> {
   }
 
   Row buildbuttom(double size) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-            margin: EdgeInsets.symmetric(vertical: 16),
-            width: size * 0.6,
-            child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30))),
-                onPressed: () async {
-                  Petdetail addPets = Petdetail(
-                    member: member,
-                    agepet: listage.toString(),
-                    gender: typegenders.toString(),
-                    namepet: namePetTextController.text,
-                    species: selectedPet.toString(),
-                    type: types.toString(),
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Container(
+        margin: EdgeInsets.symmetric(vertical: 16),
+        width: size * 0.6,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
+          ),
+          onPressed: () async {
+            if (namePetTextController.text.isEmpty ||
+                listage.isEmpty ||
+                typegenders!.isEmpty ||
+                selectedPet!.isEmpty ||
+                types!.isEmpty) {
+              // แสดงข้อความแจ้งเตือนถ้าข้อมูลไม่ครบถ้วน
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text("แจ้งเตือน",
+                        style: TextStyle(fontFamily: "Itim")),
+                    content: Text("กรุณากรอกข้อมูลให้ครบถ้วน",
+                        style: TextStyle(fontFamily: "Itim")),
+                    actions: <Widget>[
+                      TextButton(
+                        child: Text("ตกลง",
+                            style: TextStyle(fontFamily: "Itim")),
+                        onPressed: () {
+                          Navigator.of(context).pop(); // ปิดกล่องข้อความ
+                        },
+                      ),
+                    ],
                   );
-                  showSureToAddPetAlert(
-                      addPets.member!.memberId.toString(),
-                      addPets.agepet.toString(),
-                      addPets.gender.toString(),
-                      addPets.namepet.toString(),
-                      addPets.species.toString(),
-                      addPets.type.toString());
                 },
-                child: Text("เพิ่มสัตว์เลี้ยง",style: TextStyle(fontFamily: "Itim"),))),
-      ],
-    );
-  }
+              );
+            } else {
+              Petdetail addPets = Petdetail(
+                member: member,
+                agepet: listage.toString(),
+                gender: typegenders.toString(),
+                namepet: namePetTextController.text,
+                species: selectedPet.toString(),
+                type: types.toString(),
+              );
+              showSureToAddPetAlert(
+                  addPets.member!.memberId.toString(),
+                  addPets.agepet.toString(),
+                  addPets.gender.toString(),
+                  addPets.namepet.toString(),
+                  addPets.species.toString(),
+                  addPets.type.toString());
+            }
+          },
+          child: Text(
+            "เพิ่มสัตว์เลี้ยง",
+            style: TextStyle(fontFamily: "Itim"),
+          ),
+        ),
+      ),
+    ],
+  );
+}
+
 
   Row buildtypepet() {
     return Row(

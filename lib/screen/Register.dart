@@ -206,7 +206,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 buildInputField("ไอดีไลน์", Icons.account_circle_outlined,
                     IDlineTextController,
                     validator: validateidline),
-                buildbuttom(size),
+                buildButton(size),
               ],
             ),
           ),
@@ -224,18 +224,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
         controller: controller,
         obscureText: obscureText,
         decoration: InputDecoration(
-          labelText: labelText,
-          prefixIcon: Icon(icon),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.black),
-            borderRadius: BorderRadius.circular(30),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.cyan),
-            borderRadius: BorderRadius.circular(30),
-          ),
-        ),
-        validator: validator, // ใช้ validator ที่ถูกส่งเข้ามา
+            labelText: labelText,
+            prefixIcon: Icon(icon),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.black),
+              borderRadius: BorderRadius.circular(30),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.cyan),
+              borderRadius: BorderRadius.circular(30),
+            ),
+            // ถ้า validator คืนค่าไม่เป็น null ให้ใช้ errorBorder และ errorStyle
+            errorBorder: OutlineInputBorder(
+              borderSide:
+                  BorderSide(color: Colors.red), // สีขอบเมื่อข้อมูลไม่ถูกต้อง
+              borderRadius: BorderRadius.circular(30),
+            ),
+            errorStyle: TextStyle(color: Colors.red),
+            focusedErrorBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                  color: Colors.red), // กำหนดสีของกรอบเมื่อมีข้อความข้อผิดพลาด
+              borderRadius: BorderRadius.circular(30),
+            ) // สีข้อความเมื่อข้อมูลไม่ถูกต้อง // สีข้อความเมื่อข้อมูลไม่ถูกต้อง
+            ),
+        validator: validator,
+        style: TextStyle(fontFamily: "Itim"),
       ),
     );
   }
@@ -266,17 +279,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
         readOnly: true,
         controller: controller,
         decoration: InputDecoration(
-          labelText: labelText,
-          prefixIcon: Icon(icon),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.black),
-            borderRadius: BorderRadius.circular(30),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.cyan),
-            borderRadius: BorderRadius.circular(30),
-          ),
-        ),
+            labelText: labelText,
+            prefixIcon: Icon(icon),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.black),
+              borderRadius: BorderRadius.circular(30),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.cyan),
+              borderRadius: BorderRadius.circular(30),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                  color:
+                      Colors.red), // กำหนดสีของกรอบเมื่อมีข้อความข้อผิดพลาดแสดง
+              borderRadius: BorderRadius.circular(30),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                  color: Colors.red), // กำหนดสีของกรอบเมื่อมีข้อความข้อผิดพลาด
+              borderRadius: BorderRadius.circular(30),
+            ) // สีข้อความเมื่อข้อมูลไม่ถูกต้อง// สีข้อความเมื่อข้อมูลไม่ถูกต้อง
+            ),
+        style: TextStyle(fontFamily: "Itim"),
         validator: (value) {
           if (value == null || value.isEmpty) {
             return "กรุณาเลือกวันที่";
@@ -287,7 +312,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  Row buildbuttom(double size) {
+  Row buildButton(double size) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -301,47 +326,58 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
             ),
             onPressed: () async {
-              String? validationMessage;
-              if (!formkey.currentState!.validate()) {
-                validationMessage = 'โปรดกรอกข้อมูลให้ครบถ้วน';
-              }
-              http.Response response = await memberController.addMember(
-                birthdayTextController.text,
-                AdddressTextController.text,
-                AgeTextController.text,
-                fullnameTextController.text,
-                typegenders.toString(),
-                IDlineTextController.text,
-                IdCardTextController.text,
-                EmailTextController.text,
-                MobilenumberTextController.text,
-                nationalityTextController.text,
-                passwordTextController.text,
-                userNameTextController.text,
-              );
-              if (response.statusCode == 500) {
-                print("Error!");
+              if (formkey.currentState!.validate()) {
+                // กรุณากรอกข้อมูลให้ครบถ้วนก่อนทำการสร้างบัญชี
+                http.Response response = await memberController.addMember(
+                  birthdayTextController.text,
+                  AdddressTextController.text,
+                  AgeTextController.text,
+                  fullnameTextController.text,
+                  typegenders.toString(),
+                  IDlineTextController.text,
+                  IdCardTextController.text,
+                  EmailTextController.text,
+                  MobilenumberTextController.text,
+                  nationalityTextController.text,
+                  passwordTextController.text,
+                  userNameTextController.text,
+                );
+                if (response.statusCode == 500) {
+                  print("Error!");
+                } else {
+                  print("Member was added successfully!");
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      backgroundColor: Colors.green,
+                      content: Text(
+                        'สร้างบัญชีสำเร็จ!',
+                        style:
+                            TextStyle(fontFamily: "Itim", color: Colors.white),
+                      ),
+                    ),
+                  );
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) {
+                        return LoginScreen();
+                      },
+                    ),
+                  );
+                }
               } else {
-                print("Member was added successfully!");
+                // แสดงข้อความเมื่อข้อมูลไม่ครบถ้วน
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    backgroundColor: Colors.green,
+                    backgroundColor: Colors.red,
                     content: Text(
-                      'สร้างบัญชีสำเร็จ!',
+                      'โปรดกรอกข้อมูลให้ครบถ้วน',
                       style: TextStyle(fontFamily: "Itim", color: Colors.white),
                     ),
                   ),
                 );
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) {
-                      return LoginScreen();
-                    },
-                  ),
-                );
               }
             },
-            child: Text("สร้างบัญชี"),
+            child: Text("สร้างบัญชี", style: TextStyle(fontFamily: "Itim")),
           ),
         ),
       ],
@@ -352,7 +388,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Column(
       children: <Widget>[
         RadioListTile<TypeGender>(
-          title: Text('ชาย'),
+          title: Text(
+            'ชาย',
+            style: TextStyle(fontFamily: "Itim"),
+          ),
           value: TypeGender.male,
           groupValue: typegender,
           onChanged: (TypeGender? value) {
@@ -363,7 +402,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           },
         ),
         RadioListTile<TypeGender>(
-          title: Text('หญิง'),
+          title: Text('หญิง', style: TextStyle(fontFamily: "Itim")),
           value: TypeGender.female,
           groupValue: typegender,
           onChanged: (TypeGender? value) {
@@ -378,50 +417,62 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Widget buildCheckage() {
-    if (checkage) {
-      return TextFormField(
-        controller: AgeTextController,
-        enabled: false,
-        decoration: InputDecoration(
-          labelText: "อายุ",
-          prefixIcon: Icon(Icons.account_circle_outlined),
-          enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.black),
-              borderRadius: BorderRadius.circular(30)),
-          focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.cyan),
-              borderRadius: BorderRadius.circular(30)),
+  if (checkage) {
+    return TextFormField(
+      controller: AgeTextController,
+      enabled: false,
+      decoration: InputDecoration(
+        labelText: "อายุ",
+        prefixIcon: Icon(Icons.account_circle_outlined),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.black),
+          borderRadius: BorderRadius.circular(30),
         ),
-        validator: (value) {
-          if (age! < 18) {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text("Error"),
-                  content: Text("You must be 18 years or older."),
-                  actions: <Widget>[
-                    TextButton(
-                      child: Text("OK"),
-                      onPressed: () {
-                        setState(() {
-                          birthday = null;
-                          birthdayTextController.clear();
-                          age = 0;
-                        });
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
-                );
-              },
-            );
-          }
-          return null;
-        },
-      );
-    } else {
-      return const SizedBox.shrink();
-    }
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.red), // สีของเส้นเมื่อมีข้อผิดพลาด
+          borderRadius: BorderRadius.circular(30),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.red), // สีของเส้นเมื่อมีข้อผิดพลาดเมื่อโฟกัส
+          borderRadius: BorderRadius.circular(30),
+        ),
+      ),
+      validator: (value) {
+        if (age! < 18) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text(
+                  "แจ้งเตือน!!!",
+                  style: TextStyle(fontFamily: "Itim"),
+                ),
+                content: Text("อายุต้องมากกว่า 18 ปี",
+                    style: TextStyle(fontFamily: "Itim")),
+                actions: <Widget>[
+                  TextButton(
+                    child: Text("ตกลง", style: TextStyle(fontFamily: "Itim")),
+                    onPressed: () {
+                      setState(() {
+                        birthday = null;
+                        birthdayTextController.clear();
+                        age = 0;
+                      });
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        }
+        return null;
+      },
+      style: TextStyle(fontFamily: "Itim"),
+    );
+  } else {
+    return const SizedBox.shrink();
   }
+}
+
 }

@@ -57,7 +57,10 @@ class _LoginScreenState extends State<LoginScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text("ยังไม่มีบัญชี ?",style: TextStyle(fontFamily: "Itim"),),
+        Text(
+          "ยังไม่มีบัญชี ?",
+          style: TextStyle(fontFamily: "Itim"),
+        ),
         TextButton(
             onPressed: () {
               Navigator.of(context).pushReplacement(
@@ -65,7 +68,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 return RegisterScreen();
               }));
             },
-            child: Text("สมัครเข้าใช้งาน",style: TextStyle(fontFamily: "Itim")))
+            child:
+                Text("สมัครเข้าใช้งาน", style: TextStyle(fontFamily: "Itim")))
       ],
     );
   }
@@ -113,7 +117,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     }
                   }
                 },
-                child: Text("เข้าสู่ระบบ",style: TextStyle(fontFamily: "Itim")))),
+                child:
+                    Text("เข้าสู่ระบบ", style: TextStyle(fontFamily: "Itim")))),
       ],
     );
   }
@@ -123,7 +128,8 @@ class _LoginScreenState extends State<LoginScreen> {
       padding: EdgeInsets.all(8.0),
       child: Center(
           child: Text(
-        "Petinsurance",style: TextStyle(fontFamily: "Itim",fontSize: 20),
+        "Petinsurance",
+        style: TextStyle(fontFamily: "Itim", fontSize: 20),
       )),
     );
   }
@@ -150,31 +156,48 @@ class _LoginScreenState extends State<LoginScreen> {
           child: TextFormField(
             controller: userNameTextController,
             decoration: InputDecoration(
-              labelText: "ชื่อผู้ใช้",
-              prefixIcon: Icon(Icons.account_circle_outlined),
-              enabledBorder: OutlineInputBorder(
+                labelText: "ชื่อผู้ใช้",
+                prefixIcon: Icon(Icons.account_circle_outlined),
+                enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
-                  borderRadius: BorderRadius.circular(30)),
-              focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.cyan),
-                  borderRadius: BorderRadius.circular(30)),
-            ),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color:
+                          Colors.red), // กำหนดสีของกรอบเมื่อมีข้อความข้อผิดพลาด
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                errorStyle: TextStyle(color: Colors.red),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color:
+                          Colors.red), // กำหนดสีของกรอบเมื่อมีข้อความข้อผิดพลาด
+                  borderRadius: BorderRadius.circular(30),
+                ) // สีข้อความเมื่อข้อมูลไม่ถูกต้อง
+                ),
             validator: (value) {
               //ถ้าใส่ email ถูก
               bool usernameValid =
-                 RegExp(r'^(?=.*[A-Z])(?=.*[a-z])[A-Za-z0-9]{4,16}$')
+                  RegExp(r'^(?=.*[A-Z])(?=.*[a-z])[A-Za-z0-9]{4,16}$')
                       .hasMatch(value!);
 
               //กรณีไม่ใส่ username
               if (value.isEmpty) {
-                return "กรุณากรอก ตัวอักษรภาษาอังกฤษ\n [A-Z,a-z,[0-9] 4-16 ตัวอักษร";
+                return "กรุณากรอกชื่อผู้ใช้";
               }
               //กรณีใส่ usename ผิด
               else if (!usernameValid) {
                 return "ชื่อผู้ใช้ไม่ถูกต้อง";
               }
+              return null;
             },
-          style: TextStyle(fontFamily: "Itim")),
+            style: TextStyle(fontFamily: "Itim"),
+          ),
         ),
       ],
     );
@@ -191,7 +214,7 @@ class _LoginScreenState extends State<LoginScreen> {
             controller: pssswordController,
             obscureText: stateResEye,
             decoration: InputDecoration(
-              suffixIcon: IconButton(
+                suffixIcon: IconButton(
                   onPressed: () {
                     setState(() {
                       stateResEye = !stateResEye;
@@ -205,23 +228,40 @@ class _LoginScreenState extends State<LoginScreen> {
                       : Icon(
                           Icons.remove_red_eye_outlined,
                           color: Colors.black,
-                        )),
-              labelText: "รหัสผ่าน",
-              prefixIcon: Icon(Icons.lock_outline),
-              enabledBorder: OutlineInputBorder(
+                        ),
+                ),
+                labelText: "รหัสผ่าน",
+                prefixIcon: Icon(Icons.lock_outline),
+                enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
-                  borderRadius: BorderRadius.circular(30)),
-              focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.cyan),
-                  borderRadius: BorderRadius.circular(30)),
-            ),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color:
+                          Colors.red), // กำหนดสีของกรอบเมื่อมีข้อความข้อผิดพลาด
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                errorStyle: TextStyle(color: Colors.red),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color:
+                          Colors.red), // กำหนดสีของกรอบเมื่อมีข้อความข้อผิดพลาด
+                  borderRadius: BorderRadius.circular(30),
+                ) // สีข้อความเมื่อข้อมูลไม่ถูกต้อง // สีข้อความเมื่อข้อมูลไม่ถูกต้อง
+                ),
             validator: (value) {
               // ตรวจสอบความถูกต้องของรหัสผ่าน
-              bool isPasswordValid  = RegExp(r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])[A-Za-z0-9]{8,}$').hasMatch(value!);
-              // bool isPasswordValid = RegExp(r'^[0-9]{4}$').hasMatch(value!);
+              bool isPasswordValid =
+                  RegExp(r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])[A-Za-z0-9]{8,}$')
+                      .hasMatch(value!);
 
               // กรณีไม่กรอกรหัสผ่าน
-              if (value == null ) {
+              if (value == null) {
                 return "กรุณากรอกรหัสผ่าน";
               }
               // กรณีรหัสผ่านไม่ถูกต้อง
@@ -231,7 +271,8 @@ class _LoginScreenState extends State<LoginScreen> {
               // กรณีรหัสผ่านถูกต้อง
               return null;
             },
-          style: TextStyle(fontFamily: "Itim")),
+            style: TextStyle(fontFamily: "Itim"),
+          ),
         ),
       ],
     );

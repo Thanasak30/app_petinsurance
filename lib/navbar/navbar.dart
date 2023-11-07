@@ -75,7 +75,7 @@ class _NavbarState extends State<Navbar> {
           ),
           // Text("${username}"),
           ListTile(
-              leading: Icon(Icons.home_outlined,color: Colors.cyan),
+              leading: Icon(Icons.home_outlined,color:Color.fromARGB(255, 5, 9, 73)),
               title: Text("หน้าหลัก", style: TextStyle(fontFamily: "Itim")),
               onTap: () {
                 Navigator.of(context).pushReplacement(
@@ -84,7 +84,7 @@ class _NavbarState extends State<Navbar> {
                 }));
               }),
           ListTile(
-            leading: Icon(Icons.account_circle,color: Colors.cyan),
+            leading: Icon(Icons.account_circle,color:Color.fromARGB(255, 5, 9, 73)),
             title: Text("โปรไฟล์", style: TextStyle(fontFamily: "Itim")),
             onTap: () {
               Navigator.of(context).pushReplacement(
@@ -94,7 +94,7 @@ class _NavbarState extends State<Navbar> {
             },
           ),
           ListTile(
-            leading: Icon(Icons.pets,color: Colors.cyan),
+            leading: Icon(Icons.pets,color: Color.fromARGB(255, 5, 9, 73)),
             title: Text("เพิ่มสัตว์เลี้ยง", style: TextStyle(fontFamily: "Itim")),
             onTap: () {
               Navigator.of(context).pushReplacement(
@@ -104,7 +104,7 @@ class _NavbarState extends State<Navbar> {
             },
           ),
           ListTile(
-            leading: Icon(Icons.view_timeline,color: Colors.cyan),
+            leading: Icon(Icons.view_timeline,color: Color.fromARGB(255, 5, 9, 73)),
             title: Text("รายการสัตว์เลี้ยง", style: TextStyle(fontFamily: "Itim")),
             onTap: () {
               Navigator.of(context).pushReplacement(
@@ -114,7 +114,7 @@ class _NavbarState extends State<Navbar> {
             },
           ),
           ListTile(
-            leading: Icon(Icons.receipt_long,color: Colors.cyan),
+            leading: Icon(Icons.receipt_long,color: Color.fromARGB(255, 5, 9, 73)),
             title: Text("รายการกรรมธรรม์", style: TextStyle(fontFamily: "Itim")),
             onTap: () {
               Navigator.of(context).pushReplacement(
@@ -125,7 +125,7 @@ class _NavbarState extends State<Navbar> {
           ),
           const Divider(),
           ListTile(
-              leading: Icon(Icons.logout,color: Colors.cyan),
+              leading: Icon(Icons.logout,color:Color.fromARGB(255, 5, 9, 73)),
               title: Text("ออกจากระบบ", style: TextStyle(fontFamily: "Itim")),
               onTap: () {
                 SessionManager().remove("username");

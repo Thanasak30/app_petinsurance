@@ -188,10 +188,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 buildInputField("สัญชาติ", Icons.account_circle_outlined,
                     nationalityTextController,
                     validator: validatenationality),
-                buildInputField("บัตรประชาชน 13 หลัก",
+                buildInputFieldnumber("บัตรประชาชน 13 หลัก",
                     Icons.credit_card_outlined, IdCardTextController,
                     validator: validateIDcard),
-                buildInputField("หมายเลขโทรศัพท์", Icons.phone_outlined,
+                buildInputFieldmobile("หมายเลขโทรศัพท์", Icons.phone_outlined,
                     MobilenumberTextController,
                     validator: validatemobile),
                 buildDatePickerField("วัน/เดือน/ปีเกิด",
@@ -211,6 +211,85 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
           ),
         ),
+      ),
+    );
+  }
+  Widget buildInputFieldmobile(
+      String labelText, IconData icon, TextEditingController controller,
+      {bool obscureText = false, String? Function(String?)? validator}) {
+    return Container(
+      margin: EdgeInsets.only(top: 15),
+      child: TextFormField(
+        maxLength: 10,
+        controller: controller,
+        obscureText: obscureText,
+        keyboardType: TextInputType.number,
+        decoration: InputDecoration(
+            labelText: labelText,
+            prefixIcon: Icon(icon),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.black),
+              borderRadius: BorderRadius.circular(30),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.cyan),
+              borderRadius: BorderRadius.circular(30),
+            ),
+            // ถ้า validator คืนค่าไม่เป็น null ให้ใช้ errorBorder และ errorStyle
+            errorBorder: OutlineInputBorder(
+              borderSide:
+                  BorderSide(color: Colors.red), // สีขอบเมื่อข้อมูลไม่ถูกต้อง
+              borderRadius: BorderRadius.circular(30),
+            ),
+            errorStyle: TextStyle(color: Colors.red),
+            focusedErrorBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                  color: Colors.red), // กำหนดสีของกรอบเมื่อมีข้อความข้อผิดพลาด
+              borderRadius: BorderRadius.circular(30),
+            ) // สีข้อความเมื่อข้อมูลไม่ถูกต้อง // สีข้อความเมื่อข้อมูลไม่ถูกต้อง
+            ),
+        validator: validator,
+        style: TextStyle(fontFamily: "Itim"),
+      ),
+    );
+  }
+
+  Widget buildInputFieldnumber(
+      String labelText, IconData icon, TextEditingController controller,
+      {bool obscureText = false, String? Function(String?)? validator}) {
+    return Container(
+      margin: EdgeInsets.only(top: 15),
+      child: TextFormField(
+        maxLength: 13,
+        controller: controller,
+        obscureText: obscureText,
+        keyboardType: TextInputType.number,
+        decoration: InputDecoration(
+            labelText: labelText,
+            prefixIcon: Icon(icon),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.black),
+              borderRadius: BorderRadius.circular(30),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.cyan),
+              borderRadius: BorderRadius.circular(30),
+            ),
+            // ถ้า validator คืนค่าไม่เป็น null ให้ใช้ errorBorder และ errorStyle
+            errorBorder: OutlineInputBorder(
+              borderSide:
+                  BorderSide(color: Colors.red), // สีขอบเมื่อข้อมูลไม่ถูกต้อง
+              borderRadius: BorderRadius.circular(30),
+            ),
+            errorStyle: TextStyle(color: Colors.red),
+            focusedErrorBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                  color: Colors.red), // กำหนดสีของกรอบเมื่อมีข้อความข้อผิดพลาด
+              borderRadius: BorderRadius.circular(30),
+            ) // สีข้อความเมื่อข้อมูลไม่ถูกต้อง // สีข้อความเมื่อข้อมูลไม่ถูกต้อง
+            ),
+        validator: validator,
+        style: TextStyle(fontFamily: "Itim"),
       ),
     );
   }
@@ -259,11 +338,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
       margin: EdgeInsets.only(top: 15),
       child: TextFormField(
         onTap: () async {
+          int minAge = 18;
+          DateTime currentDate = DateTime.now();
+          DateTime firstAvailableDate = DateTime(
+              currentDate.year - minAge, currentDate.month, currentDate.day);
+          DateTime lastAvailableDate = DateTime(1950);
+
           DateTime? tempDate = await showDatePicker(
             context: context,
-            initialDate: DateTime.now(),
-            firstDate: DateTime(1950),
-            lastDate: DateTime.now(),
+            initialDate: firstAvailableDate,
+            firstDate: lastAvailableDate,
+            lastDate: firstAvailableDate,
           );
           if (tempDate != null) {
             setState(() {
@@ -417,62 +502,32 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Widget buildCheckage() {
-  if (checkage) {
-    return TextFormField(
-      controller: AgeTextController,
-      enabled: false,
-      decoration: InputDecoration(
-        labelText: "อายุ",
-        prefixIcon: Icon(Icons.account_circle_outlined),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.black),
-          borderRadius: BorderRadius.circular(30),
+    if (checkage) {
+      return TextFormField(
+        controller: AgeTextController,
+        enabled: false,
+        decoration: InputDecoration(
+          labelText: "อายุ",
+          prefixIcon: Icon(Icons.account_circle_outlined),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black),
+            borderRadius: BorderRadius.circular(30),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderSide:
+                BorderSide(color: Colors.red), // สีของเส้นเมื่อมีข้อผิดพลาด
+            borderRadius: BorderRadius.circular(30),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+                color: Colors.red), // สีของเส้นเมื่อมีข้อผิดพลาดเมื่อโฟกัส
+            borderRadius: BorderRadius.circular(30),
+          ),
         ),
-        errorBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.red), // สีของเส้นเมื่อมีข้อผิดพลาด
-          borderRadius: BorderRadius.circular(30),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.red), // สีของเส้นเมื่อมีข้อผิดพลาดเมื่อโฟกัส
-          borderRadius: BorderRadius.circular(30),
-        ),
-      ),
-      validator: (value) {
-        if (age! < 18) {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text(
-                  "แจ้งเตือน!!!",
-                  style: TextStyle(fontFamily: "Itim"),
-                ),
-                content: Text("อายุต้องมากกว่า 18 ปี",
-                    style: TextStyle(fontFamily: "Itim")),
-                actions: <Widget>[
-                  TextButton(
-                    child: Text("ตกลง", style: TextStyle(fontFamily: "Itim")),
-                    onPressed: () {
-                      setState(() {
-                        birthday = null;
-                        birthdayTextController.clear();
-                        age = 0;
-                      });
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              );
-            },
-          );
-        }
-        return null;
-      },
-      style: TextStyle(fontFamily: "Itim"),
-    );
-  } else {
-    return const SizedBox.shrink();
+        style: TextStyle(fontFamily: "Itim"),
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
   }
-}
-
 }

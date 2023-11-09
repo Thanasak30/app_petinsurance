@@ -421,48 +421,70 @@ class _UpdateStatusState extends State<UpdateStatus> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
+                      Visibility(
+                        visible: petinsuranceregister?.status ==
+                            'ไม่อนุมัติ'&& petinsuranceregister?.status == "หมดอายุ", // ถ้า status เป็น 'หมดอายุ' จะซ่อนปุ่มนี้
+                        child: Container(
                           margin: EdgeInsets.symmetric(vertical: 16),
                           width: size * 0.4,
                           child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30))),
-                              onPressed: () async {
-                                Petinsuranceregister updatePetdetails =
-                                    Petinsuranceregister(
-                                  insurance_regId: widget.insurance_regId,
-                                  officer: officer,
-                                );
-                                showsureToUpdateStatusAlert(
-                                    officer?.OfficerId ?? "",
-                                    petinsuranceregister?.insurance_regId
-                                            .toString() ??
-                                        "");
-                              },
-                              child: Text("ไม่อนุมัติการสมัคร",
-                                  style: TextStyle(fontFamily: "Itim")))),
-                      Container(
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                            ),
+                            onPressed: () async {
+                              Petinsuranceregister updatePetdetails =
+                                  Petinsuranceregister(
+                                insurance_regId: widget.insurance_regId,
+                                officer: officer,
+                              );
+                              showsureToUpdateStatusAlert(
+                                officer?.OfficerId ?? "",
+                                petinsuranceregister?.insurance_regId
+                                        .toString() ??
+                                    "",
+                              );
+                            },
+                            child: Text(
+                              "ไม่อนุมัติการสมัคร",
+                              style: TextStyle(fontFamily: "Itim"),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Visibility(
+                        visible: petinsuranceregister?.status ==
+                            'ไม่อนุมัติ' && petinsuranceregister?.status == "หมดอายุ", // ถ้า status เป็น 'หมดอายุ' จะซ่อนปุ่มนี้
+                        child: Container(
                           margin: EdgeInsets.symmetric(vertical: 16),
                           width: size * 0.4,
                           child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30))),
-                              onPressed: () async {
-                                Petinsuranceregister updatePetdetail =
-                                    Petinsuranceregister(
-                                  insurance_regId: widget.insurance_regId,
-                                  officer: officer,
-                                );
-                                showSureToUpdateStatusAlert(
-                                    officer?.OfficerId ?? "",
-                                    petinsuranceregister?.insurance_regId
-                                            .toString() ??
-                                        "");
-                              },
-                              child: Text("อนุมัติการสมัคร",
-                                  style: TextStyle(fontFamily: "Itim")))),
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                            ),
+                            onPressed: () async {
+                              Petinsuranceregister updatePetdetail =
+                                  Petinsuranceregister(
+                                insurance_regId: widget.insurance_regId,
+                                officer: officer,
+                              );
+                              showSureToUpdateStatusAlert(
+                                officer?.OfficerId ?? "",
+                                petinsuranceregister?.insurance_regId
+                                        .toString() ??
+                                    "",
+                              );
+                            },
+                            child: Text(
+                              "อนุมัติการสมัคร",
+                              style: TextStyle(fontFamily: "Itim"),
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   )
                 ]),

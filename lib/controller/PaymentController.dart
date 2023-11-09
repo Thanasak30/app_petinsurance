@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
+import 'package:pet_insurance/model/Payment.dart';
 import '../constant/constant_value.dart';
 
 class PaymentController {
@@ -29,7 +30,7 @@ class PaymentController {
     // ส่งข้อมูลไปยังเซิร์ฟเวอร์
     var url = Uri.parse(baseURL + "/payment/add");
     var response = await http.post(url, headers: headers, body: jsonData);
-
+    print("statuscode: ${response.statusCode}");
     print(response.body);
     return response;
   }
@@ -52,8 +53,10 @@ class PaymentController {
       request.files.add(multipartFile);
 
       var response = await request.send();
+      
       if (response.statusCode == 200) {
         var jsonResponse = await response.stream.bytesToString();
+        
         return jsonResponse; // รีเทิร์น URL ของไฟล์ภาพที่ถูกอัปโหลด
       } else {
         throw Exception('Failed to upload image');
@@ -71,5 +74,21 @@ class PaymentController {
     final utf8Body = utf8.decode(response.bodyBytes);
     var jsonResponse = json.decode(utf8Body);
     return jsonResponse;
+  }
+
+  Future listAllpayment() async {
+    Map data = {};
+
+    var body = json.encode(data);
+    var url = Uri.parse(baseURL + '/payment/getall');
+
+    http.Response response = await http.post(url, headers: headers, body: body);
+
+    final utf8Body = utf8.decode(response.bodyBytes);
+    List<dynamic> jsonResponse = json.decode(utf8Body);
+    List<Payment> list = jsonResponse
+        .map((e) => Payment.fromJsonToPayment(e))
+        .toList();
+    return list;
   }
 }

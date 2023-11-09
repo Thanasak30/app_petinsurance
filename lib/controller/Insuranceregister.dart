@@ -10,7 +10,6 @@ class InsuranceREG {
 
     String insurance_planId,
     String memberId,
-    String receivedByEmail,
     String startdate,
     String enddate,
     String status,
@@ -21,7 +20,6 @@ class InsuranceREG {
   ) async {
     var data = {
       "memberId": memberId,
-      "receivedByEmail": receivedByEmail,
       "startdate": startdate,
       "enddate" : enddate,
       "status": status,

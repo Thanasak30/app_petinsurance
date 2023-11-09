@@ -178,7 +178,8 @@ class _PaymentsState extends State<Payments> {
                         Policynumber(),
                         _images!,
                       );
-                      if (response.statusCode == 200) {
+                      print("statuscodefront: ${response.statusCode}");
+                      if (response.statusCode == 201) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             backgroundColor: Colors.green,

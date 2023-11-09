@@ -153,7 +153,10 @@ class _AddPetState extends State<AddPet> {
     double size = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("เพิ่มสัตว์เลี้ยง",style: TextStyle(fontFamily: "Itim"),),
+        title: const Text(
+          "เพิ่มสัตว์เลี้ยง",
+          style: TextStyle(fontFamily: "Itim"),
+        ),
         leading: BackButton(
           color: Colors.white,
           onPressed: () {
@@ -192,11 +195,14 @@ class _AddPetState extends State<AddPet> {
           onChanged: (TypeGender? val) {
             setState(() {
               typegender = TypeGender.male;
-              typegenders = "ชาย";
+              typegenders = "ตัวผู้";
             });
           },
         ),
-        Text('ชาย',style: TextStyle(fontFamily: "Itim"),),
+        Text(
+          'ตัวผู้',
+          style: TextStyle(fontFamily: "Itim"),
+        ),
         SizedBox(width: 20),
         Radio<TypeGender>(
           value: TypeGender.female,
@@ -204,117 +210,122 @@ class _AddPetState extends State<AddPet> {
           onChanged: (TypeGender? val) {
             setState(() {
               typegender = TypeGender.female;
-              typegenders = "หญิง";
+              typegenders = "ตัวเมีย";
             });
           },
         ),
-        Text('หญิง',style: TextStyle(fontFamily: "Itim"),),
+        Text(
+          'ตัวเมีย',
+          style: TextStyle(fontFamily: "Itim"),
+        ),
       ],
     );
   }
 
   Row buildbuttom(double size) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      Container(
-        margin: EdgeInsets.symmetric(vertical: 16),
-        width: size * 0.6,
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
-            ),
-          ),
-          onPressed: () async {
-            if (namePetTextController.text.isEmpty ||
-                listage.isEmpty ||
-                typegenders!.isEmpty ||
-                selectedPet!.isEmpty ||
-                types!.isEmpty) {
-              // แสดงข้อความแจ้งเตือนถ้าข้อมูลไม่ครบถ้วน
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Text("แจ้งเตือน",
-                        style: TextStyle(fontFamily: "Itim")),
-                    content: Text("กรุณากรอกข้อมูลให้ครบถ้วน",
-                        style: TextStyle(fontFamily: "Itim")),
-                    actions: <Widget>[
-                      TextButton(
-                        child: Text("ตกลง",
-                            style: TextStyle(fontFamily: "Itim")),
-                        onPressed: () {
-                          Navigator.of(context).pop(); // ปิดกล่องข้อความ
-                        },
-                      ),
-                    ],
-                  );
-                },
-              );
-            } else {
-              Petdetail addPets = Petdetail(
-                member: member,
-                agepet: listage.toString(),
-                gender: typegenders.toString(),
-                namepet: namePetTextController.text,
-                species: selectedPet.toString(),
-                type: types.toString(),
-              );
-              showSureToAddPetAlert(
-                  addPets.member!.memberId.toString(),
-                  addPets.agepet.toString(),
-                  addPets.gender.toString(),
-                  addPets.namepet.toString(),
-                  addPets.species.toString(),
-                  addPets.type.toString());
-            }
-          },
-          child: Text(
-            "เพิ่มสัตว์เลี้ยง",
-            style: TextStyle(fontFamily: "Itim"),
-          ),
-        ),
-      ),
-    ],
-  );
-}
-
-
-  Row buildtypepet() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Radio<Type>(
-          value: Type.Dog,
-          groupValue: type,
-          onChanged: (Type? val) {
-            setState(() {
-              type = Type.Dog;
-              types = "สุนัข";
-              selectedPet = null;
-            });
-          },
+        Container(
+          margin: EdgeInsets.symmetric(vertical: 16),
+          width: size * 0.6,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
+            onPressed: () async {
+              if (namePetTextController.text.isEmpty ||
+                  listage.isEmpty ||
+                  typegenders!.isEmpty ||
+                  selectedPet!.isEmpty ||
+                  types!.isEmpty) {
+                // แสดงข้อความแจ้งเตือนถ้าข้อมูลไม่ครบถ้วน
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text("แจ้งเตือน",
+                          style: TextStyle(fontFamily: "Itim")),
+                      content: Text("กรุณากรอกข้อมูลให้ครบถ้วน",
+                          style: TextStyle(fontFamily: "Itim")),
+                      actions: <Widget>[
+                        TextButton(
+                          child: Text("ตกลง",
+                              style: TextStyle(fontFamily: "Itim")),
+                          onPressed: () {
+                            Navigator.of(context).pop(); // ปิดกล่องข้อความ
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              } else {
+                Petdetail addPets = Petdetail(
+                  member: member,
+                  agepet: listage.toString(),
+                  gender: typegenders.toString(),
+                  namepet: namePetTextController.text,
+                  species: selectedPet.toString(),
+                  type: types.toString(),
+                );
+                showSureToAddPetAlert(
+                    addPets.member!.memberId.toString(),
+                    addPets.agepet.toString(),
+                    addPets.gender.toString(),
+                    addPets.namepet.toString(),
+                    addPets.species.toString(),
+                    addPets.type.toString());
+              }
+            },
+            child: Text(
+              "เพิ่มสัตว์เลี้ยง",
+              style: TextStyle(fontFamily: "Itim"),
+            ),
+          ),
         ),
-        Text('สุนัข',style: TextStyle(fontFamily: "Itim"),),
-        SizedBox(width: 20),
-        Radio<Type>(
-          value: Type.Cat,
-          groupValue: type,
-          onChanged: (Type? val) {
-            setState(() {
-              type = Type.Cat;
-              types = "แมว";
-              selectedPet = null;
-            });
-          },
+      ],
+    );
+  }
+
+  Column buildtypepet() {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Radio<Type>(
+              value: Type.Dog,
+              groupValue: type,
+              onChanged: (Type? val) {
+                setState(() {
+                  type = Type.Dog;
+                  types = "สุนัข";
+                  selectedPet = null;
+                });
+              },
+            ),
+            Text('สุนัข', style: TextStyle(fontFamily: "Itim")),
+            SizedBox(width: 20),
+            Radio<Type>(
+              value: Type.Cat,
+              groupValue: type,
+              onChanged: (Type? val) {
+                setState(() {
+                  type = Type.Cat;
+                  types = "แมว";
+                  selectedPet = null;
+                });
+              },
+            ),
+            Text('แมว', style: TextStyle(fontFamily: "Itim")),
+          ],
         ),
-        Text('แมว',style: TextStyle(fontFamily: "Itim"),),
-        SizedBox(width: 20),
         if (type != null)
           DropdownButton<String>(
-            hint: Text('เลือกสายพันธุ์',style: TextStyle(fontFamily: "Itim"),),
+            hint: Text('เลือกสายพันธุ์', style: TextStyle(fontFamily: "Itim")),
             value: selectedPet,
             onChanged: (String? newValue) {
               setState(() {
@@ -325,13 +336,13 @@ class _AddPetState extends State<AddPet> {
                 ? dogData.map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
-                      child: Text(value,style: TextStyle(fontFamily: "Itim"),),
+                      child: Text(value, style: TextStyle(fontFamily: "Itim")),
                     );
                   }).toList()
                 : catData.map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
-                      child: Text(value,style: TextStyle(fontFamily: "Itim"),),
+                      child: Text(value, style: TextStyle(fontFamily: "Itim")),
                     );
                   }).toList(),
           ),
@@ -353,7 +364,7 @@ class _AddPetState extends State<AddPet> {
           child: Center(
             child: Text(
               "อายุ",
-              style: TextStyle(fontSize: 15,fontFamily: "Itim"),
+              style: TextStyle(fontSize: 15, fontFamily: "Itim"),
             ),
           ),
         ),
@@ -381,7 +392,8 @@ class _AddPetState extends State<AddPet> {
                       style: TextStyle(fontSize: 15),
                     ),
                   );
-                }).toList(),style: TextStyle(fontFamily: "Itim",color: Colors.black),
+                }).toList(),
+                style: TextStyle(fontFamily: "Itim", color: Colors.black),
               ),
             ),
           ),
@@ -398,7 +410,7 @@ class _AddPetState extends State<AddPet> {
           margin: EdgeInsets.only(top: 30),
           child: Text(
             "เพิ่มสัตว์เลี้ยงของท่าน",
-            style: TextStyle(fontSize: 20,fontFamily: "Itim"),
+            style: TextStyle(fontSize: 20, fontFamily: "Itim"),
           ),
         ),
       ],
@@ -424,7 +436,8 @@ class _AddPetState extends State<AddPet> {
                   borderSide: BorderSide(color: Colors.cyan),
                   borderRadius: BorderRadius.circular(30)),
             ),
-          style: TextStyle(fontFamily: "Itim"),),
+            style: TextStyle(fontFamily: "Itim"),
+          ),
         ),
       ],
     );

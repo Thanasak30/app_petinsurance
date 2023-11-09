@@ -250,13 +250,12 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
                 buildimgdocument(),
                 const Divider(),
                 Text(
-                  "วิธีรับกรรมธรรม์",
+                  "เราจะส่งกรรมธรรม์ของท่านไปทางอีเมล",
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
-                      fontFamily: "Itim"),
+                      fontFamily: "Itim",color: Colors.red),
                 ),
-                buildRadio(),
                 SizedBox(height: 20),
                 Center(child: buildbutton(size)),
               ],
@@ -264,24 +263,6 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
           ),
         ),
       ),
-    );
-  }
-
-  RadioListTile<Type> buildRadio() {
-    return RadioListTile<Type>(
-      value: Type.receivedByEmail,
-      groupValue: typereceived,
-      title: Text(
-        "รับกรมธรรม์ทางอีเมล",
-        style: TextStyle(fontFamily: "Itim"),
-      ),
-      onChanged: (Type? val) {
-        setState(() {
-          typereceived = Type.receivedByEmail;
-          typesreceived = "รับกรมธรรม์ทางอีเมล";
-        });
-      },
-      selected: typereceived == Type.receivedByEmail,
     );
   }
 
@@ -300,7 +281,7 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
                 ),
           ),
           _image == null
-              ? Text('No image selected.', style: TextStyle(fontFamily: "Itim"))
+              ? Text('เพิ่มรูปภาพ.', style: TextStyle(fontFamily: "Itim"))
               : Image.file(
                   _image!,
                   height: 100,
@@ -417,18 +398,6 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
                     duration: Duration(seconds: 3),
                   ),
                 );
-              } else if (typesreceived == null) {
-                // Check if the insurance type is not selected
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    backgroundColor: Colors.red,
-                    content: Text(
-                      'กรุณาเลือกวิธีรับกรรมธรรม์',
-                      style: TextStyle(fontFamily: "Itim", color: Colors.white),
-                    ),
-                    duration: Duration(seconds: 3),
-                  ),
-                );
               } else {
                 // All images and insurance type are selected
                 print(widget.insurance_planId);
@@ -438,7 +407,6 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
                   http.Response response = await insuranceREG.addInsuranceReg(
                     widget.insurance_planId.toString(),
                     member!.memberId.toString(),
-                    typesreceived.toString(),
                     dateFormat.format(currentDate),
                     dateFormat.format(nextYearDate),
                     "",

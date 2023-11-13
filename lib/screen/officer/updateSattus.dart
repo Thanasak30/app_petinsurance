@@ -488,7 +488,7 @@ class _UpdateStatusState extends State<UpdateStatus> {
                   )
                 ]),
               )
-            : CircularProgressIndicator());
+            : Center(child: CircularProgressIndicator()));
   }
 
   Widget _buildPetImage(String imageUrl, BoxFit fit) {

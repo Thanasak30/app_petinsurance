@@ -109,7 +109,7 @@ class _ListPetState extends State<ListPet> {
           },
         ),
       ),
-      body:isLoade == false? ListView.builder(
+      body:isLoade == true? ListView.builder(
           itemCount: petdetail?.length,
           itemBuilder: (context, index) {
             return Padding(
@@ -158,7 +158,7 @@ class _ListPetState extends State<ListPet> {
                     ),
                   )),
             );
-          }):CircularProgressIndicator(),
+          }):Center(child: CircularProgressIndicator()),
     ));
   }
 

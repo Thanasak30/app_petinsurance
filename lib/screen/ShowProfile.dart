@@ -61,7 +61,7 @@ class _ShowProfileState extends State<ShowProfile> {
           },
         ),
       ),
-      body:isLoaded == false? Padding(
+      body:isLoaded == true? Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

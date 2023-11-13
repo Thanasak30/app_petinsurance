@@ -40,6 +40,7 @@ class _ListInsuranceState extends State<ListInsurance> {
   Payment? payment;
   List<Payment>? payments;
   bool check = false;
+  DateTime now = DateTime.now();
 
   Duration? checkdate;
   int? differancedate;
@@ -81,6 +82,7 @@ class _ListInsuranceState extends State<ListInsurance> {
 
   @override
   Widget build(BuildContext context) {
+    dateFormat.format(now);
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
@@ -107,14 +109,15 @@ class _ListInsuranceState extends State<ListInsurance> {
                         petinsuranceregister?[index].startdate ??
                             DateTime.now());
                     var enddate = dateFormat.format(
-                        petinsuranceregister?[index].enddate ?? DateTime.now());
+                        petinsuranceregister?[index].enddate as DateTime);
                     var status = petinsuranceregister?[index].status ?? "";
                     var statuspayment = (payments != null &&
                             index >= 0 &&
                             index < payments!.length)
                         ? payments![index].status ?? ""
                         : "";
-                    
+                    DateTime Enddate =
+                        petinsuranceregister?[index].enddate as DateTime;
 
                     Color getStatusColor(String status) {
                       switch (status) {
@@ -135,6 +138,9 @@ class _ListInsuranceState extends State<ListInsurance> {
                         ?.difference(DateTime.now());
                     differancedate = checkdate?.inDays;
                     differancedate = differancedate! + 1;
+                    print(
+                        "Date: ${dateFormat.format(petinsuranceregister?[index].enddate as DateTime)}");
+
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 5),
                       child: Card(
@@ -168,20 +174,27 @@ class _ListInsuranceState extends State<ListInsurance> {
                                 ),
                               ),
                               Text(
-                                (status == "อนุมัติ" &&
-                                        statuspayment != "ชำระเงินแล้ว")
-                                    ? "กรุณาทำการชำระเงิน":
-                                    (status == "อนุมัติ" &&
-                                        statuspayment == "ชำระเงินแล้ว")
-                                    ? statuspayment : "",
+                                Enddate.isBefore(now)
+                                    ? "หมดอายุ"
+                                    : (status == "อนุมัติ" &&
+                                            statuspayment == "ชำระเงินแล้ว")
+                                        ? statuspayment
+                                        : (status == "อนุมัติ" &&
+                                                statuspayment != "ชำระเงินแล้ว")
+                                            ? "กรุณาทำการชำระเงิน"
+                                            : "",
                                 style: TextStyle(
                                   fontFamily: "Itim",
                                   color: (status == "อนุมัติ" &&
                                           statuspayment != "ชำระเงินแล้ว")
-                                      ? Colors.blueAccent :
-                                       (status == "อนุมัติ" &&
-                                        statuspayment == "ชำระเงินแล้ว")
-                                      ? getStatusColor(status):Colors.red,
+                                      ? Colors.blueAccent
+                                      : Enddate.isBefore(now)
+                                          ? Colors.red
+                                          : (status == "อนุมัติ" &&
+                                                  statuspayment ==
+                                                      "ชำระเงินแล้ว")
+                                              ? getStatusColor(status)
+                                              : Colors.red,
                                 ),
                               )
                             ],

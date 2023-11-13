@@ -254,7 +254,7 @@ class _ViewinsuranceState extends State<Viewinsurance> {
             ),
           )),
         ),
-        body:isLoaded == false? Column(
+        body:isLoaded == true? Column(
           children: [
             Expanded(
               child: ListView(
@@ -269,7 +269,7 @@ class _ViewinsuranceState extends State<Viewinsurance> {
               ),
             ),
           ],
-        ):CircularProgressIndicator(),
+        ):Center(child: CircularProgressIndicator()),
       ),
     );
   }

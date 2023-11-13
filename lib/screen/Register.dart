@@ -160,7 +160,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           },
         ),
       ),
-      body: SingleChildScrollView(
+      body:isLode == false? SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Form(
@@ -211,7 +211,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
           ),
         ),
-      ),
+      ):CircularProgressIndicator(),
     );
   }
   Widget buildInputFieldmobile(

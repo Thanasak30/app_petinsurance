@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:pet_insurance/controller/OfficerController.dart';
 import 'package:pet_insurance/model/Insurancedetail.dart';
 import 'package:pet_insurance/model/Officer.dart';
+import 'package:pet_insurance/model/Petinsuranceregister.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:http/http.dart' as http;
@@ -34,6 +35,8 @@ class _EditInsuranceState extends State<EditInsurance> {
   OfficerController officerController = OfficerController();
 
   Insurancedetail? insurancedetail;
+  Petinsuranceregister? petinsuranceregister;
+  int? petregister;
   bool? isLoade;
   String? substring;
 
@@ -60,6 +63,10 @@ class _EditInsuranceState extends State<EditInsurance> {
     print(insurance_planId);
     var response = await officerController.getInsuranceById(insurance_planId);
     insurancedetail = Insurancedetail.fromJsonToInsurancedetail(response);
+     petregister =
+        await officerController.getInsuranceregByplanId(insurance_planId);
+    print("CHeck : ${petregister}");
+
     setState(() {
       setData();
       print(response);
@@ -74,6 +81,7 @@ class _EditInsuranceState extends State<EditInsurance> {
   @override
   void initState() {
     super.initState();
+
     fetcData(widget.insurance_planId);
   }
 
@@ -125,9 +133,13 @@ class _EditInsuranceState extends State<EditInsurance> {
   @override
   Widget build(BuildContext context) {
     double size = MediaQuery.of(context).size.width;
+    print("CHeck is: ${petregister}");
     return Scaffold(
       appBar: AppBar(
-        title: Text("แก้ไขแผนประกันภัย",style: TextStyle(fontFamily: "Itim"),),
+        title: Text(
+          "แก้ไขแผนประกันภัย",
+          style: TextStyle(fontFamily: "Itim"),
+        ),
         leading: BackButton(
           color: Colors.white,
           onPressed: () {
@@ -138,7 +150,7 @@ class _EditInsuranceState extends State<EditInsurance> {
           },
         ),
       ),
-      body: Form(
+      body:isLoade == false ? Form(
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -152,11 +164,13 @@ class _EditInsuranceState extends State<EditInsurance> {
               buildpet_funeral_costs(size),
               buildpets_attack_outsiders(size),
               buildthird_party_property(size),
-              buildbuttom(size)
+              petregister != 0  ? Container() : buildbuttom(size)
+              
+              
             ],
           ),
         ),
-      ),
+      ):CircularProgressIndicator(),
     );
   }
 
@@ -228,7 +242,8 @@ class _EditInsuranceState extends State<EditInsurance> {
                   borderSide: BorderSide(color: Colors.cyan),
                   borderRadius: BorderRadius.circular(30)),
             ),
-          style: TextStyle(fontFamily: "Itim"),),
+            style: TextStyle(fontFamily: "Itim"),
+          ),
         ),
       ],
     );
@@ -306,14 +321,18 @@ class _EditInsuranceState extends State<EditInsurance> {
                       treatment: TreatmentController.text,
                       duration: insurancedetail?.duration,
                       pet_funeral_costs: pet_funeral_costs.text,
-                      accident_or_illness_compensation: accident_or_illness.text,
+                      accident_or_illness_compensation:
+                          accident_or_illness.text,
                       pets_attack_outsiders: pets_attack_outsiders.text,
                       third_party_property_values_due_to_pets:
                           third_party_property.text);
                   // print(updateMember?.username?.username);
                   showSureToUpdateInsuranceeAlert(updateInsurancedetail);
                 },
-                child: Text("แก้ไขแผนประกันภัย",style: TextStyle(fontFamily:"Itim"),))),
+                child: Text(
+                  "แก้ไขแผนประกันภัย",
+                  style: TextStyle(fontFamily: "Itim"),
+                ))),
       ],
     );
   }

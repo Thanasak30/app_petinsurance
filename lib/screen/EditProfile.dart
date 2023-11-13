@@ -118,7 +118,7 @@ class _EditProfileState extends State<EditProfile> {
         confirmBtnText: "ตกลง",
         onConfirmBtnTap: () {
           Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => const EditProfile()));
+              MaterialPageRoute(builder: (context) => const ShowProfile()));
         });
   }
 
@@ -231,7 +231,7 @@ class _EditProfileState extends State<EditProfile> {
           },
         ),
       ),
-      body: SingleChildScrollView(
+      body:isLoaded == false ? SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Form(
@@ -253,10 +253,10 @@ class _EditProfileState extends State<EditProfile> {
                 buildInputField("สัญชาติ", Icons.account_circle_outlined,
                     nationalityTextController,
                     validator: validatenationality),
-                buildInputField("บัตรประชาชน 13 หลัก",
+                buildInputFieldnumber("บัตรประชาชน 13 หลัก",
                     Icons.credit_card_outlined, IdCardTextController,
                     validator: validateIDcard),
-                buildInputField("หมายเลขโทรศัพท์", Icons.phone_outlined,
+                buildInputFieldmobile("หมายเลขโทรศัพท์", Icons.phone_outlined,
                     MobilenumberTextController,
                     validator: validatemobile),
                 buildDatePickerField("วัน/เดือน/ปีเกิด",
@@ -276,6 +276,86 @@ class _EditProfileState extends State<EditProfile> {
             ),
           ),
         ),
+      ):CircularProgressIndicator(),
+    );
+  }
+
+  Widget buildInputFieldmobile(
+      String labelText, IconData icon, TextEditingController controller,
+      {bool obscureText = false, String? Function(String?)? validator}) {
+    return Container(
+      margin: EdgeInsets.only(top: 15),
+      child: TextFormField(
+        maxLength: 10,
+        controller: controller,
+        obscureText: obscureText,
+        keyboardType: TextInputType.number,
+        decoration: InputDecoration(
+            labelText: labelText,
+            prefixIcon: Icon(icon),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.black),
+              borderRadius: BorderRadius.circular(30),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.cyan),
+              borderRadius: BorderRadius.circular(30),
+            ),
+            // ถ้า validator คืนค่าไม่เป็น null ให้ใช้ errorBorder และ errorStyle
+            errorBorder: OutlineInputBorder(
+              borderSide:
+                  BorderSide(color: Colors.red), // สีขอบเมื่อข้อมูลไม่ถูกต้อง
+              borderRadius: BorderRadius.circular(30),
+            ),
+            errorStyle: TextStyle(color: Colors.red),
+            focusedErrorBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                  color: Colors.red), // กำหนดสีของกรอบเมื่อมีข้อความข้อผิดพลาด
+              borderRadius: BorderRadius.circular(30),
+            ) // สีข้อความเมื่อข้อมูลไม่ถูกต้อง // สีข้อความเมื่อข้อมูลไม่ถูกต้อง
+            ),
+        validator: validator,
+        style: TextStyle(fontFamily: "Itim"),
+      ),
+    );
+  }
+
+  Widget buildInputFieldnumber(
+      String labelText, IconData icon, TextEditingController controller,
+      {bool obscureText = false, String? Function(String?)? validator}) {
+    return Container(
+      margin: EdgeInsets.only(top: 15),
+      child: TextFormField(
+        maxLength: 13,
+        controller: controller,
+        obscureText: obscureText,
+        keyboardType: TextInputType.number,
+        decoration: InputDecoration(
+            labelText: labelText,
+            prefixIcon: Icon(icon),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.black),
+              borderRadius: BorderRadius.circular(30),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.cyan),
+              borderRadius: BorderRadius.circular(30),
+            ),
+            // ถ้า validator คืนค่าไม่เป็น null ให้ใช้ errorBorder และ errorStyle
+            errorBorder: OutlineInputBorder(
+              borderSide:
+                  BorderSide(color: Colors.red), // สีขอบเมื่อข้อมูลไม่ถูกต้อง
+              borderRadius: BorderRadius.circular(30),
+            ),
+            errorStyle: TextStyle(color: Colors.red),
+            focusedErrorBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                  color: Colors.red), // กำหนดสีของกรอบเมื่อมีข้อความข้อผิดพลาด
+              borderRadius: BorderRadius.circular(30),
+            ) // สีข้อความเมื่อข้อมูลไม่ถูกต้อง // สีข้อความเมื่อข้อมูลไม่ถูกต้อง
+            ),
+        validator: validator,
+        style: TextStyle(fontFamily: "Itim"),
       ),
     );
   }

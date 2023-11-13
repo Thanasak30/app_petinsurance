@@ -50,7 +50,7 @@ class _ListAllinsurance2State extends State<ListAllinsurance2> {
           style: TextStyle(fontFamily: "Itim"),
         ),
       ),
-      body: ListView.builder(
+      body:isLoade == false ? ListView.builder(
           itemCount: insurancedetail?.length,
           itemBuilder: (context, index) {
             var insurancename = insurancedetail?[index].insurance_name ?? "";
@@ -111,7 +111,7 @@ class _ListAllinsurance2State extends State<ListAllinsurance2> {
                     },
                   )),
             );
-          }),
+          }):CircularProgressIndicator(),
     );
   }
 }

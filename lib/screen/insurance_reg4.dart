@@ -24,6 +24,8 @@ import '../controller/OfficerController.dart';
 import '../model/Insurancedetail.dart';
 import '../model/Member.dart';
 import 'AddPet.dart';
+import 'package:image/image.dart' as img;
+
 
 class InsuranceREG4 extends StatefulWidget {
   final String pet_id;
@@ -117,28 +119,64 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
   String listanimal = listanimal_Spice.first;
   String listage = listAge.first;
 
-  Future getImage() async {
+
+  void getImage() async {
     final picker = ImagePicker();
     var image = await picker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      _image = File(image!.path);
-    });
+    if (image != null) {
+      File imageFile = File(image.path);
+      int fileSize = await imageFile.length();
+
+      if (fileSize < (1 * 1024 * 1024)) {
+        setState(() {
+         _image = File(image.path);
+        });
+      }else {
+       showFailToUplodeimgAlert();
+      }
+    }
   }
 
   Future getImagehealth() async {
     final picker = ImagePicker();
     var images = await picker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      _images = File(images!.path);
-    });
+    if (images != null) {
+      File imageFile = File(images.path);
+      int fileSize = await imageFile.length();
+
+      if (fileSize < (1 * 1024 * 1024)) {
+        setState(() {
+          _images = File(images.path);
+        });
+      }else {
+        showFailToUplodeimgAlert();
+      }
+    }
   }
 
   Future getImagepet() async {
     final picker = ImagePicker();
     var imagepet = await picker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      _imagepet = File(imagepet!.path);
-    });
+      if (imagepet != null) {
+      File imageFile = File(imagepet.path);
+      int fileSize = await imageFile.length();
+
+      if (fileSize < (1 * 1024 * 1024)) {
+        setState(() {
+         _imagepet = File(imagepet.path);
+        });
+      }else {
+        showFailToUplodeimgAlert();
+      }
+    }
+  }
+
+  void showFailToUplodeimgAlert() {
+    QuickAlert.show(
+        context: context,
+        title: "เกิดข้อผิดพลาด",
+        text: "ไม่สามารถใช้รูปที่มีขนาดมากกว่า 1 MB ได้",
+        type: QuickAlertType.error);
   }
 
   void setData() async {
@@ -205,7 +243,7 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
             },
           ),
         ),
-        body: Form(
+        body:isLoaded == false? Form(
           key: formKey,
           child: SingleChildScrollView(
             padding: EdgeInsets.all(16.0),
@@ -254,14 +292,15 @@ class _InsuranceREG4State extends State<InsuranceREG4> {
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
-                      fontFamily: "Itim",color: Colors.red),
+                      fontFamily: "Itim",
+                      color: Colors.red),
                 ),
                 SizedBox(height: 20),
                 Center(child: buildbutton(size)),
               ],
             ),
           ),
-        ),
+        ):CircularProgressIndicator(),
       ),
     );
   }

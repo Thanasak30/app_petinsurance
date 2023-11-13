@@ -117,4 +117,20 @@ class PetdetailController {
         jsonResponse.map((e) => Petdetail.fromJsonToPetdetail(e)).toList();
     return list;
   }
+
+   Future listAllpayment() async {
+    Map data = {};
+
+    var body = json.encode(data);
+    var url = Uri.parse(baseURL + '/petdetail/list');
+
+    http.Response response = await http.post(url, headers: headers, body: body);
+
+    final utf8Body = utf8.decode(response.bodyBytes);
+    List<dynamic> jsonResponse = json.decode(utf8Body);
+    List<Petdetail> list = jsonResponse
+        .map((e) => Petdetail.fromJsonToPetdetail(e))
+        .toList();
+    return list;
+  }
 }

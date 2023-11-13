@@ -73,6 +73,20 @@ class OfficerController {
     return jsonResponse;
   }
 
+  Future getInsuranceregByplanId(int insurance_planId) async {
+    int check;
+    var url =
+        Uri.parse(baseURL + '/insuranceregister/getplan/' + insurance_planId.toString());
+
+    http.Response response = await http.get(url);
+
+    final utf8Body = utf8.decode(response.bodyBytes);
+    var jsonResponse = json.decode(utf8Body);
+    check = jsonResponse;
+    print("Check : ${check}");
+    return check;
+  }
+
   Future updateInsurancedetail(Insurancedetail insurancedetail) async {
     Map<String, dynamic> data = insurancedetail.fromInsurancedetailToJson();
 
@@ -107,11 +121,11 @@ class OfficerController {
     return list;
   }
 
-  Future listInsurance(String pet_id) async {
+  Future listInsurance(String memberId) async {
     Map data = {};
 
     var body = json.encode(data);
-    var url = Uri.parse(baseURL + '/insuranceregister/list/' + pet_id);
+    var url = Uri.parse(baseURL + '/insuranceregister/list/'+ memberId );
 
     http.Response response = await http.post(url, headers: headers, body: body);
 

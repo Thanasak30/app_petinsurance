@@ -66,7 +66,7 @@ class _InsuranceREGState extends State<InsuranceREG> {
           },
         ),
       ),
-      body: ListView.builder(
+      body:isLoade == false ? ListView.builder(
           itemCount: petdetail?.length,
           itemBuilder: (context, index) {
             return Padding(
@@ -88,7 +88,7 @@ class _InsuranceREGState extends State<InsuranceREG> {
                     },
                   )),
             );
-          }),
+          }):CircularProgressIndicator(),
     );
   }
     Widget _buildPetImage(String? petType) {

@@ -1,5 +1,5 @@
 //IPv4 session
-const String ipv4 = "192.168.1.2";// ipv4 ของไวไฟที่ใช้อยู่นะปัจจุบัน
+const String ipv4 = "192.168.19.55";// ipv4 ของไวไฟที่ใช้อยู่นะปัจจุบัน
 
 //Header session
 const Map<String, String> headers = {"Access-Control-Allow-Origin": "*",

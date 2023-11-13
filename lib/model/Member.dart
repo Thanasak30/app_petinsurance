@@ -1,4 +1,5 @@
 import 'package:pet_insurance/model/Login.dart';
+import 'package:pet_insurance/model/Petdetail.dart';
 
 
 
@@ -16,6 +17,7 @@ class Member {
   String? nationality;
   String? id_line;
   Login? username;
+  // Petdetail? petdetail;
 
   Member({
     this.memberId,
@@ -29,7 +31,8 @@ class Member {
     this.brithday,
     this.nationality,
     this.id_line,
-    this.username
+    this.username,
+    // this.petdetail,
   });
 
 
@@ -46,7 +49,8 @@ class Member {
       'brithday': brithday!.toIso8601String(),
       'nationality' : nationality,
       'id_line' : id_line,
-      'username': username?.fromLoginToJson()
+      'username': username?.fromLoginToJson(),
+      // 'petid' : petdetail,
     };
   }
 
@@ -63,7 +67,8 @@ class Member {
       brithday: DateTime.parse(json["brithday"]).toLocal(),
       nationality: json["nationality"],
       id_line: json["id_line"],
-      username: Login.fromJsonToLogin(json["username"])
+      username: Login.fromJsonToLogin(json["username"]),
+      // petdetail: Petdetail.fromJsonToPetdetail(json["petid"])
     );
   }
   

@@ -29,6 +29,7 @@ class Payments extends StatefulWidget {
 class _PaymentsState extends State<Payments> {
   String? user;
   Member? member;
+  bool? isLode;
   Petinsuranceregister? petinsuranceregister;
   File? _images;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -52,7 +53,9 @@ class _PaymentsState extends State<Payments> {
     print(insurance_regId);
     var response = await officerController.getInsuranceregById(insurance_regId);
     petinsuranceregister = Petinsuranceregister.fromJsonToPetregister(response);
-    setState(() {});
+    setState(() {
+      isLode = true;
+    });
   }
 
   @override
@@ -92,7 +95,7 @@ class _PaymentsState extends State<Payments> {
             },
           ),
         ),
-        body: Form(
+        body:isLode == false? Form(
           key: formKey,
           child: Column(
             children: [
@@ -221,7 +224,7 @@ class _PaymentsState extends State<Payments> {
               ),
             ],
           ),
-        ),
+        ):CircularProgressIndicator(),
       ),
     );
   }

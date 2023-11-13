@@ -27,16 +27,21 @@ class _ListInsuranceScreenState extends State<ListInsuranceScreen> {
     if (status == 'ทั้งหมด') {
       return petinsuranceregister ?? [];
     } else {
-      return (petinsuranceregister ?? []).where((item) => item.status == status).toList();
+      return (petinsuranceregister ?? [])
+          .where((item) => item.status == status)
+          .toList();
     }
   }
+
   void fetcData() async {
     setState(() {
       isLoade = false;
     });
     petinsuranceregister = await officerController.getlistInsurancereg();
-    // petinsuranceregister = await officerController.listInsuranceapprove();
     setState(() {
+      petinsuranceregister?.forEach((element) {
+        print(element.petdetail?.member?.fullname);
+      });
       isLoade = true;
     });
   }
@@ -75,8 +80,13 @@ class _ListInsuranceScreenState extends State<ListInsuranceScreen> {
                   selectedStatus = newValue ?? 'ทั้งหมด';
                 });
               },
-              items: ['ทั้งหมด', 'อนุมัติ', 'รอดำเนินการ', 'ไม่อนุมัติ' , 'หมดอายุ']
-                  .map<DropdownMenuItem<String>>((String value) {
+              items: [
+                'ทั้งหมด',
+                'อนุมัติ',
+                'รอการอนุมัติ',
+                'ไม่อนุมัติ',
+                'หมดอายุ'
+              ].map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(value, style: TextStyle(fontFamily: 'Itim')),
@@ -86,119 +96,98 @@ class _ListInsuranceScreenState extends State<ListInsuranceScreen> {
           ],
         ),
         body: isLoade == true
-          ? ListView.builder(
-              itemCount: filterPetInsuranceRegisterByStatus(selectedStatus).length,
-              itemBuilder: (context, index) {
-                var petName =
-                    filterPetInsuranceRegisterByStatus(selectedStatus)[index].petdetail?.namepet ?? "";
-                var memberName =
-                    filterPetInsuranceRegisterByStatus(selectedStatus)[index].member?.fullname ?? "";
-                var status = filterPetInsuranceRegisterByStatus(selectedStatus)[index].status ?? "";
+            ? ListView.builder(
+                itemCount:
+                    filterPetInsuranceRegisterByStatus(selectedStatus).length,
+                itemBuilder: (context, index) {
+                  var petName =
+                      filterPetInsuranceRegisterByStatus(selectedStatus)[index]
+                              .petdetail
+                              ?.namepet ??
+                          "";
+                  var memberName =
+                      filterPetInsuranceRegisterByStatus(selectedStatus)[index]
+                          .petdetail
+                          ?.member
+                          ?.fullname;
+                  var status =
+                      filterPetInsuranceRegisterByStatus(selectedStatus)[index]
+                              .status ??
+                          "";
 
-                Color getStatusColor(String status) {
-                  switch (status) {
-                    case 'อนุมัติ':
-                      return Colors.green;
-                    case 'รอดำเนินการ':
-                      return Colors.blueGrey;
-                    case 'ไม่อนุมัติ':
-                      return Colors.red;
-                    default:
-                      return Colors.red; // สีเริ่มต้นถ้าไม่ตรงกับเงื่อนไขใด ๆ
+                  Color getStatusColor(String status) {
+                    switch (status) {
+                      case 'อนุมัติ':
+                        return Colors.green;
+                      case 'รอการอนุมัติ':
+                        return Colors.blueGrey;
+                      case 'ไม่อนุมัติ':
+                        return Colors.red;
+                      default:
+                        return Colors.red; // สีเริ่มต้นถ้าไม่ตรงกับเงื่อนไขใด ๆ
+                    }
                   }
-                }
 
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: Card(
-                    elevation: 10,
-                    child: ListTile(
-                      contentPadding: EdgeInsets.all(10),
-                      title: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "ชื่อสัตว์เลี้ยง: $petName",
-                            style: TextStyle(fontFamily: "Itim"),
-                          ),
-                          Text(
-                            "ชื่อเจ้าของ: $memberName",
-                            style: TextStyle(fontFamily: "Itim"),
-                          ),
-                          Text(
-                            "สถานะ: $status",
-                            style: TextStyle(
-                              fontFamily: "Itim",
-                              color: getStatusColor(status),
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    child: Card(
+                      elevation: 10,
+                      child: ListTile(
+                        contentPadding: EdgeInsets.all(10),
+                        title: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "ชื่อสัตว์เลี้ยง: $petName",
+                              style: TextStyle(fontFamily: "Itim"),
                             ),
-                          ),
-                        ],
-                      ),
-                      onTap: () {
-                        print("Click at $index");
-                        if (petinsuranceregister != null &&
-                            petinsuranceregister?[index] != null &&
-                            petinsuranceregister?[index].insurancedetail != null) {
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (_) => UpdateStatus(
-                                insurance_regId:
-                                    filterPetInsuranceRegisterByStatus(selectedStatus)[index].insurance_regId ?? 0,
-                                insurance_planId:
-                                    filterPetInsuranceRegisterByStatus(selectedStatus)[index].insurancedetail?.insurance_planId ?? 0,
+                            Text(
+                              "ชื่อเจ้าของ: $memberName",
+                              style: TextStyle(fontFamily: "Itim"),
+                            ),
+                            Text(
+                              "สถานะ: $status",
+                              style: TextStyle(
+                                fontFamily: "Itim",
+                                color: getStatusColor(status),
                               ),
                             ),
-                          );
-                        }
-                      },
+                          ],
+                        ),
+                        onTap: () {
+                          print("Click at $index");
+                          if (petinsuranceregister != null &&
+                              petinsuranceregister?[index] != null &&
+                              petinsuranceregister?[index].insurancedetail !=
+                                  null) {
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (_) => UpdateStatus(
+                                  insurance_regId:
+                                      filterPetInsuranceRegisterByStatus(
+                                                  selectedStatus)[index]
+                                              .insurance_regId ??
+                                          0,
+                                  insurance_planId:
+                                      filterPetInsuranceRegisterByStatus(
+                                                  selectedStatus)[index]
+                                              .insurancedetail
+                                              ?.insurance_planId ??
+                                          0,
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                      ),
                     ),
-                  ),
-                );
-              },
-            )
-          : Center(
-              child: CircularProgressIndicator(),
-            ),
-    ),
-  );
-}
-
-  // Widget buildCard(String petName, String memberName, String status, int index,
-  //     BuildContext context) {
-  //   return Card(
-  //     elevation: 10,
-  //     child: ListTile(
-  //       contentPadding: EdgeInsets.all(10),
-  //       title: Column(
-  //         crossAxisAlignment: CrossAxisAlignment.start,
-  //         children: [
-  //           Text("ชื่อสัตว์เลี้ยง: $petName",
-  //               style: TextStyle(fontFamily: "Itim")),
-  //           Text("ชื่อเจ้าของ: $memberName",
-  //               style: TextStyle(fontFamily: "Itim")),
-  //           Text("สถานะ: $status", style: TextStyle(fontFamily: "Itim")),
-  //         ],
-  //       ),
-  //       onTap: () {
-  //         print("Click at $index");
-  //         if (petinsuranceregister != null &&
-  //             petinsuranceregister?[index] != null &&
-  //             petinsuranceregister?[index].insurancedetail != null) {
-  //           Navigator.of(context).pushReplacement(
-  //             MaterialPageRoute(
-  //               builder: (_) => UpdateStatus(
-  //                 insurance_regId:
-  //                     petinsuranceregister?[index].insurance_regId ?? 0,
-  //                 insurance_planId: petinsuranceregister?[index]
-  //                         .insurancedetail
-  //                         ?.insurance_planId ??
-  //                     0,
-  //               ),
-  //             ),
-  //           );
-  //         }
-  //       },
-  //     ),
-  //   );
-  // }
+                  );
+                },
+              )
+            : Center(
+                child: CircularProgressIndicator(),
+              ),
+      ),
+    );
+  }
 }

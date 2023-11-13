@@ -95,7 +95,10 @@ class _ListPetState extends State<ListPet> {
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
-        title: const Text("รายการสัตว์เลี้ยง",style: TextStyle(fontFamily: "Itim"),),
+        title: const Text(
+          "รายการสัตว์เลี้ยง",
+          style: TextStyle(fontFamily: "Itim"),
+        ),
         leading: BackButton(
           color: Colors.white,
           onPressed: () {
@@ -106,7 +109,7 @@ class _ListPetState extends State<ListPet> {
           },
         ),
       ),
-      body: ListView.builder(
+      body:isLoade == false? ListView.builder(
           itemCount: petdetail?.length,
           itemBuilder: (context, index) {
             return Padding(
@@ -116,7 +119,10 @@ class _ListPetState extends State<ListPet> {
                   elevation: 10,
                   child: ListTile(
                     leading: _buildPetImage(petdetail?[index].type),
-                    title: Text("${petdetail?[index].namepet}",style: TextStyle(fontFamily: "Itim"),),
+                    title: Text(
+                      "${petdetail?[index].namepet}",
+                      style: TextStyle(fontFamily: "Itim"),
+                    ),
                     onTap: () {
                       print("pet_id ${petdetail?[index].petId}");
                       print("member_Id ${member?.memberId.toString()}");
@@ -130,8 +136,21 @@ class _ListPetState extends State<ListPet> {
                     },
                     trailing: GestureDetector(
                       onTap: () {
-                        showSureToDeletePetAlert(
-                            petdetail?[index].petId.toString() ?? "");
+                        if (petdetail?[index].status ==
+                            "ยังไม่ได้ทำการสมัครแผน") {
+                          showSureToDeletePetAlert(
+                              petdetail?[index].petId.toString() ?? "");
+                        }
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: Colors.red,
+                            content: Text(
+                              'ไม่สามารถลบสัตว์เลี้ยงได้!',
+                              style: TextStyle(
+                                  fontFamily: "Itim", color: Colors.white),
+                            ),
+                          ),
+                        );
                       },
                       child: Icon(
                         Icons.delete,
@@ -139,7 +158,7 @@ class _ListPetState extends State<ListPet> {
                     ),
                   )),
             );
-          }),
+          }):CircularProgressIndicator(),
     ));
   }
 

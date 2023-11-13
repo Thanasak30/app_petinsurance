@@ -265,7 +265,7 @@ class _Viewinsurance2State extends State<Viewinsurance2> {
               ),
             ),
           ],
-        ): Container(),
+        ): CircularProgressIndicator(),
       ),
     );
   }

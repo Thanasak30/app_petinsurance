@@ -29,7 +29,7 @@ class Payment {
       'imgpayment': imgpayment,
       'total': total,
       'status' : status,
-      'insuranceregister' : insuranceregister,
+      'insurance_regId' : insuranceregister?.fromPetregisterToJson(),
 
     };
   }

@@ -246,19 +246,19 @@ class _UpdateStatusState extends State<UpdateStatus> {
                           ),
                           SizedBox(height: 10),
                           Text(
-                              "ชื่อผู้เอาประกันภัย: ${petinsuranceregister?.member?.fullname ?? ''}",
+                              "ชื่อผู้เอาประกันภัย: ${petinsuranceregister?.petdetail?.member?.fullname ?? ''}",
                               style: TextStyle(fontFamily: "Itim")),
                           Text(
-                              "วัน/เดือน/ปีเกิด: ${dateFormat.format(petinsuranceregister?.member?.brithday ?? DateTime.now())}",
+                              "วัน/เดือน/ปีเกิด: ${dateFormat.format(petinsuranceregister?.petdetail?.member?.brithday ?? DateTime.now())}",
                               style: TextStyle(fontFamily: "Itim")),
                           Text(
-                              "เลขบัตรประชาชน: ${petinsuranceregister?.member?.idcard ?? ''}",
+                              "เลขบัตรประชาชน: ${petinsuranceregister?.petdetail?.member?.idcard ?? ''}",
                               style: TextStyle(fontFamily: "Itim")),
                           Text(
-                              "ที่อยู่ผู้เอาประกัน: ${petinsuranceregister?.member?.address ?? ''}",
+                              "ที่อยู่ผู้เอาประกัน: ${petinsuranceregister?.petdetail?.member?.address ?? ''}",
                               style: TextStyle(fontFamily: "Itim")),
                           Text(
-                              "เบอร์โทรศัพท์: ${petinsuranceregister?.member?.mobileno ?? ''}",
+                              "เบอร์โทรศัพท์: ${petinsuranceregister?.petdetail?.member?.mobileno ?? ''}",
                               style: TextStyle(fontFamily: "Itim")),
                         ],
                       ),
@@ -422,8 +422,7 @@ class _UpdateStatusState extends State<UpdateStatus> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Visibility(
-                        visible: petinsuranceregister?.status ==
-                            'ไม่อนุมัติ'&& petinsuranceregister?.status == "หมดอายุ", // ถ้า status เป็น 'หมดอายุ' จะซ่อนปุ่มนี้
+                        visible: petinsuranceregister?.status == 'รอการอนุมัติ',
                         child: Container(
                           margin: EdgeInsets.symmetric(vertical: 16),
                           width: size * 0.4,
@@ -455,7 +454,7 @@ class _UpdateStatusState extends State<UpdateStatus> {
                       ),
                       Visibility(
                         visible: petinsuranceregister?.status ==
-                            'ไม่อนุมัติ' && petinsuranceregister?.status == "หมดอายุ", // ถ้า status เป็น 'หมดอายุ' จะซ่อนปุ่มนี้
+                            'รอการอนุมัติ', // ถ้า status เป็น 'หมดอายุ' จะซ่อนปุ่มนี้
                         child: Container(
                           margin: EdgeInsets.symmetric(vertical: 16),
                           width: size * 0.4,
@@ -489,7 +488,7 @@ class _UpdateStatusState extends State<UpdateStatus> {
                   )
                 ]),
               )
-            : Container());
+            : CircularProgressIndicator());
   }
 
   Widget _buildPetImage(String imageUrl, BoxFit fit) {

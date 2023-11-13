@@ -19,7 +19,7 @@ import '../model/Petinsuranceregister.dart';
 import 'View_insurance.dart';
 
 class ListInsurance extends StatefulWidget {
-  const ListInsurance({super.key});
+  const ListInsurance({super.key, Key});
 
   @override
   State<ListInsurance> createState() => _ListInsuranceState();
@@ -34,10 +34,12 @@ class _ListInsuranceState extends State<ListInsurance> {
   List<Insurancedetail>? insurancedetail;
   List<Petinsuranceregister>? petinsuranceregister;
 
-  List<Petdetail>? petdetail;
+  Petdetail? petdetail;
   Member? member;
   String? user;
   Payment? payment;
+  List<Payment>? payments;
+  bool check = false;
 
   Duration? checkdate;
   int? differancedate;
@@ -51,10 +53,9 @@ class _ListInsuranceState extends State<ListInsurance> {
     user = await SessionManager().get("username");
     print(user);
     member = await memberController.getMemberById(user!);
-    petdetail = await petdetailController
-        .listAllPetdetailByMember(member!.memberId.toString());
-    petinsuranceregister =
-        await officerController.listInsurance(member!.memberId.toString());
+
+    petinsuranceregister = await officerController
+        .listInsurance(member?.memberId.toString() ?? "");
 
     setState(() {
       isLoade = true;
@@ -62,18 +63,20 @@ class _ListInsuranceState extends State<ListInsurance> {
   }
 
   void PaymentData() async {
-    var payments = await paymentController.listAllpayment();
+    payments = await paymentController.listAllpayment();
     print("payments  :  ${payments}");
-
-    payment = Payment.fromJsonToPayment(payments);
-    print("payment  :  ${payment?.status}");
+    setState(() {
+      payments?.forEach((element) {
+        print(element.status);
+      });
+    });
   }
 
   @override
   void initState() {
     super.initState();
+    PaymentData();
     fetcData();
-    // PaymentData();
   }
 
   @override
@@ -99,14 +102,18 @@ class _ListInsuranceState extends State<ListInsurance> {
                   itemBuilder: (context, index) {
                     var petName =
                         petinsuranceregister?[index].petdetail?.namepet ?? "";
-                    var memberName =
-                        petinsuranceregister?[index].member?.fullname ?? "";
-                    var startdate =
-                        dateFormat.format(petinsuranceregister?[index].startdate ?? DateTime.now());
-                    var enddate = dateFormat.format(petinsuranceregister?[index].enddate ?? DateTime.now());
+                    var memberName = member?.fullname;
+                    var startdate = dateFormat.format(
+                        petinsuranceregister?[index].startdate ??
+                            DateTime.now());
+                    var enddate = dateFormat.format(
+                        petinsuranceregister?[index].enddate ?? DateTime.now());
                     var status = petinsuranceregister?[index].status ?? "";
-                    var statuspayment = payment?.status;
-
+                    var statuspayment = (payments != null &&
+                            index >= 0 &&
+                            index < payments!.length)
+                        ? payments![index].status ?? ""
+                        : "";
                     
 
                     Color getStatusColor(String status) {
@@ -160,6 +167,23 @@ class _ListInsuranceState extends State<ListInsurance> {
                                   color: getStatusColor(status),
                                 ),
                               ),
+                              Text(
+                                (status == "อนุมัติ" &&
+                                        statuspayment != "ชำระเงินแล้ว")
+                                    ? "กรุณาทำการชำระเงิน":
+                                    (status == "อนุมัติ" &&
+                                        statuspayment == "ชำระเงินแล้ว")
+                                    ? statuspayment : "",
+                                style: TextStyle(
+                                  fontFamily: "Itim",
+                                  color: (status == "อนุมัติ" &&
+                                          statuspayment != "ชำระเงินแล้ว")
+                                      ? Colors.blueAccent :
+                                       (status == "อนุมัติ" &&
+                                        statuspayment == "ชำระเงินแล้ว")
+                                      ? getStatusColor(status):Colors.red,
+                                ),
+                              )
                             ],
                           ),
                           onTap: () {

@@ -149,9 +149,9 @@ class _EditPetState extends State<EditPet> {
 /*-------------------------------------------------- */
     TypeGender? convertToTypeGender(String? value) {
       switch (value) {
-        case 'ชาย':
+        case 'ตัวผู้':
           return TypeGender.male;
-        case 'หญิง':
+        case 'ตัวเมีย':
           return TypeGender.female;
       }
     }
@@ -252,7 +252,7 @@ class _EditPetState extends State<EditPet> {
                 ),
               ),
             )
-          : Container(),
+          : CircularProgressIndicator(),
     ));
   }
 
@@ -300,18 +300,22 @@ class _EditPetState extends State<EditPet> {
                         borderRadius: BorderRadius.circular(30))),
                 onPressed: () async {
                   print("MemberId ${member?.memberId}");
-                  Petdetail updatePetdetail = Petdetail(
-                    petId: petdetail?.petId,
-                    agepet: agePetTextController.text = dropdownage,
-                    gender: typegenders,
-                    namepet: namePetTextController.text,
-                    species: selectedPet,
-                    type: types,
-                    status: petdetail?.status,
-                    member: member,
-                  );
+                  if (petdetail?.status == "ยังไม่ได้ทำการสมัครแผน") {
+                    Petdetail updatePetdetail = Petdetail(
+                      petId: petdetail?.petId,
+                      agepet: agePetTextController.text = dropdownage,
+                      gender: typegenders,
+                      namepet: namePetTextController.text,
+                      species: selectedPet,
+                      type: types,
+                      status: petdetail?.status,
+                      member: member,
+                    );
 
-                  showSureToUpdateMemberAlert(updatePetdetail);
+                    showSureToUpdateMemberAlert(updatePetdetail);
+                  } else {
+                    showFailToUpdateMemberAlert();
+                  }
                 },
                 child: Text("แก้ไขข้อมูลสัตว์เลี้ยง",
                     style: TextStyle(fontFamily: "Itim")))),
@@ -334,72 +338,74 @@ class _EditPetState extends State<EditPet> {
   }
 
   Column buildtypepet() {
-  return Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Radio<Type>(
-            value: Type.Dog,
-            groupValue: Types,
-            onChanged: (Type? val) {
-              setState(() {
-                Types = Type.Dog;
-                types = "สุนัข";
-                selectedPet = 'กรุณาเลือกสายพันธุ์';
-              });
-            },
-          ),
-          Text('สุนัข'),
-          SizedBox(width: 20),
-          Radio<Type>(
-            value: Type.Cat,
-            groupValue: Types,
-            onChanged: (Type? val) {
-              setState(() {
-                Types = Type.Cat;
-                types = "แมว";
-                selectedPet = 'กรุณาเลือกสายพันธุ์';
-              });
-            },
-          ),
-          Text('แมว', style: TextStyle(fontFamily: "Itim")),
-        ],
-      ),
-      SizedBox(height: 20),
-      // Dropdown button in a new row
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          DropdownButton<String>(
-            hint: Text('เลือกสายพันธุ์', style: TextStyle(fontFamily: "Itim")),
-            value: selectedPet,
-            onChanged: (String? newValue) {
-              setState(() {
-                selectedPet = newValue!;
-              });
-            },
-            items: types == "สุนัข"
-                ? dogData.map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value, style: TextStyle(fontFamily: "Itim")),
-                    );
-                  }).toList()
-                : catData.map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value, style: TextStyle(fontFamily: "Itim")),
-                    );
-                  }).toList(),
-          ),
-        ],
-      ),
-    ],
-  );
-}
-
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Radio<Type>(
+              value: Type.Dog,
+              groupValue: Types,
+              onChanged: (Type? val) {
+                setState(() {
+                  Types = Type.Dog;
+                  types = "สุนัข";
+                  selectedPet = 'กรุณาเลือกสายพันธุ์';
+                });
+              },
+            ),
+            Text('สุนัข'),
+            SizedBox(width: 20),
+            Radio<Type>(
+              value: Type.Cat,
+              groupValue: Types,
+              onChanged: (Type? val) {
+                setState(() {
+                  Types = Type.Cat;
+                  types = "แมว";
+                  selectedPet = 'กรุณาเลือกสายพันธุ์';
+                });
+              },
+            ),
+            Text('แมว', style: TextStyle(fontFamily: "Itim")),
+          ],
+        ),
+        SizedBox(height: 20),
+        // Dropdown button in a new row
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            DropdownButton<String>(
+              hint:
+                  Text('เลือกสายพันธุ์', style: TextStyle(fontFamily: "Itim")),
+              value: selectedPet,
+              onChanged: (String? newValue) {
+                setState(() {
+                  selectedPet = newValue!;
+                });
+              },
+              items: types == "สุนัข"
+                  ? dogData.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child:
+                            Text(value, style: TextStyle(fontFamily: "Itim")),
+                      );
+                    }).toList()
+                  : catData.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child:
+                            Text(value, style: TextStyle(fontFamily: "Itim")),
+                      );
+                    }).toList(),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
 
   Row buildagepet(double size) {
     return Row(

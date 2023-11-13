@@ -44,8 +44,6 @@ class Petdetail {
         species: json["species"],
         type: json["type"],
         status: json["status"],
-        member: json["member"] == null
-            ? null
-            : Member.fromJsonToMember(json["memberId"]));
+        member: Member.fromJsonToMember(json["members"]));
   }
 }

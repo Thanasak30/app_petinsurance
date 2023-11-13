@@ -82,9 +82,13 @@ class PaymentController {
     var body = json.encode(data);
     var url = Uri.parse(baseURL + '/payment/getall');
 
-    http.Response response = await http.post(url, headers: headers, body: body);
+
+
+    http.Response response = await http.get(url, headers: headers);
+
 
     final utf8Body = utf8.decode(response.bodyBytes);
+      print("utf8Body ${utf8Body}");
     List<dynamic> jsonResponse = json.decode(utf8Body);
     List<Payment> list = jsonResponse
         .map((e) => Payment.fromJsonToPayment(e))

@@ -5,7 +5,6 @@ import 'package:pet_insurance/model/Petinsuranceregister.dart';
 import 'Petdetail.dart';
 
 class Insurancedetail {
-
   int? insurance_planId;
   String? insurance_name;
   String? duration;
@@ -17,10 +16,7 @@ class Insurancedetail {
   String? third_party_property_values_due_to_pets;
   String? accident_or_illness_compensation;
   double? price;
-  // Member? member;
-  // Officer? officer;
-  // Petdetail? petdetail;
-  Petinsuranceregister? petinsuranceregister;
+
 
   Insurancedetail({
     this.insurance_planId,
@@ -34,9 +30,7 @@ class Insurancedetail {
     this.third_party_property_values_due_to_pets,
     this.accident_or_illness_compensation,
     this.treatment,
-
-  }
-  );
+  });
 
   Map<String, dynamic> fromInsurancedetailToJson() {
     return <String, dynamic>{
@@ -49,10 +43,9 @@ class Insurancedetail {
       'treatment': treatment,
       'pet_funeral_costs': pet_funeral_costs,
       'pets_attack_outsiders': pets_attack_outsiders,
-      'third_party_property_values_due_to_pets': third_party_property_values_due_to_pets,
+      'third_party_property_values_due_to_pets':
+          third_party_property_values_due_to_pets,
       'accident_or_illness_compensation': accident_or_illness_compensation,
-
-      
     };
   }
 
@@ -67,10 +60,12 @@ class Insurancedetail {
       treatment: json["treatment"],
       pet_funeral_costs: json["pet_funeral_costs"],
       pets_attack_outsiders: json["pets_attack_outsiders"],
-      third_party_property_values_due_to_pets: json["third_party_property_values_due_to_pets"],
-      accident_or_illness_compensation: json["accident_or_illness_compensation"],
+      third_party_property_values_due_to_pets:
+          json["third_party_property_values_due_to_pets"],
+      accident_or_illness_compensation:
+          json["accident_or_illness_compensation"],
     );
   }
-  
-   
- }
+
+
+}
